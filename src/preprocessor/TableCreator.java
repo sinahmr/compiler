@@ -1,8 +1,6 @@
 package preprocessor;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 
@@ -15,6 +13,15 @@ public class TableCreator {
 
     public static void main(String[] args) {
         new TableCreator().run();
+    }
+
+    private void run() {
+        readGrammarFile();
+        calculateFirsts();
+        calculateFollows();
+
+        Table table = createTable();
+        writeTableToFile(table);
     }
 
     private void readGrammarFile() {
@@ -133,17 +140,6 @@ public class TableCreator {
         }
     }
 
-    private void printFirstsOrFollows(HashMap<String, HashSet<String>> m) {
-        for (Map.Entry<String, HashSet<String>> entry : m.entrySet()) {
-            String nt = entry.getKey();
-            HashSet<String> set = entry.getValue();
-            System.out.print(nt + ": ");
-            for (String s : set)
-                System.out.print(s + ", ");
-            System.out.println();
-        }
-    }
-
     private Table createTable() {
         Table table = new Table(terminals, nonTerminals);
         ArrayList<State> states = new ArrayList<>();
@@ -179,7 +175,7 @@ public class TableCreator {
                 table.put("" + newStateNum, i, nonTerminal);
             }
 
-           for (Item item : state.items) {  // Reduce
+            for (Item item : state.items) {  // Reduce
                 if (item.lhs.equals("$S") && item.dotBefore == 1) {
                     table.put("Acc", i, "EOF");
                     continue;
@@ -192,20 +188,43 @@ public class TableCreator {
         return table;
     }
 
-    private void run() {
-        readGrammarFile();
-        calculateFirsts();
-        calculateFollows();
+    private void writeTableToFile(Table table) {
+        String delimiter = "\t";
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/parser/table.csv"))) {
+            String[] header = new String[terminals.size() + nonTerminals.size()];
+            for (Map.Entry<String, Integer> entry : table.tntToColumnNumber.entrySet()) {
+                String nt = entry.getKey();
+                int column = entry.getValue();
+                header[column] = nt;
+            }
+            String content = delimiter + String.join(delimiter, header);
 
-        Table table = createTable();
-        System.out.println();
-
-        System.out.println("Follows:");
-        printFirstsOrFollows(follows);
-        System.out.println("\nFirsts:");
-        printFirstsOrFollows(firsts);
-
+            for (int i = 0; i < table.statesCount; i++) {
+                content += "\n" + i + delimiter;
+                for (int j = 0; j < terminals.size() + nonTerminals.size(); j++) {
+                    if (table.table[i][j] != null)
+                        content += table.table[i][j];
+                    if (j != terminals.size() + nonTerminals.size() - 1)
+                        content += delimiter;
+                }
+            }
+            bw.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    private void printFirstsOrFollows(HashMap<String, HashSet<String>> m) {
+        for (Map.Entry<String, HashSet<String>> entry : m.entrySet()) {
+            String nt = entry.getKey();
+            HashSet<String> set = entry.getValue();
+            System.out.print(nt + ": ");
+            for (String s : set)
+                System.out.print(s + ", ");
+            System.out.println();
+        }
+    }
+
 }
 
 class Item {
@@ -299,7 +318,6 @@ class State {
         }
     }
 
-    // TODO ghable hameye item.rhs[item.dotBefore] ha bayad check kard noghte akhar nabashe
     public Item[] cloneItemsWithDotBeforeTNTAndMoveDot(String tnt) {
         ArrayList<Item> toReturn = new ArrayList<>();
         for (Item item : items) {
@@ -321,6 +339,7 @@ class Table {
     HashSet<String> nonTerminals;
     HashMap<String, Integer> tntToColumnNumber = new HashMap<>();
     String[][] table;
+    int statesCount = 0;
 
     public Table(HashSet<String> terminals, HashSet<String> nonTerminals) {
         this.terminals = terminals;
@@ -336,10 +355,10 @@ class Table {
     public void put(String text, int state, String tnt) {
         int column = tntToColumnNumber.get(tnt);
         if (table[state][column] != null)
-            table[state][column] += text;
+            table[state][column] += "/" + text;
         else
             table[state][column] = text;
+        if (state + 1 > statesCount)
+            statesCount = state + 1;
     }
-
-
 }
