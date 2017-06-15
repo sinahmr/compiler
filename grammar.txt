@@ -1,0 +1,59 @@
+$Program → $DeclarationList EOF
+$DeclarationList → $DeclarationList $Declaration
+$DeclarationList → $Declaration
+$Declaration →  $VarDeclaration
+$Declaration →  $FunDeclaration
+$VarDeclaration → $TypeSpecifier ID ;
+$VarDeclaration → $TypeSpecifier ID [ NUM ] ;
+$TypeSpecifier → int
+$FunDeclaration → $FunReturnType ID ( $Params ) $CompoundStmt
+$FunReturnType → int
+$FunReturnType → void
+$Params → $ParamList
+$Params → void
+$ParamList → $ParamList , $Param
+$ParamList → $Param
+$Param → $TypeSpecifier ID
+$Param → $TypeSpecifier ID [ ]
+$CompoundStmt → { $LocalDeclarations $StatementList }
+$LocalDeclarations → $LocalDeclarations  $VarDeclaration
+$LocalDeclarations → ε
+$StatementList → $StatementList $Statement
+$StatementList → ε
+$Statement → $ExpressionStmt
+$Statement → $CompoundStmt
+$Statement → $SelectionStmt
+$Statement → $IterationStmt
+$Statement → $ReturnStmt
+$ExpressionStmt → $Var = $Expression ;
+$ExpressionStmt → ;
+$SelectionStmt → if ( $GenExpression ) $Statement
+$SelectionStmt → if ( $GenExpression ) $Statement else $Statement
+$IterationStmt → while ( $GenExpression ) $Statement
+$ReturnStmt → return ;
+$ReturnStmt → return $GenExpression ;
+$Var → ID
+$Var → ID [ $Expression ]
+$GenExpression → RelExpression
+$GenExpression → $Expression
+RelExpression → RelExpression && $RelTerm
+RelExpression → $RelTerm
+$RelTerm → $Expression == $Expression
+$RelTerm → $Expression < $Expression
+$Expression → $Expression $AddOp $Term
+$Expression → $Term
+$AddOp → +
+$AddOp → -
+$Term → $Term $MulOp $Factor
+$Term → $Factor
+$MulOp → *
+$MulOp → /
+$Factor → ( $Expression )
+$Factor → $Var
+$Factor → $Call
+$Factor → NUM
+$Call → ID ( $Args )
+$Args → $ArgList
+$Args → ε
+$ArgList → $ArgList , $Expression
+$ArgList → $Expression
