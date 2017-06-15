@@ -59,8 +59,10 @@ public class TableCreator {
         String[] parts = s.trim().split(" ");
         for (int i = 0; i < parts.length; i++) {
             String part = parts[i];
-            if (!part.startsWith("$"))
+            if (!part.startsWith("$")) {
+                toReturn.add(part);
                 break;
+            }
             if (!firsts.get(part.trim()).contains("ε")) {
                 toReturn.addAll(firsts.get(part.trim()));
                 break;
@@ -198,8 +200,10 @@ public class TableCreator {
         Table table = createTable();
         System.out.println();
 
-//        System.out.println("Follows:");
-//        printFirstsOrFollows(follows);
+        System.out.println("Follows:");
+        printFirstsOrFollows(follows);
+        System.out.println("\nFirsts:");
+        printFirstsOrFollows(firsts);
 
     }
 }
