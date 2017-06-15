@@ -1,8 +1,8 @@
 $Program → $DeclarationList EOF
 $DeclarationList → $DeclarationList $Declaration
 $DeclarationList → $Declaration
-$Declaration →  $VarDeclaration
-$Declaration →  $FunDeclaration
+$Declaration → $VarDeclaration
+$Declaration → $FunDeclaration
 $VarDeclaration → $TypeSpecifier ID ;
 $VarDeclaration → $TypeSpecifier ID [ NUM ] ;
 $TypeSpecifier → int
@@ -16,7 +16,7 @@ $ParamList → $Param
 $Param → $TypeSpecifier ID
 $Param → $TypeSpecifier ID [ ]
 $CompoundStmt → { $LocalDeclarations $StatementList }
-$LocalDeclarations → $LocalDeclarations  $VarDeclaration
+$LocalDeclarations → $LocalDeclarations $VarDeclaration
 $LocalDeclarations → ε
 $StatementList → $StatementList $Statement
 $StatementList → ε
@@ -34,10 +34,10 @@ $ReturnStmt → return ;
 $ReturnStmt → return $GenExpression ;
 $Var → ID
 $Var → ID [ $Expression ]
-$GenExpression → RelExpression
+$GenExpression → $RelExpression
 $GenExpression → $Expression
-RelExpression → RelExpression && $RelTerm
-RelExpression → $RelTerm
+$RelExpression → $RelExpression && $RelTerm
+$RelExpression → $RelTerm
 $RelTerm → $Expression == $Expression
 $RelTerm → $Expression < $Expression
 $Expression → $Expression $AddOp $Term
