@@ -1,18 +1,26 @@
 package parser;
 
 import preprocessor.ParseTable;
+import scanner.Scanner;
+import scanner.Token;
 
 import java.io.*;
-import java.util.Scanner;
+import java.util.Stack;
 
 public class Parser {
+    Scanner scanner;
     Grammar grammar;
     ParseTable table;
+    Stack<Integer> stack = new Stack<>();
 
-    public Parser() throws IOException {
+    public Parser(Scanner scanner) throws IOException {
+        this.scanner = scanner;
         grammar = getGrammar();
         table = getParseTable();
+    }
 
+    public void parse() {
+//        Token token = scanner.getNextToken();
     }
 
     private Grammar getGrammar() throws IOException {
@@ -28,7 +36,7 @@ public class Parser {
 
     private ParseTable getParseTable() throws IOException {
         File tableFile = new File("./src/resource/table.csv");
-        String csv = new Scanner(tableFile).useDelimiter("\\Z").next();
+        String csv = new java.util.Scanner(tableFile).useDelimiter("\\Z").next();
         return new ParseTable(csv);
     }
 
