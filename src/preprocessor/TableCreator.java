@@ -1,7 +1,6 @@
 package preprocessor;
 
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 
 public class TableCreator {
@@ -34,7 +33,7 @@ public class TableCreator {
 
                 String[] parts = line.split("→")[1].trim().split(" ");
                 for (String part : parts)
-                    if (!part.startsWith("$"))
+                    if (!part.startsWith("$") && !part.trim().equals("ε"))
                         terminals.add(part.trim());
 
                 HashSet<String> first;
