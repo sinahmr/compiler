@@ -20,7 +20,7 @@ public class TableCreator {
         calculateFirsts();
         calculateFollows();
 
-        Table table = createTable();
+        ParseTable table = createTable();
         writeTableToFile(table);
     }
 
@@ -140,8 +140,8 @@ public class TableCreator {
         }
     }
 
-    private Table createTable() {
-        Table table = new Table(terminals, nonTerminals);
+    private ParseTable createTable() {
+        ParseTable table = new ParseTable(terminals, nonTerminals);
         ArrayList<State> states = new ArrayList<>();
         State s0 = new State(new Item("$S → $Program", 0), rules);
         states.add(s0);
@@ -188,7 +188,7 @@ public class TableCreator {
         return table;
     }
 
-    private void writeTableToFile(Table table) {
+    private void writeTableToFile(ParseTable table) {
         String delimiter = "\t";
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/parser/table.csv"))) {
             String[] header = new String[terminals.size() + nonTerminals.size()];
@@ -330,35 +330,5 @@ class State {
             }
         }
         return toReturn.toArray(new Item[toReturn.size()]);
-    }
-}
-
-class Table {
-    final int MAX_STATES = 200;
-    HashSet<String> terminals;
-    HashSet<String> nonTerminals;
-    HashMap<String, Integer> tntToColumnNumber = new HashMap<>();
-    String[][] table;
-    int statesCount = 0;
-
-    public Table(HashSet<String> terminals, HashSet<String> nonTerminals) {
-        this.terminals = terminals;
-        this.nonTerminals = nonTerminals;
-        table = new String[MAX_STATES][terminals.size() + nonTerminals.size()];
-        int i = 0;
-        for (String terminal : terminals)
-            tntToColumnNumber.put(terminal, i++);
-        for (String nonTerminal : nonTerminals)
-            tntToColumnNumber.put(nonTerminal, i++);
-    }
-
-    public void put(String text, int state, String tnt) {
-        int column = tntToColumnNumber.get(tnt);
-        if (table[state][column] != null)
-            table[state][column] += "/" + text;
-        else
-            table[state][column] = text;
-        if (state + 1 > statesCount)
-            statesCount = state + 1;
     }
 }

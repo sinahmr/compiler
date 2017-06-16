@@ -1,6 +1,5 @@
-/**
- * Created by Pooya-Laptop on 6/15/2017.
- */
+package scanner;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ class Scanner
         if(currentToken > lexemeBeginning)
             return new Token(keywordTable, IDTable, lastTokenType, Arrays.copyOfRange(buffer, lexemeBeginning, currentToken));
         else
-            return new Token(keywordTable, IDTable, lastTokenType, Arrays.copyOfRange(buffer, lexemeBeginning, 2*bufferLength) , Arrays.copyOfRange(buffer, 0, currentToken);
+            return new Token(keywordTable, IDTable, lastTokenType, Arrays.copyOfRange(buffer, lexemeBeginning, 2*bufferLength) , Arrays.copyOfRange(buffer, 0, currentToken));
     }
 
     private void loadBuffer() throws IOException
