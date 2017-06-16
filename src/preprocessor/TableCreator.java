@@ -25,8 +25,8 @@ public class TableCreator {
     }
 
     private void readGrammarFile() {
-        URL url = getClass().getResource("grammar.txt");
-        try (BufferedReader br = new BufferedReader(new FileReader(url.getPath()))) {
+        File grammarFile = new File("./src/resource/grammar.txt");
+        try (BufferedReader br = new BufferedReader(new FileReader(grammarFile))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String lhs = line.split("→")[0].trim();
@@ -190,7 +190,7 @@ public class TableCreator {
 
     private void writeTableToFile(ParseTable table) {
         String delimiter = "\t";
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/parser/table.csv"))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("./src/resource/table.csv"))) {
             String[] header = new String[terminals.size() + nonTerminals.size()];
             for (Map.Entry<String, Integer> entry : table.tntToColumnNumber.entrySet()) {
                 String nt = entry.getKey();
