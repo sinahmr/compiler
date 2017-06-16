@@ -10,6 +10,20 @@ public class ParseTable {
     public String[][] table;
     public int statesCount = 0;
 
+    public ParseTable(String csv) {
+        String[] lines = csv.split("\n");
+        String[] header = lines[0].split("\t");
+        for (int i = 1; i < header.length; i++)
+            tntToColumnNumber.put(header[i], i - 1);
+        statesCount = lines.length - 1;
+        table = new String[statesCount][header.length - 1];
+        for (int i = 1; i < lines.length; i++) {
+            String[] values = lines[i].split("\t");
+            for (int j = 1; j < values.length; j++)
+                table[i - 1][j - 1] = values[j];
+        }
+    }
+
     public ParseTable(HashSet<String> terminals, HashSet<String> nonTerminals) {
         String[] ts = terminals.toArray(new String[terminals.size()]);
         String[] nts = nonTerminals.toArray(new String[nonTerminals.size()]);
