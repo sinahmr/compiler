@@ -1,5 +1,7 @@
 package scanner;
 
+import errorhandler.ErrorHandler;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ public class Scanner
 
     public Token.Type lastTokenType;
 
+    private ErrorHandler errorHandler;  // TODO: Pouya az tab'e scannerError e in estefade kon
     private DFA dfa;
     private SymbolTable keywordTable;
     private SymbolTable IDTable;
@@ -21,6 +24,9 @@ public class Scanner
     private FileInputStream code;
     public byte[] buffer;
 
+    public Scanner(ErrorHandler errorHandler) {
+        this.errorHandler = errorHandler;
+    }
 
     public void initiate(FileInputStream code, SymbolTable keywordTable, SymbolTable IDTable)
     {

@@ -1,5 +1,6 @@
 package parser;
 
+import errorhandler.ErrorHandler;
 import preprocessor.ParseTable;
 import scanner.Scanner;
 import scanner.Token;
@@ -9,12 +10,14 @@ import java.util.Stack;
 
 public class Parser {
     Scanner scanner;
+    ErrorHandler errorHandler;
     Grammar grammar;
     ParseTable table;
     Stack<Integer> stack = new Stack<>();
 
-    public Parser(Scanner scanner) throws IOException {
+    public Parser(Scanner scanner, ErrorHandler errorHandler) throws IOException {
         this.scanner = scanner;
+        this.errorHandler = errorHandler;
         grammar = getGrammar();
         table = getParseTable();
     }
