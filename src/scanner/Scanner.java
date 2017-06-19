@@ -16,7 +16,7 @@ public class Scanner
 
     public Token.Type lastTokenType;
 
-    private ErrorHandler errorHandler;  // TODO: Pouya az tab'e scannerError e in estefade kon
+    public ErrorHandler errorHandler;  // TODO: Pouya az tab'e scannerError e in estefade kon
     private DFA dfa;
     private SymbolTable keywordTable;
     private SymbolTable IDTable;
@@ -24,15 +24,13 @@ public class Scanner
     private FileInputStream code;
     public byte[] buffer;
 
-    public Scanner(ErrorHandler errorHandler) {
-        this.errorHandler = errorHandler;
-    }
-
-    public void initiate(FileInputStream code, SymbolTable keywordTable, SymbolTable IDTable)
+    public Scanner(FileInputStream code, ErrorHandler errorHandler)
     {
         this.code = code;
-        this.keywordTable = keywordTable;
-        this.IDTable = IDTable;
+        keywordTable = new SymbolTable();
+        keywordTable.addKeywords();
+        IDTable = new SymbolTable();
+        this.errorHandler = errorHandler;
         currentToken = 0;
         lexemeBeginning = 0;
         buffer = new byte[bufferLength*2];
@@ -83,6 +81,7 @@ class DFA
         this.size = size;
         this.scn = scanner;
 
+
         groups = new byte[3][];
         groups[Group.NUM.ordinal()] = new byte[]{'0','1','2','3','4','5','6','7','8','9'};
         groups[Group.LETTER.ordinal()] = new byte[]{'a','b','c','d','e','f','g','h','i','j','k','l','m',
@@ -92,8 +91,8 @@ class DFA
         groups[Group.DELIM.ordinal()] = new byte[]{'\r', '\n', ' '};
 
         setErrors();
-
         setTrans();
+        setFinals();
 
         currState = 0;
     }
@@ -102,13 +101,14 @@ class DFA
     public Token.Type run() throws Exception
     {
         currState = 0;
+        boolean toEnd=false;
         while(true)
         {
             if(currState == 0)
                 scn.lexemeBeginning = scn.currentToken;
 
             if(scn.buffer[scn.currentToken] == 0)
-                throw new Exception(errors[0]);
+                toEnd = true;
 
             TupleIB next = new TupleIB(currState, scn.buffer[scn.currentToken]);
 
@@ -120,7 +120,8 @@ class DFA
             else if(tranError.containsKey(next))
             {
                 scn.currentToken++;
-                throw new Exception(errors[tranError.get(next)]);
+                scn.errorHandler.scannerError(errors[tranError.get(next)]);
+                currState = 0;
             }else
             {
                 if(tranDef[currState] >= 0)
@@ -130,7 +131,9 @@ class DFA
                 }else
                 {
                     scn.currentToken++;
-                    throw new Exception(errors[-tranDef[currState]]);
+                    if(currState != 0 || scn.buffer[scn.currentToken] != 0)// check shavad
+                        scn.errorHandler.scannerError(errors[-tranDef[currState]]);
+                    currState = 0;
                 }
             }
 
@@ -154,13 +157,15 @@ class DFA
                     return finalStates.get(currState);
                 }
             }
+
+            if(toEnd)
+                return Token.Type.EOF;
         }
     }
 
     private void setErrors()
     {
-        errors = new String[4];
-        errors[0] = "Reached EOF"; //square 0 is for EOF error
+        errors = new String[4]; //index 0 was used for EOF error and is currently unassigned
         errors[1] = "Invalid character to begin with";
         errors[2] = "Invalid character after &";
         errors[3] = "A number is instantly followed by a letter";
@@ -230,6 +235,7 @@ class DFA
         finalStates = new HashMap<>();
         undoFinalStates = new ArrayList<>();
         conFinalStates = new ArrayList<>();
+        finalConditions = new ArrayList<>();
 
         finalStates.put(1 , Token.Type.SEMICOLON);
         finalStates.put(2 , Token.Type.BRACKET_O);
@@ -246,9 +252,9 @@ class DFA
         finalStates.put(13, Token.Type.ASSIGN);
         undoFinalStates.add(13);
         finalStates.put(15, Token.Type.AND);
-        finalStates.put(17, Token.Type.SLASH);
+        finalStates.put(17, Token.Type.DIVIDE);
         undoFinalStates.add(17);
-        finalStates.put(17, Token.Type.SLASH);
+        finalStates.put(17, Token.Type.DIVIDE);
 
         finalStates.put(20, Token.Type.PLUS);
         conFinalStates.add(20);
