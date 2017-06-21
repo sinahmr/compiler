@@ -20,6 +20,7 @@ public class TableCreator {
         calculateFollows();
 
         ParseTable table = createTable();
+        writeFollowsToFile();
         writeTableToFile(table);
     }
 
@@ -206,6 +207,20 @@ public class TableCreator {
                     if (j != terminals.size() + nonTerminals.size() - 1)
                         content += delimiter;
                 }
+            }
+            bw.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeFollowsToFile() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("./src/resource/follows.txt"))) {
+            String content = "";
+            for (Map.Entry<String, HashSet<String>> entry : follows.entrySet()) {
+                String nt = entry.getKey();
+                HashSet<String> values = entry.getValue();
+                content += nt + " " + String.join(" ", values) + "\n";
             }
             bw.write(content);
         } catch (IOException e) {
