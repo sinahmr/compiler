@@ -1,0 +1,11 @@
+ - dar ebteda code bayad be ebtedaye main jump beshe (ba backpatching dorost beshe, har tabe' jadidi ke tarif mishe overwrite kone ta akhari ke main e), ghable jump bayad meghdare DISP[0] be avalle Static Variables va meghdare DISP[1] va top_sp be avale Local parameters eshare konan
+ 
+ - dar ebtedaye tabe': top_sp be Local Parameters in tabe' eshare mikone, meghdare DISP[1] va address bazgasht jump save beshe, meghdare khodesh ro jaygozin meghdare DISP[1] mikone, maghadir Actual Parameters tu jayi ke tu Local Parameters barashun vujud dare copy mishan
+ 
+ - dar entehaye tabe': return meghdar khuruji ro bezare to jaye makhsusesh, meghdar DISP[1] be meghdare save shode bargarde va top_sp ham hamin meghdar ro begire, jump beshe be return address
+ 
+ - ghabl az farakhani tabe': maghadir vurudi ro bezar tuye Actual Parameters, meghdare top_sp beshe ebtedaye Local Parameters tabe' daruni, jump kon be avale tabe'
+ 
+ - ba'd az farakhani tabe': meghdare khuruji copy beshe tuye ye temp
+ 
+ - ba'd az ta'rif array: meghdare pointer be khuneye ba'di eshare kone

@@ -1,0 +1,57 @@
+$Program → #init $DeclarationList EOF
+$DeclarationList → $DeclarationList $Declaration
+$DeclarationList → $Declaration
+$Declaration → $VarDeclaration
+$Declaration → $FunDeclaration
+$VarDeclaration → int ID #def_var ;
+$VarDeclaration → int ID #def_arr #set_pointer [ NUM #arr_size ] ;
+$FunDeclaration → int #set_ret_type ID #def_func #start_scope ( $Params ) #init_func $CompoundStmt #end_scope
+$FunDeclaration → void #set_ret_type ID #def_func #start_scope ( $Params ) #init_func $CompoundStmt #end_scope
+$Params → $ParamList
+$Params → void
+$ParamList → $ParamList , $Param #func_add_param
+$ParamList → $Param #func_add_param
+$Param → int ID #def_var 
+$Param → int ID #def_arr [ ]
+$CompoundStmt → { #start_scope $LocalDeclarations $StatementList #end_scope }
+$LocalDeclarations → $LocalDeclarations $VarDeclaration
+$LocalDeclarations → ε
+$StatementList → $StatementList $Statement
+$StatementList → ε
+$Statement → $ExpressionStmt
+$Statement → $CompoundStmt
+$Statement → $SelectionStmt
+$Statement → $IterationStmt
+$Statement → $ReturnStmt #end_func
+$ExpressionStmt → $Var #pid = $Expression #assign ;
+$ExpressionStmt → ;
+$SelectionStmt → if ( $GenExpression ) $Statement
+$SelectionStmt → if ( $GenExpression ) $Statement else $Statement
+$IterationStmt → while ( $GenExpression ) $Statement
+$ReturnStmt → return ;
+$ReturnStmt → return $GenExpression #set_ret_value ;
+$Var → ID #pid
+$Var → ID #pid #push_arr_size [ $Expression ] #arr_value
+$GenExpression → $RelExpression
+$GenExpression → $Expression
+$RelExpression → $RelExpression && $RelTerm
+$RelExpression → $RelTerm
+$RelTerm → $Expression == $Expression #equal
+$RelTerm → $Expression < $Expression #larger
+$Expression → $Expression $AddOp $Term
+$Expression → $Term
+$AddOp → +
+$AddOp → -
+$Term → $Term $MulOp $Factor
+$Term → $Factor
+$MulOp → *
+$MulOp → /
+$Factor → ( $Expression )
+$Factor → $Var
+$Factor → $Call
+$Factor → NUM #num_value
+$Call → ID ( $Args )
+$Args → $ArgList
+$Args → ε
+$ArgList → $ArgList , $Expression
+$ArgList → $Expression

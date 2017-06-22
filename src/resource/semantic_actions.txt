@@ -1,0 +1,100 @@
+//farz kardam har dastur 3 address e 4 byte hafeze mikhad
+//initialization PM va SS va i va top ghabl az init bayad anjam beshe
+// be nazaram ba'zi dastur hayi ke neveshtem be bish az yek dastur 3 addresse tabdil mishe
+
+CONSTANTS:
+CODE_SIZE
+STATIC_SIZE
+TEMP_SIZE
+
+#init
+PB[i] = assign CODE_SIZE+12 to DISP[0]; i+=4;
+PB[i] = assign CODE_SIZE+12+STATIC_SIZE+TEMP_SIZE+12 to DISP[1]; i+=4;
+PB[i] = assign CODE_SIZE+12+STATIC_SIZE+TEMP_SIZE+12 to TOP_SP; i+=4;
+push(i) // gharare tu in khune jump be main gharar begire
+i += 4;
+
+#def_var
+symbol.defineVar(input);
+
+#def_arr
+symbol.defineArray(input);
+
+#arr_size
+symbol.setArraySize(input);
+
+#set_pointer
+PB[i] = assign symbol.getAddress(input)+4 to TOP_SP+symbol.getAddress(input); i+=4;
+
+#set_ret_type
+if(input == int)
+	symbol.setRetType(int);
+else
+	symbol.setRetType(void);
+	
+#def_func
+symbol.defineFunc(input, i); // daghigh i doroste? ya bayad yekam offset dashte bashe?
+
+#func_add_param
+symbol.addFuncParam();
+
+#start_scope
+symbol.startScope();
+	
+#end_scope
+symbol.endScope();
+
+#init_func
+PB[ss(top)] = jump to i;
+PB[i] = assign DISP[1] to TOP_SP-8; i+=4;
+PB[i] = assign TOP_SP to DISP[1]; i+=4;
+param_length = symbol.getFuncParamLength();
+for j = 0 to param_length-1
+	PB[i] = assign TOP_SP-8-(4-j)*param_length to j*param_length ; i+=4;
+
+#set_ret_value
+param_length = symbol.getFuncParamLength();
+PB[i] = assign ss(top) to TOP_SP-8-4*param_length; i+=4;
+pop(1);
+
+#end_func
+PB[i] = assign TOP_SP-8 to DISP[1]; i+=4;
+PB[i] = assign TOP_SP-8 to TOP_SP; i+=4
+PB[i] = jump to TOP_SP-4; i+=4; // inja hamun meghdar ghadimi top_sp estefade beshe va dobare khunde nashe
+
+#pid
+address = symbol.getAddress(input);
+level = symbol.getScopeLevel(input);
+if(level == 0)
+	push(DISP[0] + address);
+else
+	push(DISP[1] + address);
+	
+#assign
+PB[i] = assign ss(top) to ss(top-1); i+=4;
+pop(2);
+
+#push_arr_size
+push(symbol.getArraySize(input));
+
+#arr_value
+size = ss(top-1);
+if(size >= 0)
+{
+	PB[i] = size larger than ss(top) to temp2; i+=4;
+	PB[i] = jump if not temp2 to i+8; i+=4;
+	PB[i] = report error and HALT; i+=4;
+}
+PB[i] = assign ss(top-2) + ss(top) to temp1; i+=4;
+pop(3); push(temp1);
+
+#num_value
+PB[i] = assing input to temp1; i+=4;
+push(temp1);
+
+
+
+
+
+
+
