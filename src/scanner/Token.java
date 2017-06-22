@@ -3,7 +3,7 @@ package scanner;
 public class Token
 {
     public enum Type {ID, NUM, INT, VOID, IF, ELSE, WHILE, RETURN,
-        SEMICOLON, BRACKET_O, BRACKET_C, PARAN_O, PARAN_C, COLON, ACCOlADE_O, ACCOLADE_C,
+        SEMICOLON, BRACKET_O, BRACKET_C, PARAN_O, PARAN_C, COMMA, ACCOlADE_O, ACCOLADE_C,
         ASSIGN, AND, EQUAL, SMALLER, PLUS, MINUS, MULT, DIVIDE, EOF};
     //all keywords and IDs are identical up to this point, change tokenType by using the keyword symbol table
     public Type type;

@@ -11,7 +11,7 @@ public class SymbolTable
     public ArrayList<IDType> IDTypes;
     public ArrayList<RetType> retTypes;
     public ArrayList<Integer> addresses;
-    public ArrayList<Integer> args;
+    public ArrayList<Integer> args_size;
 
     public ArrayList<Integer> scopeStack;
     public ArrayList<Integer> currOffset;
@@ -20,9 +20,10 @@ public class SymbolTable
     private ErrorHandler errorHandler;
 
     private int lastDefinedFunc;
+    private int lastDefinedArray;
     private RetType lastRetType;
 
-    enum IDType {FUNC, VAR};
+    enum IDType {FUNC, VAR, ARRAY};
     enum RetType {VOID, INT};
 
     public SymbolTable(int initAddress, ErrorHandler errorHandler)
@@ -30,7 +31,7 @@ public class SymbolTable
         lexemes = new ArrayList<>();
         tokenTypes = new ArrayList<>();
         addresses = new ArrayList<>();
-        args = new ArrayList<>();
+        args_size = new ArrayList<>();
         IDTypes = new ArrayList<>();
         retTypes = new ArrayList<>();
         this.currAddress = initAddress;
@@ -56,7 +57,7 @@ public class SymbolTable
             lexemes.remove(lexemes.size()-1);
             tokenTypes.remove(tokenTypes.size()-1);
             addresses.remove(addresses.size()-1);
-            args.remove(args.size()-1);
+            args_size.remove(args_size.size()-1);
             IDTypes.remove(IDTypes.size()-1);
             retTypes.remove(retTypes.size()-1);
         }
@@ -79,7 +80,7 @@ public class SymbolTable
         }
         if(IDTypes.get(index) != null)
         {
-            errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var
+            errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
         }
         if(lastRetType == null)
         {
@@ -88,7 +89,7 @@ public class SymbolTable
         }
 
         addresses.set(index, address);
-        args.set(index, 0);
+        args_size.set(index, 0);
         IDTypes.set(index, IDType.FUNC);
         retTypes.set(index, lastRetType);
         lastRetType = null;
@@ -98,7 +99,7 @@ public class SymbolTable
 
     public void addFuncParam() //farz kardam ke adade tabe' ro az farakhani defineFunc hefz mikone, in moshkeli be vujud miare?
     {
-        args.set(lastDefinedFunc, args.get(lastDefinedFunc)+1);
+        args_size.set(lastDefinedFunc, args_size.get(lastDefinedFunc)+1);
     }
 
     public void defineVar(String var)
@@ -112,13 +113,39 @@ public class SymbolTable
         }
         if(IDTypes.get(index) != null)
         {
-            errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var
+            errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
         }
 
         addresses.set(index, currAddress);
         currAddress += 4; // chon har moteghayyer 4 byte hafeze mikhad
         IDTypes.set(index, IDType.VAR);
 
+    }
+
+    public void defineArray(String array)
+    {
+        int index = find(array);
+        if(index < 0)
+        {
+            errorHandler.semanticError("Var defined before name declaration"); // hesam ine ke in khata hichvaght nabayad ettefagh biofte!! magar moghe'i ke code compiler eshkal dashte bashe
+            insert(array);
+            index = lexemes.size()-1;
+        }
+        if(IDTypes.get(index) != null)
+        {
+            errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
+        }
+
+        addresses.set(index, currAddress);
+        currAddress += 4;
+        IDTypes.set(index, IDType.ARRAY);
+
+        lastDefinedArray = index;
+    }
+
+    public void setArraySize(int size) //farz kardam in tabe' ba'd az defineArray farakhani mishe va in ke akharin array ta'rif shode ro hefz mikone
+    {
+        args_size.set(lastDefinedArray, size);
     }
 
     public int getAddress(String ID)
@@ -148,6 +175,14 @@ public class SymbolTable
                 if (scopeStack.get(i) <= index)
                     return addresses.get(index) - currOffset.get(i);
             }
+        }else if(IDTypes.get(index) == IDType.ARRAY) // address array ro gereftan bayad kamelan moshabeh var bashe dg, na?!
+        {
+            int i;
+            for (i = scopeStack.size() - 1; i >= 0; i--)
+            {
+                if (scopeStack.get(i) <= index)
+                    return addresses.get(index) - currOffset.get(i);
+            }
         }
         return -1;
     }
@@ -166,12 +201,12 @@ public class SymbolTable
 
     public void addKeywords()
     {
-        lexemes.add("int"); tokenTypes.add(Token.Type.INT); addresses.add(-1); args.add(-1); IDTypes.add(null); retTypes.add(null);
-        lexemes.add("void"); tokenTypes.add(Token.Type.VOID); addresses.add(-1); args.add(-1); IDTypes.add(null); retTypes.add(null);
-        lexemes.add("if"); tokenTypes.add(Token.Type.IF); addresses.add(-1); args.add(-1); IDTypes.add(null); retTypes.add(null);
-        lexemes.add("else"); tokenTypes.add(Token.Type.ELSE); addresses.add(-1); args.add(-1); IDTypes.add(null); retTypes.add(null);
-        lexemes.add("while"); tokenTypes.add(Token.Type.WHILE); addresses.add(-1); args.add(-1); IDTypes.add(null); retTypes.add(null);
-        lexemes.add("return"); tokenTypes.add(Token.Type.RETURN); addresses.add(-1); args.add(-1); IDTypes.add(null); retTypes.add(null);
+        lexemes.add("int"); tokenTypes.add(Token.Type.INT); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
+        lexemes.add("void"); tokenTypes.add(Token.Type.VOID); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
+        lexemes.add("if"); tokenTypes.add(Token.Type.IF); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
+        lexemes.add("else"); tokenTypes.add(Token.Type.ELSE); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
+        lexemes.add("while"); tokenTypes.add(Token.Type.WHILE); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
+        lexemes.add("return"); tokenTypes.add(Token.Type.RETURN); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
     }
 
     public Token.Type lookUp(String lex)
@@ -193,7 +228,7 @@ public class SymbolTable
         lexemes.add(lex);
         tokenTypes.add(type);
         addresses.add(-1);
-        args.add(-1);
+        args_size.add(-1);
         IDTypes.add(null);
         retTypes.add(null);
     }
