@@ -12,4 +12,9 @@ public class ErrorHandler {
     public void parserError(String msg) {  // TODO
         System.out.println(msg);
     }
+
+    public void semanticError(String msg)
+    {
+        System.out.println(msg);
+    }
 }
