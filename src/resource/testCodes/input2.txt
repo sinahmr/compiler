@@ -1,0 +1,13 @@
+int main( void ){
+if(2+4)
+{
+	int d;
+	d=3;
+	output(d);	
+}
+else{
+int d;
+d=2;
+output(d);
+}
+}

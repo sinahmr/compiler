@@ -13,7 +13,8 @@ import java.util.Stack;
 
 
 // TODO: ezafe va handle kardane $#yechizi ha va $!yechizi ha (tahlilgare manayi)
-
+// TODO: raf'e S/R conflict
+// TODO: error message
 
 public class Parser {
     Scanner scanner;
