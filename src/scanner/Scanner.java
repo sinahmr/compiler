@@ -16,6 +16,8 @@ public class Scanner
     public int currentToken;
     public int lexemeBeginning;
 
+    public boolean loadedFirstHalf=false;
+
     public Token.Type lastTokenType;
 
     public ErrorHandler errorHandler;  // TODO: Pouya az tab'e scannerError e in estefade kon
@@ -41,8 +43,7 @@ public class Scanner
 
     public Token getNextToken() throws Exception
     {
-        if(currentToken == 0 || currentToken == bufferLength)
-            loadBuffer();
+
         lexemeBeginning = currentToken;
         lastTokenType = dfa.run();
         if(currentToken > lexemeBeginning)
@@ -51,9 +52,26 @@ public class Scanner
             return new Token(keywordTable, IDTable, lastTokenType, Arrays.copyOfRange(buffer, lexemeBeginning, 2*bufferLength) , Arrays.copyOfRange(buffer, 0, currentToken));
     }
 
-    private void loadBuffer() throws IOException
+    public void loadBuffer() throws Exception
     {
-        code.read(buffer, currentToken, bufferLength);
+
+        if(loadedFirstHalf)
+        {
+            int amount = code.read(buffer, bufferLength, bufferLength);
+            if(amount < 0)
+                amount = 0;
+            for(int i=bufferLength+amount;i<bufferLength*2;i++)
+                    buffer[i] = 0;
+        }
+        else
+        {
+            int amount = code.read(buffer, 0, bufferLength);
+            if(amount < 0)
+                amount = 0;
+            for(int i=0+amount;i<bufferLength;i++)
+                buffer[i] = 0;
+        }
+        loadedFirstHalf = !loadedFirstHalf;
     }
 
 
@@ -106,6 +124,11 @@ class DFA
         boolean toEnd=false;
         while(true)
         {
+            scn.currentToken = scn.currentToken % (2*scn.bufferLength);
+
+            if((scn.currentToken < scn.bufferLength && !scn.loadedFirstHalf) || (scn.currentToken >= scn.bufferLength && scn.loadedFirstHalf))
+                scn.loadBuffer();
+
             if(currState == 0)
                 scn.lexemeBeginning = scn.currentToken;
 
@@ -162,6 +185,7 @@ class DFA
 
             if(toEnd)
                 return Token.Type.EOF;
+
         }
     }
 
