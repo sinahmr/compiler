@@ -11,6 +11,8 @@ import java.util.HashMap;
 public class Scanner
 {
     public final int bufferLength=100; //TODO
+    public final int symbolTableInitAddress=1012; //TODO
+
     public int currentToken;
     public int lexemeBeginning;
 
@@ -27,9 +29,9 @@ public class Scanner
     public Scanner(FileInputStream code, ErrorHandler errorHandler)
     {
         this.code = code;
-        keywordTable = new SymbolTable();
+        keywordTable = new SymbolTable(symbolTableInitAddress, errorHandler);
         keywordTable.addKeywords();
-        IDTable = new SymbolTable();
+        IDTable = new SymbolTable(symbolTableInitAddress, errorHandler);
         this.errorHandler = errorHandler;
         currentToken = 0;
         lexemeBeginning = 0;
@@ -242,7 +244,7 @@ class DFA
         finalStates.put(3 , Token.Type.BRACKET_C);
         finalStates.put(4 , Token.Type.PARAN_O);
         finalStates.put(5 , Token.Type.PARAN_C);
-        finalStates.put(6 , Token.Type.COLON);
+        finalStates.put(6 , Token.Type.COMMA);
         finalStates.put(7 , Token.Type.ACCOlADE_O);
         finalStates.put(8 , Token.Type.ACCOLADE_C);
         finalStates.put(9 , Token.Type.SMALLER);
