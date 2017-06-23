@@ -41,7 +41,7 @@ public class Scanner
         dfa = new DFA(this, 30);
     }
 
-    public Token getNextToken() throws Exception
+    public Token getNextToken()
     {
 
         lexemeBeginning = currentToken;
@@ -52,9 +52,10 @@ public class Scanner
             return new Token(keywordTable, IDTable, lastTokenType, Arrays.copyOfRange(buffer, lexemeBeginning, 2*bufferLength) , Arrays.copyOfRange(buffer, 0, currentToken));
     }
 
-    public void loadBuffer() throws Exception
+    public void loadBuffer()
     {
 
+        try{
         if(loadedFirstHalf)
         {
             int amount = code.read(buffer, bufferLength, bufferLength);
@@ -72,6 +73,10 @@ public class Scanner
                 buffer[i] = 0;
         }
         loadedFirstHalf = !loadedFirstHalf;
+        }catch(Exception e)
+        {
+            errorHandler.scannerError("Buffer error");
+        }
     }
 
 
@@ -118,7 +123,7 @@ class DFA
     }
 
 
-    public Token.Type run() throws Exception
+    public Token.Type run()
     {
         currState = 0;
         boolean toEnd=false;
