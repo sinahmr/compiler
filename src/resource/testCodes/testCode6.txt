@@ -1,1 +1,2 @@
-int ID;
+int a;
+a = 0;

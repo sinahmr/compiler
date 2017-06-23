@@ -47,4 +47,39 @@ public class Token
         }else
             type = tokenType;
     }
+
+    //ID, NUM, INT, VOID, IF, ELSE, WHILE, RETURN,
+    //SEMICOLON, BRACKET_O, BRACKET_C, PARAN_O, PARAN_C, COLON, ACCOlADE_O, ACCOLADE_C,
+    //ASSIGN, AND, EQUAL, SMALLER, PLUS, MINUS, MULT, DIVIDE, EOF
+    @Override
+    public String toString() {  // This is written so that scanner and parser are distinct modules and parse table column index is not dependant on scanner's token to integer mapping
+        switch (this.type) {
+            case ID: return "ID";
+            case IF: return "if";
+            case AND: return "&&";
+            case EOF: return "EOF";
+            case INT: return "int";
+            case NUM: return "NUM";
+            case ELSE: return "else";
+            case MULT: return "*";
+            case PLUS: return "+";
+            case VOID: return "void";
+            case COMMA: return ",";
+            case EQUAL: return "==";
+            case MINUS: return "-";
+            case WHILE: return "while";
+            case ASSIGN: return "=";
+            case DIVIDE: return "/";
+            case RETURN: return "return";
+            case PARAN_C: return ")";
+            case PARAN_O: return "(";
+            case SMALLER: return "<";
+            case BRACKET_C: return "]";
+            case BRACKET_O: return "[";
+            case SEMICOLON: return ";";
+            case ACCOLADE_C: return "}";
+            case ACCOlADE_O: return "{";
+        }
+        return null;
+    }
 }

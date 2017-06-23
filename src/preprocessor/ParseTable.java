@@ -3,18 +3,23 @@ package preprocessor;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class ParseTable {
     private static final int MAX_STATES = 200;
     public HashMap<String, Integer> tntToColumnNumber = new HashMap<>();
     public String[][] table;
     public int statesCount = 0;
+    public int firstNTColumn = -1;
 
     public ParseTable(String csv) {
         String[] lines = csv.split("\n");
         String[] header = lines[0].split("\t");
-        for (int i = 1; i < header.length; i++)
+        for (int i = 1; i < header.length; i++) {
             tntToColumnNumber.put(header[i], i - 1);
+            if (firstNTColumn == -1 && header[i].startsWith("$"))
+                firstNTColumn = i - 1;
+        }
         statesCount = lines.length - 1;
         table = new String[statesCount][header.length - 1];
         for (int i = 1; i < lines.length; i++) {
@@ -33,6 +38,7 @@ public class ParseTable {
         int i = 0;
         for (String terminal : ts)
             tntToColumnNumber.put(terminal, i++);
+        firstNTColumn = i;
         for (String nonTerminal : nts)
             tntToColumnNumber.put(nonTerminal, i++);
     }
@@ -45,5 +51,23 @@ public class ParseTable {
             table[state][column] = text;
         if (state + 1 > statesCount)
             statesCount = state + 1;
+    }
+
+    public String get(int state, String tnt) {
+        int column = tntToColumnNumber.get(tnt);
+        return table[state][column];
+    }
+
+    public String get(int state, int column) {
+        return table[state][column];
+    }
+
+    public String getNTAtColumn(int atColumn) {
+        for (Map.Entry<String, Integer> entry : tntToColumnNumber.entrySet()) {
+            int column = entry.getValue();
+            if (column == atColumn)
+                return entry.getKey();
+        }
+        return null;
     }
 }

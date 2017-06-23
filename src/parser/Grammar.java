@@ -5,6 +5,11 @@ import java.util.ArrayList;
 public class Grammar {
     ArrayList<Rule> rules = new ArrayList<>();
 
+    public Grammar() {
+        Rule dummyRule = new Rule(null, null, 0);
+        rules.add(dummyRule);
+    }
+
     public void addRule(String rule) {
         Rule r = new Rule(rule, rules.size());
         rules.add(r);
@@ -26,7 +31,10 @@ class Rule {
         String lhs = rule.split("→")[0].trim();
         String[] parts = rule.split("→")[1].trim().split(" ");
         this.lhs = lhs;
-        this.rhs = parts;
+        if (rule.contains("ε"))
+            this.rhs = new String[0];
+        else
+            this.rhs = parts;
         this.ruleNumber = ruleNumber;
     }
 }
