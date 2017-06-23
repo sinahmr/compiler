@@ -1,0 +1,11 @@
+int b;
+int main( void ){
+int a;
+if(a<2 )
+	if(a)
+		b=2;
+	else{
+		output(4*3);
+	}
+output(a);
+}

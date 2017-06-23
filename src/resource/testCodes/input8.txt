@@ -1,0 +1,12 @@
+int f(int a[], int b){
+
+a[2]= b+3;
+return 2;
+}
+int main(void){
+int a[5];
+a[1]=1;
+output(3+2);
+a[0]=f(a,2);
+return 0;
+}
