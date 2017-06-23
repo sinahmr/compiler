@@ -189,6 +189,9 @@ class DFA
         tranValid.put(new TupleIB(0,(byte)'}'), 8);
         tranValid.put(new TupleIB(0,(byte)'<'), 9);
         tranValid.put(new TupleIB(0, (byte) '*'), 10);
+
+        tranValid.put(new TupleIB(0, (byte) '='), 11);
+
         putGroup(tranValid, 0, groups[Group.LETTER.ordinal()], 28);
         putGroup(tranValid, 0, groups[Group.DELIM.ordinal()], 0);
         tranValid.put(new TupleIB(0, (byte) '&'), 14);

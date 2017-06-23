@@ -12,7 +12,7 @@ public class UserInterface
     public static void main(String[] args) throws Exception
     {
         ErrorHandler errorHandler = new ErrorHandler();
-        Scanner scanner = new Scanner(new FileInputStream("D:/testCode4.txt"), errorHandler);
+        Scanner scanner = new Scanner(new FileInputStream("./src/resource/testCodes/testCode8.txt"), errorHandler);
         while(true)
         {
             Token next = scanner.getNextToken();
