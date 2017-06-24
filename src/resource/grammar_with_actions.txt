@@ -23,6 +23,7 @@ $Statement → $CompoundStmt
 $Statement → $SelectionStmt
 $Statement → $IterationStmt
 $Statement → $ReturnStmt #end_func
+$Statement → output ( $Args ) ;
 $ExpressionStmt → $Var #pid = $Expression #assign ;
 $ExpressionStmt → ;
 $SelectionStmt → if ( $GenExpression ) $Statement
