@@ -270,6 +270,8 @@ class Item {
         Item i = (Item) obj;
         if (!i.lhs.equals(this.lhs) || i.dotBefore != this.dotBefore || i.rhs.length != this.rhs.length)
             return false;
+        if (i.rhs.length != this.rhs.length)
+            return false;
         for (int k = 0; k < i.rhs.length; k++)
             if (!i.rhs[k].equals(this.rhs[k]))
                 return false;
@@ -303,6 +305,8 @@ class State {
         if (obj == null || !(obj instanceof State))
             return false;
         State s = (State) obj;
+        if (s.items.size() != this.items.size())
+            return false;
         for (Item item : s.items)
             if (!this.items.contains(item))
                 return false;

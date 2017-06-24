@@ -25,16 +25,20 @@ public class Parser {
     Set<String> nonTerminals;
     Stack<Integer> stack = new Stack<>();
 
-    public Parser(Scanner scanner, ErrorHandler errorHandler) throws IOException {
+    public Parser(Scanner scanner, ErrorHandler errorHandler) {
         this.scanner = scanner;
         this.errorHandler = errorHandler;
-        grammar = getGrammar();
-        table = getParseTable();
-        follows = getFollows();
+        try {
+            grammar = getGrammar();
+            table = getParseTable();
+            follows = getFollows();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         nonTerminals = follows.keySet();
     }
 
-    public void parse() throws Exception { // TODO delete exception
+    public void parse() {
         stack.push(0);
         boolean getNewToken = true;
         Token token = null;
@@ -47,7 +51,8 @@ public class Parser {
             if (action == null || action.equals("")) {
                 token = handleErrorAndReturnLastToken();
                 if (token == null) {  // Parser is finished
-                    throw new Exception("Parse could not be complete, even after recovery.");
+                    errorHandler.parserError("Parse could not be complete, even after recovery.");
+                    return;
                 }
                 action = table.get(stack.peek(), token.toString());
             }
@@ -74,7 +79,7 @@ public class Parser {
 
     }
 
-    private Token handleErrorAndReturnLastToken() throws Exception { // TODO delete
+    private Token handleErrorAndReturnLastToken() {
         HashSet<String> nts = removeFromStackAndGetNTSet();
 
         // discard input
@@ -86,7 +91,7 @@ public class Parser {
             for (String nt : nts)
                 if (follows.get(nt).contains(token.toString()))
                     selectedNT = nt;
-        } while (selectedNT == null || !token.toString().equals("EOF"));
+        } while (selectedNT == null && !token.toString().equals("EOF"));
 
         // push the new state
         if (selectedNT == null) {

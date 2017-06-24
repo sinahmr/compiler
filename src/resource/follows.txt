@@ -1,14 +1,14 @@
 $FunDeclaration void EOF int
-$VarDeclaration void ; { ID while EOF if } int return
+$VarDeclaration output void ; { ID while EOF if } int return
 $Declaration void EOF int
 $Param ) ,
 $RelExpression && ) ;
 $Factor == && ) * ; + < , ] - /
-$ExpressionStmt else ; { ID while } if return
+$ExpressionStmt output else ; { ID while } if return
 $Term == && ) * ; + < , ] - /
-$CompoundStmt void else ; { ID while EOF } if int return
-$Statement else ; { ID while } if return
-$StatementList ; { ID while } if return
+$CompoundStmt output void else ; { ID while EOF } if int return
+$Statement output else ; { ID while } if return
+$StatementList output ; { ID while } if return
 $MulOp NUM ( ID
 $ArgList ) ,
 $Expression == && ) ; + < , ] -
@@ -16,13 +16,13 @@ $GenExpression ) ;
 $AddOp NUM ( ID
 $Program EOF
 $DeclarationList void EOF int
-$ReturnStmt else ; { ID while } if return
+$ReturnStmt output else ; { ID while } if return
 $Var == && ) * ; + < , = ] - /
-$SelectionStmt else ; { ID while } if return
+$SelectionStmt output else ; { ID while } if return
 $Call == && ) * ; + < , ] - /
 $Params )
 $Args )
-$LocalDeclarations ; { ID while if } return int
+$LocalDeclarations output ; { ID while if } return int
 $RelTerm && ) ;
 $ParamList ) ,
-$IterationStmt else ; { ID while } if return
+$IterationStmt output else ; { ID while } if return
