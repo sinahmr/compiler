@@ -207,6 +207,7 @@ public class SymbolTable
         lexemes.add("else"); tokenTypes.add(Token.Type.ELSE); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
         lexemes.add("while"); tokenTypes.add(Token.Type.WHILE); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
         lexemes.add("return"); tokenTypes.add(Token.Type.RETURN); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
+		lexemes.add("output"); tokenTypes.add(Token.Type.OUTPUT); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
     }
 
     public Token.Type lookUp(String lex)

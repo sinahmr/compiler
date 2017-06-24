@@ -4,7 +4,7 @@ public class Token
 {
     public enum Type {ID, NUM, INT, VOID, IF, ELSE, WHILE, RETURN,
         SEMICOLON, BRACKET_O, BRACKET_C, PARAN_O, PARAN_C, COMMA, ACCOlADE_O, ACCOLADE_C,
-        ASSIGN, AND, EQUAL, SMALLER, PLUS, MINUS, MULT, DIVIDE, EOF};
+        ASSIGN, AND, EQUAL, SMALLER, PLUS, MINUS, MULT, DIVIDE, EOF, OUTPUT}
     //all keywords and IDs are identical up to this point, change tokenType by using the keyword symbol table
     public Type type;
     public int attribute;
@@ -78,6 +78,7 @@ public class Token
             case SEMICOLON: return ";";
             case ACCOLADE_C: return "}";
             case ACCOlADE_O: return "{";
+			case OUTPUT: return "output";
         }
         return null;
     }
