@@ -23,36 +23,36 @@ $Statement → $CompoundStmt
 $Statement → $SelectionStmt
 $Statement → $IterationStmt
 $Statement → $ReturnStmt #end_func
-$Statement → output ( $Args ) ;
+$Statement → output ( $Expression #output ) ;
 $ExpressionStmt → $Var #pid = $Expression #assign ;
 $ExpressionStmt → ;
-$SelectionStmt → if ( $GenExpression ) $Statement
-$SelectionStmt → if ( $GenExpression ) $Statement else $Statement
-$IterationStmt → while ( $GenExpression ) $Statement
+$SelectionStmt → if ( $GenExpression ) #save $Statement #jpf
+$SelectionStmt → if ( $GenExpression ) #save $Statement #jpf_save else $Statement #jp
+$IterationStmt → while #label ( $GenExpression ) #save $Statement #while
 $ReturnStmt → return ;
 $ReturnStmt → return $GenExpression #set_ret_value ;
 $Var → ID #pid
 $Var → ID #pid #push_arr_size [ $Expression ] #arr_value
 $GenExpression → $RelExpression
 $GenExpression → $Expression
-$RelExpression → $RelExpression && $RelTerm
+$RelExpression → $RelExpression && $RelTerm #and
 $RelExpression → $RelTerm
 $RelTerm → $Expression == $Expression #equal
 $RelTerm → $Expression < $Expression #larger
-$Expression → $Expression $AddOp $Term
+$Expression → $Expression $AddOp $Term #add
 $Expression → $Term
-$AddOp → +
-$AddOp → -
-$Term → $Term $MulOp $Factor
+$AddOp → + #plus
+$AddOp → - #minus
+$Term → $Term $MulOp $Factor #mult
 $Term → $Factor
-$MulOp → *
-$MulOp → /
+$MulOp → * #times
+$MulOp → / #divide
 $Factor → ( $Expression )
 $Factor → $Var
 $Factor → $Call
 $Factor → NUM #num_value
-$Call → ID ( $Args )
+$Call → ID #pid #sp_param ( $Args ) #sp_local_jp
 $Args → $ArgList
 $Args → ε
-$ArgList → $ArgList , $Expression
-$ArgList → $Expression
+$ArgList → $ArgList , $Expression #copy_input
+$ArgList → $Expression #copy_input

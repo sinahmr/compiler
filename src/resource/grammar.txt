@@ -23,7 +23,7 @@ $Statement → $CompoundStmt
 $Statement → $SelectionStmt
 $Statement → $IterationStmt
 $Statement → $ReturnStmt
-$Statement → output ( $Args ) ;
+$Statement → output ( $Expression ) ;
 $ExpressionStmt → $Var = $Expression ;
 $ExpressionStmt → ;
 $SelectionStmt → if ( $GenExpression ) $Statement

@@ -89,12 +89,83 @@ PB[i] = assign ss(top-2) + ss(top) to temp1; i+=4;
 pop(3); push(temp1);
 
 #num_value
-PB[i] = assing input to temp1; i+=4;
+PB[i] = assign input to temp1; i+=4;
 push(temp1);
 
+#save
+push(i); i+=4;
 
+#jpf
+PB[ss(top)] = jump if not ss(top-1) to i; pop(2);
 
+#jpf_save
+push(i); i+=4;
+PB[ss(top)] = jump if not ss(top-1) to i;
+pop(2); push(i-4);
 
+#jp
+PB[ss(top)] = jump to i;
+pop(1);
 
+#label
+push(i)
 
+#while
+PB[i] = jump to ss(top-2); i+=4;
+PB[ss(top)] = jump if not ss(top-1) to iF;
+pop(3);
+
+#and
+PB[i] = and ss(top), ss(top-1) to temp1;
+pop(2); push(temp1);
+
+#equal
+PB[i] = equal ss(top), ss(top-1) to temp1;
+pop(2); push(temp1);
+
+#larger
+PB[i] = larger ss(top), ss(top-1) to temp1;
+pop(2); push(temp1);
+
+#output
+PB[i] = output ss(top); pop(1);
+
+#plus
+push(+);
+
+#minus
+push(-);
+
+#add
+if(ss(top-1) == (+))
+	PB[i] = add ss(top-2), ss(top) to temp1
+else if(ss(top-1) == (-))
+	PB[i] = sub ss(top-2), ss(top) to temp1
+	
+#times
+push(*);
+
+#divide
+push(/);
+
+#mult
+if(ss(top-1) == (*))
+	PB[i] = mult ss(top-2), ss(top) to temp1
+else if(ss(top-1) == (-))
+	PB[i] = divide ss(top-2), ss(top) to temp1
+
+#call
+ //inke te'dad vurudi ha dorost bashe tu semantic analysis handle beshe
+
+#sp_param
+param_length = symbol.localParamLength();
+PB[i] = add param_length*4+4, top_sp to top_sp; i+=4;
+
+#copy_input
+PB[i] = assign ss(top) to @top_sp; i+=4; pop(1);
+PB[i] = add top_sp, 4 to top_sp; i+=4; // mishe ino behine tar kard?
+
+#sp_local
+PB[i] = add top_sp, 8 to top_sp; i+=4;
+PB[i] = jump to ss(top); i+=4; pop(1);
 

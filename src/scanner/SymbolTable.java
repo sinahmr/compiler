@@ -234,6 +234,17 @@ public class SymbolTable
         retTypes.add(null);
     }
 
+    public int localParamLength()
+    {
+        int cnt=0;
+        for(int i=scopeStack.get(scopeStack.size()-1); i<lexemes.size(); i++)
+            if(args_size.get(i) < 0)
+                cnt++;
+            else
+                cnt+= args_size.get(i);
+        return cnt;
+    }
+
     public void insert(String lex) {
         insert(lex, Token.Type.ID);
     }
