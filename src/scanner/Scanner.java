@@ -116,7 +116,7 @@ class DFA
                                 'n','o','p','q','r','s','t','u','v','w','x','y','z',
                 'A','B','C','D','E','F','G','H','I','J','K','L','M',
                 'N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
-        groups[Group.DELIM.ordinal()] = new byte[]{'\r', '\n', ' '};
+        groups[Group.DELIM.ordinal()] = new byte[]{'\r', '\n', ' ', '\t'};
 
         setErrors();
         setTrans();
@@ -166,6 +166,8 @@ class DFA
                     scn.currentToken++;
                     if(currState != 0 || scn.buffer[scn.currentToken] != 0)// check shavad
                         scn.errorHandler.scannerError(errors[-tranDef[currState]]);
+
+
                     currState = 0;
                 }
             }
@@ -255,11 +257,11 @@ class DFA
         tranDef[21] = 23;
 
         putGroup(tranValid, 24, groups[Group.NUM.ordinal()], 24);
-        putGroup(tranError, 24, groups[Group.LETTER.ordinal()], -3);
+        putGroup(tranError, 24, groups[Group.LETTER.ordinal()], 3);
         tranDef[24] = 26;
 
         putGroup(tranValid, 25, groups[Group.NUM.ordinal()], 25);
-        putGroup(tranError, 25, groups[Group.LETTER.ordinal()], -3);
+        putGroup(tranError, 25, groups[Group.LETTER.ordinal()], 3);
         tranDef[25] = 27;
 
         putGroup(tranValid, 28, groups[Group.NUM.ordinal()], 28);
@@ -295,10 +297,10 @@ class DFA
 
         finalStates.put(20, Token.Type.PLUS);
         conFinalStates.add(20);
-        finalConditions.add(new Token.Type[]{Token.Type.NUM, Token.Type.PARAN_C, Token.Type.BRACKET_C});
+        finalConditions.add(new Token.Type[]{Token.Type.NUM, Token.Type.PARAN_C, Token.Type.BRACKET_C, Token.Type.ID});
         finalStates.put(21, Token.Type.MINUS);
         conFinalStates.add(21);
-        finalConditions.add(new Token.Type[]{Token.Type.NUM, Token.Type.PARAN_C, Token.Type.BRACKET_C});
+        finalConditions.add(new Token.Type[]{Token.Type.NUM, Token.Type.PARAN_C, Token.Type.BRACKET_C, Token.Type.ID});
 
         finalStates.put(22, Token.Type.PLUS);
         undoFinalStates.add(22);
