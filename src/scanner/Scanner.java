@@ -1,5 +1,7 @@
 package scanner;
 
+// DELETE THIS COMMENT
+
 import errorhandler.ErrorHandler;
 
 import java.io.FileInputStream;
