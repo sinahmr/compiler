@@ -138,7 +138,7 @@ public class Parser {
 
     private Grammar getGrammar() throws IOException {
         Grammar grammar = new Grammar();
-        File grammarFile = new File("./src/resource/grammar.txt");
+        File grammarFile = new File("./src/resource/grammars/final_grammar.txt");
         BufferedReader br = new BufferedReader(new FileReader(grammarFile));
         String line;
         while ((line = br.readLine()) != null) {

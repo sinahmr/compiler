@@ -17,13 +17,13 @@ public class UserInterface
             e.printStackTrace();
             return;
         }
-        //new Parser(scanner, errorHandler).parse();
-        while(true)
-        {
-            Token next = scanner.getNextToken();
-            if(next.type == Token.Type.EOF)
-                break;
-            System.out.println(next.type + "  ***  " + next.attribute);
-        }
+        new Parser(scanner, errorHandler).parse();
+//        while(true)
+//        {
+//            Token next = scanner.getNextToken();
+//            if(next.type == Token.Type.EOF)
+//                break;
+//            System.out.println(next.type + "  ***  " + next.attribute);
+//        }
     }
 }

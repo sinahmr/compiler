@@ -15,17 +15,46 @@ public class TableCreator {
     }
 
     private void run() {
-        readGrammarFile();
+        createNewGrammarFile();
+        readNewGrammarFile();
         calculateFirsts();
         calculateFollows();
 
         ParseTable table = createTable();
         writeFollowsToFile();
+        // TODO resolve conflicts.txt
+        System.out.println("Don't forget to resolve conflicts.txt");
         writeTableToFile(table);
     }
 
-    private void readGrammarFile() {
-        File grammarFile = new File("./src/resource/grammar.txt");
+    private void createNewGrammarFile() {
+        File rawGrammarFile = new File("./src/resource/grammars/grammar_with_actions.txt");
+        ArrayList<String> lines = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(rawGrammarFile))) {
+            String line;
+            while ((line = br.readLine()) != null)
+                lines.add(line.replace("#", "$#"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < lines.size(); i++) {
+            String[] rhs = lines.get(i).split("→")[1].trim().split(" ");
+            for (String tnt : rhs)
+                if (tnt.startsWith("$#") && !lines.contains(tnt + " → ε"))
+                    lines.add(tnt + " → ε");
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("./src/resource/grammars/final_grammar.txt"))) {
+            String content = String.join("\n", lines);
+            bw.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void readNewGrammarFile() {
+        File grammarFile = new File("./src/resource/grammars/final_grammar.txt");
         try (BufferedReader br = new BufferedReader(new FileReader(grammarFile))) {
             String line;
             while ((line = br.readLine()) != null) {

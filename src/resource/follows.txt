@@ -1,28 +1,65 @@
+$#copy_input ) ,
+$#init void int
 $FunDeclaration void EOF int
 $VarDeclaration output void ; { ID while EOF if } int return
+$#plus NUM ( ID
+$#times NUM ( ID
+$#jpf output else ; { ID while } if return
+$#num_value == && ) * ; + < , ] - /
+$Term == && ) * ; + < , ] - /
+$#jp output else ; { ID while } if return
+$#sp_local_jp == && ) * ; + < , ] - /
+$#set_ret_type ID
+$#assign ;
+$#minus NUM ( ID
+$#set_pointer [
+$#arr_size ]
+$#pid == && ( ) * + , - / [ ; < = ]
+$#mult == && ) * ; + < , ] - /
+$#init_func {
+$#end_func output else ; { ID while } if return
+$ArgList ) ,
+$Expression == && ) ; + < , ] -
+$#larger && ) ;
+$#sp_param (
+$AddOp NUM ( ID
+$Program EOF
+$DeclarationList void EOF int
+$#def_arr [
+$#start_scope output ( ; { ID while if } int return
+$Call == && ) * ; + < , ] - /
+$Params )
+$Args )
+$RelTerm && ) ;
+$ParamList ) ,
+$#arr_value == && ) * ; + < , = ] - /
+$#while output else ; { ID while } if return
 $Declaration void EOF int
 $Param ) ,
 $RelExpression && ) ;
 $Factor == && ) * ; + < , ] - /
+$#equal && ) ;
 $ExpressionStmt output else ; { ID while } if return
-$Term == && ) * ; + < , ] - /
+$#def_func (
+$#add == && ) ; + < , ] -
+$#end_scope void EOF } int
 $CompoundStmt output void else ; { ID while EOF } if int return
 $Statement output else ; { ID while } if return
+$#jpf_save else
+$#func_add_param ) ,
 $StatementList output ; { ID while } if return
 $MulOp NUM ( ID
-$ArgList ) ,
-$Expression == && ) ; + < , ] -
 $GenExpression ) ;
-$AddOp NUM ( ID
-$Program EOF
-$DeclarationList void EOF int
+$#label (
+$#save output ; { ID while if return
 $ReturnStmt output else ; { ID while } if return
 $Var == && ) * ; + < , = ] - /
 $SelectionStmt output else ; { ID while } if return
-$Call == && ) * ; + < , ] - /
-$Params )
-$Args )
+$#and && ) ;
+$#def_var ) ; ,
+$#output )
+$#set_ret_value ;
+$#push_arr_size [
 $LocalDeclarations output ; { ID while if } return int
-$RelTerm && ) ;
-$ParamList ) ,
 $IterationStmt output else ; { ID while } if return
+$#divide NUM ( ID
