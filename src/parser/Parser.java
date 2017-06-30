@@ -1,5 +1,6 @@
 package parser;
 
+import codegenerator.CodeGenerator;
 import errorhandler.ErrorHandler;
 import preprocessor.ParseTable;
 import scanner.Scanner;
@@ -18,15 +19,19 @@ import java.util.Stack;
 
 public class Parser {
     Scanner scanner;
+    CodeGenerator codeGenerator;
     ErrorHandler errorHandler;
     Grammar grammar;
     ParseTable table;
     HashMap<String, HashSet<String>> follows;
     Set<String> nonTerminals;
     Stack<Integer> stack = new Stack<>();
+    final int MAX_PREV_TOKENS = 3;
+    Token[] prevTokens;
 
-    public Parser(Scanner scanner, ErrorHandler errorHandler) {
+    public Parser(Scanner scanner, CodeGenerator codeGenerator, ErrorHandler errorHandler) {
         this.scanner = scanner;
+        this.codeGenerator = codeGenerator;
         this.errorHandler = errorHandler;
         try {
             grammar = getGrammar();
@@ -36,6 +41,7 @@ public class Parser {
             e.printStackTrace();
         }
         nonTerminals = follows.keySet();
+        prevTokens = new Token[MAX_PREV_TOKENS];
     }
 
     public void parse() {
@@ -68,6 +74,12 @@ public class Parser {
             } else {  // Reduce
                 int ruleNumber = Integer.parseInt(action.substring(1));
                 Rule rule = grammar.rules.get(ruleNumber);
+
+                if (rule.lhs.startsWith("$#")) {
+                    String codegenAction = rule.lhs.substring(1);
+                    codeGenerator.generateCode(codegenAction, token, prevTokens);
+                }
+
                 int popTimes = rule.rhs.length;
                 for (int i = 0; i < popTimes; i++)
                     stack.pop();
@@ -75,6 +87,7 @@ public class Parser {
                 stack.push(gotoState);
                 getNewToken = false;
             }
+            pushToPrevTokens(token);
         } while (!stack.isEmpty());
 
     }
@@ -153,4 +166,10 @@ public class Parser {
         return new ParseTable(csv);
     }
 
+    private void pushToPrevTokens(Token token) {
+        for (int i = prevTokens.length - 1; i > 0; i--) {
+            prevTokens[i] = prevTokens[i - 1];
+        }
+        prevTokens[0] = token;
+    }
 }

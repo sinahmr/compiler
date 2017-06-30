@@ -1,3 +1,4 @@
+import codegenerator.CodeGenerator;
 import errorhandler.ErrorHandler;
 import parser.Parser;
 import scanner.Scanner;
@@ -17,7 +18,8 @@ public class UserInterface
             e.printStackTrace();
             return;
         }
-        new Parser(scanner, errorHandler).parse();
+        CodeGenerator codeGenerator = new CodeGenerator();
+        new Parser(scanner, codeGenerator, errorHandler).parse();
 //        while(true)
 //        {
 //            Token next = scanner.getNextToken();
