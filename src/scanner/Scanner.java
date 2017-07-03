@@ -82,6 +82,9 @@ public class Scanner
         }
     }
 
+    public SymbolTable getSymbolTable() {
+        return this.IDTable;
+    }
 
 }
 

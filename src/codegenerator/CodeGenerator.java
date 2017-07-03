@@ -42,7 +42,7 @@ public class CodeGenerator {
                 push(p); p++;
                 break;
             case "def_var":
-                symbolTable.defineVar(prevTokens[0].);
+//                symbolTable.defineVar(prevTokens[0],);
                 break;
             case "set_pointer":
                 break;

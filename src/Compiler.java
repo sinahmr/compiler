@@ -6,7 +6,7 @@ import scanner.Token;
 
 import java.io.*;
 
-public class UserInterface
+public class Compiler
 {
     public static void main(String[] args) {
         ErrorHandler errorHandler = new ErrorHandler();
@@ -18,7 +18,7 @@ public class UserInterface
             e.printStackTrace();
             return;
         }
-        CodeGenerator codeGenerator = new CodeGenerator();
+        CodeGenerator codeGenerator = new CodeGenerator(scanner.getSymbolTable());
         new Parser(scanner, codeGenerator, errorHandler).parse();
 //        while(true)
 //        {
