@@ -1,6 +1,6 @@
 CODE (fixed length)
 ----------
-TOP_SP (moshakhkhas beshe ke daghighan be chi eshare mikone) (be nazaram be aval Local Parameters eshare kone)
+TOP
 DISP[0] (be avale Static Variables eshare mikone)
 DISP[1] (kollan in DISP ha hich fayedeyi nadaran, chon meghdare DISP[0] fix e va meghdare DISP[1] hamun TOP_SP)
 Static Variables (fixed length)

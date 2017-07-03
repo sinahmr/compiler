@@ -25,15 +25,13 @@ symbol.setArraySize(input);
 
 #set_pointer
 PB[i] = assign symbol.getAddress(input)+4 to TOP_SP+symbol.getAddress(input); i+=4;
-
-#set_ret_type
-if(input == int)
+	
+#def_func
+symbol.defineFunc(input[0], i); // daghigh i doroste? ya bayad yekam offset dashte bashe?
+if(input[1] == int)
 	symbol.setRetType(int);
 else
 	symbol.setRetType(void);
-	
-#def_func
-symbol.defineFunc(input, i); // daghigh i doroste? ya bayad yekam offset dashte bashe?
 
 #func_add_param
 symbol.addFuncParam();
@@ -165,7 +163,7 @@ PB[i] = add param_length*4+4, top_sp to top_sp; i+=4;
 PB[i] = assign ss(top) to @top_sp; i+=4; pop(1);
 PB[i] = add top_sp, 4 to top_sp; i+=4; // mishe ino behine tar kard?
 
-#sp_local
+#sp_local_jp
 PB[i] = add top_sp, 8 to top_sp; i+=4;
 PB[i] = jump to ss(top); i+=4; pop(1);
 

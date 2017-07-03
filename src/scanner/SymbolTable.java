@@ -111,6 +111,8 @@ public class SymbolTable
             insert(var);
             index = lexemes.size()-1;
         }
+
+
         if(IDTypes.get(index) != null)
         {
             errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
@@ -119,8 +121,9 @@ public class SymbolTable
         addresses.set(index, currAddress);
         currAddress += 4; // chon har moteghayyer 4 byte hafeze mikhad
         IDTypes.set(index, IDType.VAR);
-
     }
+
+    //public void defineVar(int index)
 
     public void defineArray(String array)
     {

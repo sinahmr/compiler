@@ -5,8 +5,8 @@ $Declaration → $VarDeclaration
 $Declaration → $FunDeclaration
 $VarDeclaration → int ID #def_var ;
 $VarDeclaration → int ID #def_arr #set_pointer [ NUM #arr_size ] ;
-$FunDeclaration → int #set_ret_type ID #def_func #start_scope ( $Params ) #init_func $CompoundStmt #end_scope
-$FunDeclaration → void #set_ret_type ID #def_func #start_scope ( $Params ) #init_func $CompoundStmt #end_scope
+$FunDeclaration → int ID #def_func #start_scope ( $Params ) #init_func $CompoundStmt #end_scope
+$FunDeclaration → void ID #def_func #start_scope ( $Params ) #init_func $CompoundStmt #end_scope
 $Params → $ParamList
 $Params → void
 $ParamList → $ParamList , $Param #func_add_param
@@ -27,7 +27,7 @@ $Statement → output ( $Expression #output ) ;
 $ExpressionStmt → $Var #pid = $Expression #assign ;
 $ExpressionStmt → ;
 $SelectionStmt → if ( $GenExpression ) #save $Statement #jpf
-$SelectionStmt → if ( $GenExpression ) #save $Statement #jpf_save else $Statement #jp
+$SelectionStmt → if ( $GenExpression ) #save $Statement else #jpf_save $Statement #jp
 $IterationStmt → while #label ( $GenExpression ) #save $Statement #while
 $ReturnStmt → return ;
 $ReturnStmt → return $GenExpression #set_ret_value ;
