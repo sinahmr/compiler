@@ -48,6 +48,7 @@ public class Token
         {
             System.out.println(e.getMessage()); // TODO inja error ma'ni dar khuruji bedim?
         }
+        System.out.println("Token: " + type + " " + attribute);
     }
 
     @Override

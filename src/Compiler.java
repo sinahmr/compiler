@@ -20,6 +20,10 @@ public class Compiler
         }
         CodeGenerator codeGenerator = new CodeGenerator(scanner.getSymbolTable());
         new Parser(scanner, codeGenerator, errorHandler).parse();
+
+        //codeGenerator.run();
+
+
 //        while(true)
 //        {
 //            Token next = scanner.getNextToken();

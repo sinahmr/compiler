@@ -42,6 +42,10 @@ symbol.addFuncParam();
 #end_scope
 symbol.endScope();
 
+#end_func
+PB[i] = sub 4 from CODE_SIZE to CODE_SIZE; i+=4;
+PB[i] = jump to @CODE_SIZE; i+=4;
+
 #init_func
 PB[ss(top)] = jump to i;
 PB[i] = assign DISP[1] to TOP_SP-8; i+=4;
@@ -112,19 +116,19 @@ push(i)
 
 #while
 PB[i] = jump to ss(top-2); i+=4;
-PB[ss(top)] = jump if not ss(top-1) to iF;
+PB[ss(top)] = jump if not ss(top-1) to i;
 pop(3);
 
 #and
-PB[i] = and ss(top), ss(top-1) to temp1;
+PB[i] = and ss(top), ss(top-1) to temp1; i+=4;
 pop(2); push(temp1);
 
 #equal
-PB[i] = equal ss(top), ss(top-1) to temp1;
+PB[i] = equal ss(top), ss(top-1) to temp1; i+=4;
 pop(2); push(temp1);
 
 #larger
-PB[i] = larger ss(top), ss(top-1) to temp1;
+PB[i] = larger ss(top), ss(top-1) to temp1; i+=4;
 pop(2); push(temp1);
 
 #output
@@ -138,9 +142,9 @@ push(-);
 
 #add
 if(ss(top-1) == (+))
-	PB[i] = add ss(top-2), ss(top) to temp1
+	PB[i] = add ss(top-2), ss(top) to temp1; i+=4;
 else if(ss(top-1) == (-))
-	PB[i] = sub ss(top-2), ss(top) to temp1
+	PB[i] = sub ss(top-2), ss(top) to temp1; i+=4;
 	
 #times
 push(*);
@@ -151,20 +155,24 @@ push(/);
 #mult
 if(ss(top-1) == (*))
 	PB[i] = mult ss(top-2), ss(top) to temp1
-else if(ss(top-1) == (-))
+else if(ss(top-1) == (/))
 	PB[i] = divide ss(top-2), ss(top) to temp1
 
 #call
- //inke te'dad vurudi ha dorost bashe tu semantic analysis handle beshe
+PB[i] = assign i+2 to top
+PB[i] = jump to ss(top-1); i+=4;
+pop(2);
 
-#sp_param
-param_length = symbol.localParamLength();
-PB[i] = add param_length*4+4, top_sp to top_sp; i+=4;
+#init_copy
+offset = symbol.getFuncAddressOffset(input);
+push(offset);
 
 #copy_input
-PB[i] = assign ss(top) to @top_sp; i+=4; pop(1);
-PB[i] = add top_sp, 4 to top_sp; i+=4; // mishe ino behine tar kard?
+PB[i] = assign ss(top) to offset; i+=4;
+offset = pop(1)+4;
+push(offset);
 
-#sp_local_jp
-PB[i] = add top_sp, 8 to top_sp; i+=4;
-PB[i] = jump to ss(top); i+=4; pop(1);
+
+//#sp_local_jp
+//PB[i] = add top_sp, 8 to top_sp; i+=4;
+//PB[i] = jump to ss(top); i+=4; pop(1);

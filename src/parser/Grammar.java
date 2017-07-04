@@ -28,8 +28,8 @@ class Rule {
     }
 
     public Rule(String rule, int ruleNumber) {
-        String lhs = rule.split("→")[0].trim();
-        String[] parts = rule.split("→")[1].trim().split(" ");
+        String lhs = rule.split("~")[0].trim();
+        String[] parts = rule.split("~")[1].trim().split(" ");
         this.lhs = lhs;
         if (rule.contains("ε"))
             this.rhs = new String[0];

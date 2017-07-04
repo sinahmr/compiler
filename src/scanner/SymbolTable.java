@@ -12,6 +12,7 @@ public class SymbolTable
     public ArrayList<RetType> retTypes;
     public ArrayList<Integer> addresses;
     public ArrayList<Integer> args_size;
+    public ArrayList<Integer> addressOffset;
 
     public ArrayList<Integer> scopeStack;
     public ArrayList<Integer> currOffset;
@@ -34,6 +35,7 @@ public class SymbolTable
         args_size = new ArrayList<>();
         IDTypes = new ArrayList<>();
         retTypes = new ArrayList<>();
+        addressOffset = new ArrayList<>();
         this.currAddress = initAddress;
         this.errorHandler = errorHandler;
 
@@ -58,6 +60,7 @@ public class SymbolTable
             tokenTypes.remove(tokenTypes.size()-1);
             addresses.remove(addresses.size()-1);
             args_size.remove(args_size.size()-1);
+            addressOffset.remove(addressOffset.size()-1);
             IDTypes.remove(IDTypes.size()-1);
             retTypes.remove(retTypes.size()-1);
         }
@@ -90,6 +93,7 @@ public class SymbolTable
 
         addresses.set(index, address);
         args_size.set(index, 0);
+        addressOffset.set(index, currAddress);
         IDTypes.set(index, IDType.FUNC);
         retTypes.set(index, lastRetType);
         lastRetType = null;
@@ -207,13 +211,13 @@ public class SymbolTable
 
     public void addKeywords()
     {
-        lexemes.add("int"); tokenTypes.add(Token.Type.INT); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
-        lexemes.add("void"); tokenTypes.add(Token.Type.VOID); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
-        lexemes.add("if"); tokenTypes.add(Token.Type.IF); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
-        lexemes.add("else"); tokenTypes.add(Token.Type.ELSE); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
-        lexemes.add("while"); tokenTypes.add(Token.Type.WHILE); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
-        lexemes.add("return"); tokenTypes.add(Token.Type.RETURN); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
-		lexemes.add("output"); tokenTypes.add(Token.Type.OUTPUT); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null);
+        lexemes.add("int"); tokenTypes.add(Token.Type.INT); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null); addressOffset.add(-1);
+        lexemes.add("void"); tokenTypes.add(Token.Type.VOID); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null); addressOffset.add(-1);
+        lexemes.add("if"); tokenTypes.add(Token.Type.IF); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null); addressOffset.add(-1);
+        lexemes.add("else"); tokenTypes.add(Token.Type.ELSE); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null); addressOffset.add(-1);
+        lexemes.add("while"); tokenTypes.add(Token.Type.WHILE); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null); addressOffset.add(-1);
+        lexemes.add("return"); tokenTypes.add(Token.Type.RETURN); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null); addressOffset.add(-1);
+		lexemes.add("output"); tokenTypes.add(Token.Type.OUTPUT); addresses.add(-1); args_size.add(-1); IDTypes.add(null); retTypes.add(null); addressOffset.add(-1);
     }
 
     public Token.Type lookUp(String lex)
@@ -236,6 +240,7 @@ public class SymbolTable
         tokenTypes.add(type);
         addresses.add(-1);
         args_size.add(-1);
+        addressOffset.add(-1);
         IDTypes.add(null);
         retTypes.add(null);
     }
@@ -268,5 +273,26 @@ public class SymbolTable
             return -1;
         }
         return args_size.get(index);
+    }
+
+    public int getFuncAddressOffset(int index)
+    {
+        if(IDTypes.get(index) != IDType.FUNC)
+        {
+            errorHandler.semanticError("ID is not an function");
+            return -1;
+        }
+        return addressOffset.get(index);
+    }
+
+    public void print()
+    {
+        for(int i=0; i<lexemes.size(); i++)
+            System.out.println(lexemes.get(i) + " $ " + addresses.get(i));
+    }
+    public void printFull()
+    {
+        for(int i=0; i<lexemes.size(); i++)
+            System.out.println(lexemes.get(i) + " $ " + addresses.get(i));
     }
 }

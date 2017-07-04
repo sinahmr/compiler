@@ -39,10 +39,12 @@ public class TableCreator {
         }
 
         for (int i = 0; i < lines.size(); i++) {
-            String[] rhs = lines.get(i).split("→")[1].trim().split(" ");
+            System.out.println(lines.get(i));
+            System.out.println(lines.get(i).length());
+            String[] rhs = lines.get(i).split("~")[1].trim().split(" ");
             for (String tnt : rhs)
-                if (tnt.startsWith("$#") && !lines.contains(tnt + " → ε"))
-                    lines.add(tnt + " → ε");
+                if (tnt.startsWith("$#") && !lines.contains(tnt + " ~ ε"))
+                    lines.add(tnt + " ~ ε");
         }
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("./src/resource/grammars/final_grammar.txt"))) {
@@ -58,10 +60,10 @@ public class TableCreator {
         try (BufferedReader br = new BufferedReader(new FileReader(grammarFile))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String lhs = line.split("→")[0].trim();
+                String lhs = line.split("~")[0].trim();
                 nonTerminals.add(lhs);
 
-                String[] parts = line.split("→")[1].trim().split(" ");
+                String[] parts = line.split("~")[1].trim().split(" ");
                 for (String part : parts)
                     if (!part.startsWith("$") && !part.trim().equals("ε"))
                         terminals.add(part.trim());
@@ -120,8 +122,8 @@ public class TableCreator {
         while (shouldContinue) {
             shouldContinue = false;
             for (String rule : rules) {
-                String lhs = rule.split("→")[0].trim();
-                HashSet<String> toUnion = firstOfString(rule.split("→")[1].trim());
+                String lhs = rule.split("~")[0].trim();
+                HashSet<String> toUnion = firstOfString(rule.split("~")[1].trim());
                 firsts.get(lhs).addAll(toUnion);
                 int currentSize = firsts.get(lhs).size();
                 if (firstSetSize.getOrDefault(lhs, -1) != currentSize)
@@ -137,8 +139,8 @@ public class TableCreator {
         while (shouldContinue) {
             shouldContinue = false;
             for (String rule : rules) {
-                String lhs = rule.split("→")[0].trim();
-                String[] parts = rule.split("→")[1].trim().split(" ");
+                String lhs = rule.split("~")[0].trim();
+                String[] parts = rule.split("~")[1].trim().split(" ");
                 for (int i = 0; i < parts.length - 1; i++) {  // Ignore the last part
                     String part = parts[i];
                     if (part.startsWith("$")) {
@@ -172,7 +174,7 @@ public class TableCreator {
     private ParseTable createTable() {
         ParseTable table = new ParseTable(terminals, nonTerminals);
         ArrayList<State> states = new ArrayList<>();
-        State s0 = new State(new Item("$S → $Program", 0), rules);
+        State s0 = new State(new Item("$S ~ $Program", 0), rules);
         states.add(s0);
 
         for (int i = 0; i < states.size(); i++) {
@@ -284,8 +286,8 @@ class Item {
     }
 
     public Item(String rule, int ruleNumber) {
-        this.lhs = rule.split("→")[0].trim();
-        this.rhs = rule.split("→")[1].trim().split(" ");
+        this.lhs = rule.split("~")[0].trim();
+        this.rhs = rule.split("~")[1].trim().split(" ");
         if (this.rhs[0].equals("ε"))
             this.rhs = new String[0];
         this.dotBefore = 0;
@@ -355,9 +357,9 @@ class State {
             }
             for (int j = 0; j < grammarRules.size(); j++) {
                 String rule = grammarRules.get(j);
-                String lhs = rule.split("→")[0].trim();
+                String lhs = rule.split("~")[0].trim();
                 if (shouldAddRulesOf.contains(lhs)) {
-                    Item newItem = new Item(rule, j + 1);  // Number 0 is S → Program
+                    Item newItem = new Item(rule, j + 1);  // Number 0 is S ~ Program
                     if (!items.contains(newItem))
                         items.add(newItem);
                 }

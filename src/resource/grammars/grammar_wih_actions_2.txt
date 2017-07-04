@@ -29,8 +29,8 @@ $ExpressionStmt → ;
 $SelectionStmt → if ( $GenExpression ) save $Statement jpf
 $SelectionStmt → if ( $GenExpression ) save $Statement else jpf_save $Statement jp
 $IterationStmt → while label ( $GenExpression ) save $Statement while
-$ReturnStmt → return ;
-$ReturnStmt → return $GenExpression set_ret_value ;
+$ReturnStmt → return end_func;
+$ReturnStmt → return $GenExpression set_ret_value end_func;
 $Var → ID pid
 $Var → ID pid push_arr_size [ $Expression ] arr_value
 $GenExpression → $RelExpression
@@ -51,7 +51,7 @@ $Factor → ( $Expression )
 $Factor → $Var
 $Factor → $Call
 $Factor → NUM num_value
-$Call → ID pid sp_param ( $Args ) sp_local_jp
+$Call → ID pid init_copy ( $Args ) call
 $Args → $ArgList
 $Args → ε
 $ArgList → $ArgList , $Expression copy_input

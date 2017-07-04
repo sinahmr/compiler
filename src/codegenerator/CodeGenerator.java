@@ -1,6 +1,6 @@
 package codegenerator;
 
-import com.sun.org.apache.bcel.internal.classfile.Code;
+import scanner.Scanner;
 import scanner.SymbolTable;
 import scanner.Token;
 
@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 public class CodeGenerator {
+
+    ArrayList<String> tempBuffAction;
+    ArrayList<Token> tempBuffToken;
+    ArrayList<Token[]> tempBuffPrev;
 
     final int CODE_SIZE = 1000;
     final int STATIC_SIZE = 20;
@@ -20,7 +24,7 @@ public class CodeGenerator {
     Stack<Integer> semanticStack;
     InterCode[] PB;
 
-    enum  CodeType {ADD, AND, ASSIGN, EQ, JPF, JP, LT, MULT, NOT, PRINT, SUB, DIVIDE};
+    enum  CodeType {ADD, AND, ASSIGN, EQ, JPF, JP, LT, MULT, NOT, PRINT, SUB, DIVIDE, OUTPUT};
     enum AddressType {INDIRECT, DIRECT, IMMEDIATE};
 
     public CodeGenerator(SymbolTable symbolTable)
@@ -30,10 +34,51 @@ public class CodeGenerator {
         PB = new InterCode[CODE_SIZE];
     }
 
+    public void generateCode(String action, Token currentToken, Token[] prevTokens)
+    {
+        tempBuffAction.add(action);
+        tempBuffToken.add(currentToken);
+        tempBuffPrev.add(prevTokens);
+    }
+
+    public void run()
+    {
+        java.util.Scanner scn = new java.util.Scanner(System.in);
+
+        while(true)
+        {
+            String command = scn.nextLine();
+            if(command.startsWith("run"))
+            {
+                int cnt = 1;
+                if(command.split(" ").length > 1)
+                    cnt = new Integer(command.split(" ")[1]);
+                for(int i=0; i<cnt; i++)
+                {
+                    generateCode2(tempBuffAction.remove(0), tempBuffToken.remove(0), tempBuffPrev.remove(0));
+                }
+            }else if(command.startsWith("pb"))
+            {
+                int cnt=p;
+                if(command.split(" ").length > 1)
+                    cnt = new Integer(command.split(" ")[1]);
+                for(int i=p-cnt;i<p;i++)
+                    PB[i].print();
+            }else if(command.startsWith("st"))
+            {
+                if(command.split(" ").length > 1)
+                    symbolTable.printFull();
+                else
+                    symbolTable.print();
+            }
+        }
+
+    }
+
     // currentToken: tokeni ke ba didanesh tasmim gereftim Reduce anjam bedim o hanuz too stack nayoomade
     // prevTokens: tokenhaye ghabli ke barresi shodan o oomadan too stack.
     // "int void ID" -> prevTokens[0] == ID, prevTokens[2] == int
-    public void generateCode(String action, Token currentToken, Token[] prevTokens) {
+    public void generateCode2(String action, Token currentToken, Token[] prevTokens) {
         int temp, temp2;
         switch (action)
         {
@@ -91,14 +136,13 @@ public class CodeGenerator {
                 PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.DIRECT, peek(0),
                                                         AddressType.DIRECT, CODE_SIZE+4);
                 pop(1);
-
-                PB[p++] = new InterCode(CodeType.SUB, AddressType.IMMEDIATE, 4,
-                        AddressType.DIRECT, CODE_SIZE,
-                        AddressType.DIRECT, CODE_SIZE);
-                PB[p++] = new InterCode(CodeType.JP, AddressType.DIRECT, CODE_SIZE);
                 break;
-            //case "end_func":
-            //    break;
+            case "end_func":
+                PB[p++] = new InterCode(CodeType.SUB, AddressType.DIRECT, CODE_SIZE,
+                        AddressType.IMMEDIATE, 4,
+                        AddressType.DIRECT, CODE_SIZE);
+                PB[p++] = new InterCode(CodeType.JP, AddressType.INDIRECT, CODE_SIZE); // in nabayd direct bashe?
+                break;
             case "pid":
                 push(symbolTable.getAddress(prevTokens[0].attribute));
                 break;
@@ -134,40 +178,107 @@ public class CodeGenerator {
                 pop(2);
                 break;
             case "jpf_save":
+                PB[peek(0)] = new InterCode(CodeType.JPF, AddressType.DIRECT, peek(1),
+                                                    AddressType.IMMEDIATE, p+1);
+                pop(2);
+                push(p); p++;
+                //push(p-1); in ke comment kardam nabayad bashe?
                 break;
             case "jp":
+                PB[peek(0)] = new InterCode(CodeType.JP, AddressType.IMMEDIATE, p);
+                pop(1);
                 break;
             case "label":
+                push(p);
                 break;
             case "while":
+                PB[p++] = new InterCode(CodeType.JP, AddressType.IMMEDIATE, peek(2));
+                PB[peek(0)] = new InterCode(CodeType.JPF, AddressType.DIRECT, peek(1),
+                                                    AddressType.IMMEDIATE, p);
+                pop(3);
                 break;
             case "and":
+                temp = getTemp();
+                PB[p++] = new InterCode(CodeType.AND, AddressType.DIRECT, peek(0),
+                                                    AddressType.DIRECT, peek(1),
+                                                    AddressType.DIRECT, temp);
+                pop(2); push(temp);
                 break;
             case "equal":
+                temp = getTemp();
+                PB[p++] = new InterCode(CodeType.EQ, AddressType.DIRECT, peek(0),
+                        AddressType.DIRECT, peek(1),
+                        AddressType.DIRECT, temp);
+                pop(2); push(temp);
                 break;
             case "larger":
+                temp = getTemp();
+                PB[p++] = new InterCode(CodeType.LT, AddressType.DIRECT, peek(0),
+                        AddressType.DIRECT, peek(1),
+                        AddressType.DIRECT, temp);
+                pop(2); push(temp);
                 break;
             case "output":
+                PB[p++] = new InterCode(CodeType.OUTPUT, AddressType.DIRECT, peek(0));
+                pop(1);
                 break;
             case "plus":
+                push('+'); // in haminjuri okeye? mage nabayad int begire? :))) (moshabehan baraye '-' '*' '/')
                 break;
             case "minus":
+                push('-');
                 break;
             case "add":
+                temp = getTemp();
+                if(peek(1) == '+') // in tasavi kar mikone? (moshabehan baraye '-' '*' '/')
+                    PB[p++] = new InterCode(CodeType.ADD, AddressType.DIRECT, peek(2),
+                                                        AddressType.DIRECT, peek(0),
+                                                        AddressType.DIRECT, temp);
+                else if(peek(1) == '-')
+                    PB[p++] = new InterCode(CodeType.SUB, AddressType.DIRECT, peek(2),
+                                                        AddressType.DIRECT, peek(0),
+                                                        AddressType.DIRECT, temp);
+
+                pop(3); push(temp);
                 break;
             case "times":
+                push('*');
                 break;
             case "divide":
+                push('/');
                 break;
             case "mult":
+                temp = getTemp();
+                if(peek(1) == '*')
+                    PB[p++] = new InterCode(CodeType.MULT, AddressType.DIRECT, peek(2),
+                            AddressType.DIRECT, peek(0),
+                            AddressType.DIRECT, temp);
+                else if(peek(1) == '/')
+                    PB[p++] = new InterCode(CodeType.DIVIDE, AddressType.DIRECT, peek(2),
+                            AddressType.DIRECT, peek(0),
+                            AddressType.DIRECT, temp);
+
+                pop(3); push(temp);
                 break;
             case "call":
+                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.IMMEDIATE, p+2,
+                                                    AddressType.INDIRECT, CODE_SIZE);
+                pop(1);
+                PB[p++] = new InterCode(CodeType.JP, AddressType.IMMEDIATE, peek(0));
+                pop(1);
                 break;
-            case "sp_param":
-                break;
+            //case "sp_param": ino nemikhaim dg?
+                //break;
             case "copy_input":
+                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.DIRECT, peek(0),
+                                                        AddressType.DIRECT, peek(1));
+                pop(1);
+                push(pop(1)+4);
                 break;
-            case "sp_local":
+            //case "sp_local": mikhaim ino?
+            //    break;
+            case "init_copy":
+                push(symbolTable.getFuncAddressOffset(prevTokens[0].attribute));
                 break;
         }
     }
