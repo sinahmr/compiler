@@ -17,15 +17,6 @@ i += 4;
 #def_var
 symbol.defineVar(input);
 
-#def_arr
-symbol.defineArray(input);
-
-#arr_size
-symbol.setArraySize(input);
-
-#set_pointer
-PB[i] = assign symbol.getAddress(input)+4 to TOP_SP+symbol.getAddress(input); i+=4;
-	
 #def_func
 symbol.defineFunc(input[0], i); // daghigh i doroste? ya bayad yekam offset dashte bashe?
 if(input[1] == int)
@@ -33,11 +24,20 @@ if(input[1] == int)
 else
 	symbol.setRetType(void);
 
-#func_add_param
-symbol.addFuncParam();
+#def_arr
+symbol.defineArray(input);
+
+#set_pointer
+PB[i] = assign symbol.getAddress(input)+4 to TOP_SP+symbol.getAddress(input); i+=4;
+
+#arr_size
+symbol.setArraySize(input);
 
 #start_scope
 symbol.startScope();
+
+#func_add_param
+symbol.addFuncParam();
 	
 #end_scope
 symbol.endScope();
@@ -56,6 +56,7 @@ PB[i] = assign ss(top) to TOP_SP-8-4*param_length; i+=4;
 pop(1);
 
 #end_func
+// bachpatching dasture meghdar dehi top dar avalle tabe'
 PB[i] = assign TOP_SP-8 to DISP[1]; i+=4;
 PB[i] = assign TOP_SP-8 to TOP_SP; i+=4
 PB[i] = jump to TOP_SP-4; i+=4; // inja hamun meghdar ghadimi top_sp estefade beshe va dobare khunde nashe
@@ -63,7 +64,7 @@ PB[i] = jump to TOP_SP-4; i+=4; // inja hamun meghdar ghadimi top_sp estefade be
 #pid
 address = symbol.getAddress(input);
 level = symbol.getScopeLevel(input);
-if(level == 0)
+if(level == 0) // inja ro ridam
 	push(DISP[0] + address);
 else
 	push(DISP[1] + address);
@@ -166,4 +167,3 @@ PB[i] = add top_sp, 4 to top_sp; i+=4; // mishe ino behine tar kard?
 #sp_local_jp
 PB[i] = add top_sp, 8 to top_sp; i+=4;
 PB[i] = jump to ss(top); i+=4; pop(1);
-

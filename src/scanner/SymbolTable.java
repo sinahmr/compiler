@@ -24,7 +24,7 @@ public class SymbolTable
     private RetType lastRetType;
 
     enum IDType {FUNC, VAR, ARRAY};
-    enum RetType {VOID, INT};
+    public enum RetType {VOID, INT};
 
     public SymbolTable(int initAddress, ErrorHandler errorHandler)
     {
@@ -69,15 +69,15 @@ public class SymbolTable
         lastRetType = retType;
     }
 
-    public void defineFunc(String func, int address)
+    public void defineFunc(int index, int address) // the former input was the name of the array and the address
     {
-        int index = find(func);
+        /*int index = find(func);
         if(index < 0)
         {
             errorHandler.semanticError("Function defined before name declaration"); // hesam ine ke in khata hichvaght nabayad ettefagh biofte!! magar moghe'i ke code compiler eshkal dashte bashe
             insert(func);
             index = lexemes.size()-1;
-        }
+        }*/
         if(IDTypes.get(index) != null)
         {
             errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
@@ -102,15 +102,15 @@ public class SymbolTable
         args_size.set(lastDefinedFunc, args_size.get(lastDefinedFunc)+1);
     }
 
-    public void defineVar(String var)
+    public void defineVar(int index) // the former input was the name of the var
     {
-        int index = find(var);
+        /*int index = find(var);
         if(index < 0)
         {
             errorHandler.semanticError("Var defined before name declaration"); // hesam ine ke in khata hichvaght nabayad ettefagh biofte!! magar moghe'i ke code compiler eshkal dashte bashe
             insert(var);
             index = lexemes.size()-1;
-        }
+        }*/
 
 
         if(IDTypes.get(index) != null)
@@ -123,17 +123,16 @@ public class SymbolTable
         IDTypes.set(index, IDType.VAR);
     }
 
-    //public void defineVar(int index)
 
-    public void defineArray(String array)
+    public void defineArray(int index) // the former input was the name of the array
     {
-        int index = find(array);
+        /*int index = find(array);
         if(index < 0)
         {
             errorHandler.semanticError("Var defined before name declaration"); // hesam ine ke in khata hichvaght nabayad ettefagh biofte!! magar moghe'i ke code compiler eshkal dashte bashe
             insert(array);
             index = lexemes.size()-1;
-        }
+        }*/
         if(IDTypes.get(index) != null)
         {
             errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
@@ -149,6 +148,7 @@ public class SymbolTable
     public void setArraySize(int size) //farz kardam in tabe' ba'd az defineArray farakhani mishe va in ke akharin array ta'rif shode ro hefz mikone
     {
         args_size.set(lastDefinedArray, size);
+        currAddress += 4*size; // ino ba'dan ezafe kardam, motmaen nistam
     }
 
     public int getAddress(String ID)
@@ -163,7 +163,7 @@ public class SymbolTable
         if(IDTypes.get(index) == null)
         {
             errorHandler.semanticError("ID not defined yet");
-            defineVar(ID);
+            defineVar(index);
         }
 
         if(IDTypes.get(index) == IDType.FUNC)
@@ -250,5 +250,10 @@ public class SymbolTable
 
     public void insert(String lex) {
         insert(lex, Token.Type.ID);
+    }
+
+    public int getFuncParamLength()
+    {
+        return args_size.get(lastDefinedFunc);
     }
 }

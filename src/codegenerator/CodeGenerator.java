@@ -36,31 +36,50 @@ public class CodeGenerator {
         switch (action)
         {
             case "init":
-                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.IMMEDIATE, CODE_SIZE+12+STATIC_SIZE+TEMP_SIZE, AddressType.DIRECT, CODE_SIZE);
-                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.IMMEDIATE, CODE_SIZE+12, AddressType.DIRECT, CODE_SIZE+4);
-                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.IMMEDIATE, CODE_SIZE+12+STATIC_SIZE+TEMP_SIZE+12, AddressType.DIRECT, CODE_SIZE+8);
+                PB[p++] = new InterCode(CodeType.ASSIGN,
+                        AddressType.IMMEDIATE, CODE_SIZE+12+STATIC_SIZE+TEMP_SIZE+12, AddressType.DIRECT, CODE_SIZE);
+                PB[p++] = new InterCode(CodeType.ASSIGN,
+                        AddressType.IMMEDIATE, CODE_SIZE+12, AddressType.DIRECT, CODE_SIZE+4);
+                PB[p++] = new InterCode(CodeType.ASSIGN,
+                        AddressType.IMMEDIATE, CODE_SIZE+12+STATIC_SIZE+TEMP_SIZE+12, AddressType.DIRECT, CODE_SIZE+8);
                 push(p); p++;
                 break;
             case "def_var":
-//                symbolTable.defineVar(prevTokens[0],);
-                break;
-            case "set_pointer":
-                break;
-            case "arr_size":
-                break;
-            case "set_ret_type":
+                symbolTable.defineVar(prevTokens[0].attribute);
                 break;
             case "def_func":
-                break;
-            case "start_scope":
-                break;
-            case "init_func":
-                break;
-            case "end_scope":
-                break;
-            case "func_add_param":
+                symbolTable.defineFunc(prevTokens[0].attribute, p);
+                if(prevTokens[1].type == Token.Type.INT)
+                    symbolTable.setRetType(SymbolTable.RetType.INT);
+                else if(prevTokens[1].type == Token.Type.VOID)
+                    symbolTable.setRetType(SymbolTable.RetType.VOID);
                 break;
             case "def_arr":
+                symbolTable.defineArray(prevTokens[0].attribute);
+                break;
+            case "set_pointer":
+                //TODO
+                break;
+            case "arr_size":
+                symbolTable.setArraySize(prevTokens[0].attribute);
+                break;
+            case "start_scope":
+                symbolTable.startScope();
+                break;
+            case "init_func":
+                PB[semanticStack.peek()] = new InterCode(CodeType.JP, AddressType.IMMEDIATE, p);
+                int param_length = symbolTable.getFuncParamLength();
+                /*for(int i=0;i<param_length;i++)
+                    PB[p++] = new InterCode(CodeType.ASSIGN,
+                            AddressType.DIRECT)*/
+
+                push(p); p++;
+                break;
+            case "end_scope":
+                symbolTable.endScope();
+                break;
+            case "func_add_param":
+                symbolTable.addFuncParam();
                 break;
             case "set_ret_value":
                 break;
