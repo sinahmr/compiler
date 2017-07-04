@@ -151,15 +151,15 @@ public class SymbolTable
         currAddress += 4*size; // ino ba'dan ezafe kardam, motmaen nistam
     }
 
-    public int getAddress(String ID)
+    public int getAddress(int index) // the former input was the name of the array
     {
-        int index = find(ID);
+        /*int index = find(ID);
         if(index < 0)
         {
             errorHandler.semanticError("Address demanded before name declaration"); // hesam ine ke in khata hichvaght nabayad ettefagh biofte!! magar moghe'i ke code compiler eshkal dashte bashe
             insert(ID);
             index = lexemes.size()-1;
-        }
+        }*/
         if(IDTypes.get(index) == null)
         {
             errorHandler.semanticError("ID not defined yet");
@@ -173,19 +173,22 @@ public class SymbolTable
         else if(IDTypes.get(index) == IDType.VAR)
         {
             int i;
-            for (i = scopeStack.size() - 1; i >= 0; i--)
+            /*for (i = scopeStack.size() - 1; i >= 0; i--)
             {
                 if (scopeStack.get(i) <= index)
                     return addresses.get(index) - currOffset.get(i);
-            }
+            }*/
+            return addresses.get(index);
         }else if(IDTypes.get(index) == IDType.ARRAY) // address array ro gereftan bayad kamelan moshabeh var bashe dg, na?!
         {
             int i;
-            for (i = scopeStack.size() - 1; i >= 0; i--)
+            /*for (i = scopeStack.size() - 1; i >= 0; i--)
             {
                 if (scopeStack.get(i) <= index)
-                    return addresses.get(index) - currOffset.get(i);
-            }
+                    //return addresses.get(index) - currOffset.get(i);
+                    return addresses.get(index);
+            }*/
+            return addresses.get(index);
         }
         return -1;
     }
@@ -255,5 +258,15 @@ public class SymbolTable
     public int getFuncParamLength()
     {
         return args_size.get(lastDefinedFunc);
+    }
+
+    public int getArraySize(int index)
+    {
+        if(IDTypes.get(index) != IDType.ARRAY)
+        {
+            errorHandler.semanticError("ID is not an array");
+            return -1;
+        }
+        return args_size.get(index);
     }
 }

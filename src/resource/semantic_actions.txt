@@ -54,12 +54,13 @@ for j = 0 to param_length-1
 param_length = symbol.getFuncParamLength();
 PB[i] = assign ss(top) to TOP_SP-8-4*param_length; i+=4;
 pop(1);
+PB[i] = jump to TOP_SP-4; i+=4; // inja hamun meghdar ghadimi top_sp estefade beshe va dobare khunde nashe
 
 #end_func
 // bachpatching dasture meghdar dehi top dar avalle tabe'
 PB[i] = assign TOP_SP-8 to DISP[1]; i+=4;
 PB[i] = assign TOP_SP-8 to TOP_SP; i+=4
-PB[i] = jump to TOP_SP-4; i+=4; // inja hamun meghdar ghadimi top_sp estefade beshe va dobare khunde nashe
+
 
 #pid
 address = symbol.getAddress(input);

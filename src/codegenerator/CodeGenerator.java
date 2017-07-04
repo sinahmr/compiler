@@ -13,6 +13,7 @@ public class CodeGenerator {
     final int STATIC_SIZE = 20;
     final int TEMP_SIZE = 100;
 
+    int tempPointer=0;
     int p = 0;
 
     SymbolTable symbolTable;
@@ -33,15 +34,16 @@ public class CodeGenerator {
     // prevTokens: tokenhaye ghabli ke barresi shodan o oomadan too stack.
     // "int void ID" -> prevTokens[0] == ID, prevTokens[2] == int
     public void generateCode(String action, Token currentToken, Token[] prevTokens) {
+        int temp, temp2;
         switch (action)
         {
             case "init":
                 PB[p++] = new InterCode(CodeType.ASSIGN,
-                        AddressType.IMMEDIATE, CODE_SIZE+12+STATIC_SIZE+TEMP_SIZE+12, AddressType.DIRECT, CODE_SIZE);
-                PB[p++] = new InterCode(CodeType.ASSIGN,
-                        AddressType.IMMEDIATE, CODE_SIZE+12, AddressType.DIRECT, CODE_SIZE+4);
-                PB[p++] = new InterCode(CodeType.ASSIGN,
-                        AddressType.IMMEDIATE, CODE_SIZE+12+STATIC_SIZE+TEMP_SIZE+12, AddressType.DIRECT, CODE_SIZE+8);
+                        AddressType.IMMEDIATE, CODE_SIZE+8+STATIC_SIZE+TEMP_SIZE, AddressType.DIRECT, CODE_SIZE);
+                //PB[p++] = new InterCode(CodeType.ASSIGN,
+                //        AddressType.IMMEDIATE, CODE_SIZE+12, AddressType.DIRECT, CODE_SIZE+4);
+                //PB[p++] = new InterCode(CodeType.ASSIGN,
+                //        AddressType.IMMEDIATE, CODE_SIZE+12+STATIC_SIZE+TEMP_SIZE+12, AddressType.DIRECT, CODE_SIZE+8);
                 push(p); p++;
                 break;
             case "def_var":
@@ -58,7 +60,9 @@ public class CodeGenerator {
                 symbolTable.defineArray(prevTokens[0].attribute);
                 break;
             case "set_pointer":
-                //TODO
+                int address = symbolTable.getAddress(prevTokens[0].attribute);
+                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.IMMEDIATE, address+4,
+                        AddressType.DIRECT, address);
                 break;
             case "arr_size":
                 symbolTable.setArraySize(prevTokens[0].attribute);
@@ -67,13 +71,15 @@ public class CodeGenerator {
                 symbolTable.startScope();
                 break;
             case "init_func":
-                PB[semanticStack.peek()] = new InterCode(CodeType.JP, AddressType.IMMEDIATE, p);
-                int param_length = symbolTable.getFuncParamLength();
-                /*for(int i=0;i<param_length;i++)
+                PB[peek(0)] = new InterCode(CodeType.JP, AddressType.IMMEDIATE, p);
+                /*int param_length = symbolTable.getFuncParamLength();
+                for(int i=0;i<param_length;i++)
                     PB[p++] = new InterCode(CodeType.ASSIGN,
-                            AddressType.DIRECT)*/
-
-                push(p); p++;
+                            AddressType.DIRECT)
+                push(p); p++;*/
+                PB[p++] = new InterCode(CodeType.ADD, AddressType.IMMEDIATE, 4,
+                                                        AddressType.DIRECT, CODE_SIZE,
+                                                        AddressType.DIRECT, CODE_SIZE);
                 break;
             case "end_scope":
                 symbolTable.endScope();
@@ -82,22 +88,50 @@ public class CodeGenerator {
                 symbolTable.addFuncParam();
                 break;
             case "set_ret_value":
+                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.DIRECT, peek(0),
+                                                        AddressType.DIRECT, CODE_SIZE+4);
+                pop(1);
+
+                PB[p++] = new InterCode(CodeType.SUB, AddressType.IMMEDIATE, 4,
+                        AddressType.DIRECT, CODE_SIZE,
+                        AddressType.DIRECT, CODE_SIZE);
+                PB[p++] = new InterCode(CodeType.JP, AddressType.DIRECT, CODE_SIZE);
                 break;
-            case "end_func":
-                break;
+            //case "end_func":
+            //    break;
             case "pid":
+                push(symbolTable.getAddress(prevTokens[0].attribute));
                 break;
             case "assign":
+                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.DIRECT, pop(1),
+                                                        AddressType.DIRECT, pop(1) );
                 break;
             case "push_arr_size":
+                push(symbolTable.getArraySize(prevTokens[0].attribute));
                 break;
             case "arr_value":
+                int size = peek(1);
+                temp = getTemp();
+                temp2 = getTemp();
+                PB[p++] = new InterCode(CodeType.ADD, AddressType.IMMEDIATE, peek(2),
+                                                    AddressType.DIRECT, peek(0),
+                                                    AddressType.DIRECT, temp);
+                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.INDIRECT, temp,
+                                                    AddressType.DIRECT, temp2);
+                pop(3); push(temp2);
                 break;
             case "num_value":
+                temp = getTemp();
+                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.IMMEDIATE, prevTokens[0].attribute,
+                                                    AddressType.DIRECT, temp);
                 break;
             case "save":
+                push(p); p++;
                 break;
             case "jpf":
+                PB[peek(0)] = new InterCode(CodeType.JPF, AddressType.DIRECT, peek(1),
+                                                    AddressType.IMMEDIATE, p);
+                pop(2);
                 break;
             case "jpf_save":
                 break;
@@ -149,6 +183,17 @@ public class CodeGenerator {
         for(int i=0;i<cnt;i++)
             result = semanticStack.pop();
         return result;
+    }
+
+    private int peek(int depth)
+    {
+        return semanticStack.get(semanticStack.size()-1-depth);
+    }
+
+    private int getTemp()
+    {
+        tempPointer+=4;
+        return CODE_SIZE+8+STATIC_SIZE+(tempPointer-4);
     }
 }
 
