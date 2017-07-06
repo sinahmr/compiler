@@ -6,7 +6,7 @@ $Declaration ~ $FunDeclaration
 $VarDeclaration ~ int ID $#def_var ;
 $VarDeclaration ~ int ID [ $#def_arr $#set_pointer NUM $#arr_size ] ;
 $FunDeclaration ~ int ID ( $#def_func $#start_scope_func $Params ) $#init_func $CompoundStmt $#end_scope
-$FunDeclaration ~ void ID $#def_func $#start_scope_func ( $Params ) $#init_func $CompoundStmt $#end_scope
+$FunDeclaration ~ void ID ( $#def_func $#start_scope_func $Params ) $#init_func $CompoundStmt $#end_scope
 $Params ~ $ParamList
 $Params ~ void
 $ParamList ~ $ParamList , $Param $#func_add_param
