@@ -27,6 +27,8 @@ public class SymbolTable
     enum IDType {FUNC, VAR, ARRAY};
     public enum RetType {VOID, INT};
 
+    boolean startedFuncScope=false;
+
     public SymbolTable(int initAddress, ErrorHandler errorHandler)
     {
         lexemes = new ArrayList<>();
@@ -47,8 +49,19 @@ public class SymbolTable
 
     public void startScope()
     {
+        if(startedFuncScope)
+        {
+            startedFuncScope = false;
+            return;
+        }
         scopeStack.add(lexemes.size());
         currOffset.add(currAddress);
+    }
+
+    public void startScopeFunc()
+    {
+        startScope();
+        startedFuncScope = true;
     }
 
     public void endScope()

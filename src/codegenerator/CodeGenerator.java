@@ -19,6 +19,8 @@ public class CodeGenerator {
     int tempPointer=0;
     int p = 0;
 
+    int lastPrinted = 0;
+
     SymbolTable symbolTable;
     Stack<Integer> semanticStack;
     InterCode[] PB;
@@ -82,6 +84,7 @@ public class CodeGenerator {
         final AddressType DIRECT = AddressType.DIRECT;
         final AddressType INDIRECT = AddressType.INDIRECT;
         int temp, temp2, temp3;
+        System.out.println("Called " + action);
         switch (action)
         {
             case "init":
@@ -284,6 +287,13 @@ public class CodeGenerator {
                 push(symbolTable.getFuncAddressOffset(prevTokens[0].attribute));
                 break;
         }
+        for(int i=lastPrinted;i<p;i++)
+            if(PB[i] != null)
+                PB[i].print();
+            else
+                System.out.println("            ");
+        lastPrinted = p;
+
     }
 
     private void push(int value)
