@@ -21,7 +21,7 @@ public class Compiler
         CodeGenerator codeGenerator = new CodeGenerator(scanner.getSymbolTable());
         new Parser(scanner, codeGenerator, errorHandler).parse();
 
-        codeGenerator.run();
+        //codeGenerator.run();
 
 
         /*while(true)

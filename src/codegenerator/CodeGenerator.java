@@ -33,7 +33,7 @@ public class CodeGenerator {
         PB = new InterCode[CODE_SIZE];
     }
 
-    public void generateCode(String action, Token currentToken, Token[] prevTokens)
+    public void generateCode2(String action, Token currentToken, Token[] prevTokens)
     {
         tempBuffAction.add(action);
         tempBuffToken.add(currentToken);
@@ -77,7 +77,7 @@ public class CodeGenerator {
     // currentToken: tokeni ke ba didanesh tasmim gereftim Reduce anjam bedim o hanuz too stack nayoomade
     // prevTokens: tokenhaye ghabli ke barresi shodan o oomadan too stack.
     // "int void ID" -> prevTokens[0] == ID, prevTokens[2] == int
-    public void generateCode2(String action, Token currentToken, Token[] prevTokens) {
+    public void generateCode(String action, Token currentToken, Token[] prevTokens) {
         final AddressType IMMEDIATE = AddressType.IMMEDIATE;
         final AddressType DIRECT = AddressType.DIRECT;
         final AddressType INDIRECT = AddressType.INDIRECT;
