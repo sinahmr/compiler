@@ -32,7 +32,7 @@ public class CodeGenerator {
         semanticStack = new Stack<>();
         PB = new InterCode[CODE_SIZE];
     }
-/*
+
     public void generateCode(String action, Token currentToken, Token[] prevTokens)
     {
         tempBuffAction.add(action);
@@ -49,7 +49,7 @@ public class CodeGenerator {
             String command = scn.nextLine();
             if(command.startsWith("run"))
             {
-                int cnt = 1;
+                int cnt = tempBuffAction.size();
                 if(command.split(" ").length > 1)
                     cnt = new Integer(command.split(" ")[1]);
                 for(int i=0; i<cnt; i++)
@@ -73,11 +73,11 @@ public class CodeGenerator {
         }
 
     }
-*/
+
     // currentToken: tokeni ke ba didanesh tasmim gereftim Reduce anjam bedim o hanuz too stack nayoomade
     // prevTokens: tokenhaye ghabli ke barresi shodan o oomadan too stack.
     // "int void ID" -> prevTokens[0] == ID, prevTokens[2] == int
-    public void generateCode(String action, Token currentToken, Token[] prevTokens) {
+    public void generateCode2(String action, Token currentToken, Token[] prevTokens) {
         final AddressType IMMEDIATE = AddressType.IMMEDIATE;
         final AddressType DIRECT = AddressType.DIRECT;
         final AddressType INDIRECT = AddressType.INDIRECT;

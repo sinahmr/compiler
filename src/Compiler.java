@@ -21,15 +21,15 @@ public class Compiler
         CodeGenerator codeGenerator = new CodeGenerator(scanner.getSymbolTable());
         new Parser(scanner, codeGenerator, errorHandler).parse();
 
-        //codeGenerator.run();
+        codeGenerator.run();
 
 
-//        while(true)
-//        {
-//            Token next = scanner.getNextToken();
-//            if(next.type == Token.Type.EOF)
-//                break;
-//            System.out.println(next.type + "  ***  " + next.attribute);
-//        }
+        /*while(true)
+        {
+            Token next = scanner.getNextToken();
+            if(next.type == Token.Type.EOF)
+                break;
+            System.out.println(next.type + "  ***  " + next.attribute);
+        }*/
     }
 }
