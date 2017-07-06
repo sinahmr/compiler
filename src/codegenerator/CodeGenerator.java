@@ -136,11 +136,11 @@ public class CodeGenerator {
             case "func_add_param":
                 symbolTable.addFuncParam();
                 break;
-            case "set_ret_value":
+            /*case "set_ret_value":
                 PB[p++] = new InterCode(CodeType.ASSIGN, DIRECT, peek(0),
                                                         DIRECT, CODE_SIZE+4);
                 pop(1);
-                break;
+                break;*/
             case "end_func":
                 PB[p++] = new InterCode(CodeType.SUB, DIRECT, CODE_SIZE,
                         IMMEDIATE, 4,
@@ -151,8 +151,9 @@ public class CodeGenerator {
                 push(symbolTable.getAddress(prevTokens[0].attribute));
                 break;
             case "assign":
-                PB[p++] = new InterCode(CodeType.ASSIGN, DIRECT, pop(1),
-                                                        DIRECT, pop(1) );
+
+                PB[p++] = new InterCode(CodeType.ASSIGN, peek(0)>0?DIRECT:INDIRECT, abs(pop(1)),
+                                                peek(1)>0?DIRECT:INDIRECT, abs(pop(1)) );
                 break;
             case "push_arr_size":
                 push(symbolTable.getArraySize(prevTokens[0].attribute));
@@ -161,16 +162,17 @@ public class CodeGenerator {
                 int size = peek(1);
                 temp = getTemp();
                 temp2 = getTemp();
-                temp3 = getTemp();
+                //temp3 = getTemp();
                 PB[p++] = new InterCode(CodeType.MULT, IMMEDIATE, 4,
                         DIRECT, peek(0),
                         DIRECT, temp);
                 PB[p++] = new InterCode(CodeType.ADD, IMMEDIATE, peek(2),
                                                     DIRECT, temp,
                                                     DIRECT, temp2);
-                PB[p++] = new InterCode(CodeType.ASSIGN, INDIRECT, temp2,
-                                                    DIRECT, temp3);
-                pop(3); push(temp3);
+                //PB[p++] = new InterCode(CodeType.ASSIGN, INDIRECT, temp2,
+                //                                    DIRECT, temp3);
+
+                pop(3); push(-temp2);
                 break;
             case "num_value":
                 temp = getTemp();
@@ -182,12 +184,12 @@ public class CodeGenerator {
                 push(p); p++;
                 break;
             case "jpf":
-                PB[peek(0)] = new InterCode(CodeType.JPF, DIRECT, peek(1),
+                PB[peek(0)] = new InterCode(CodeType.JPF, peek(1)>0?DIRECT:INDIRECT, abs(peek(1)),
                                                     IMMEDIATE, p);
                 pop(2);
                 break;
             case "jpf_save":
-                PB[peek(0)] = new InterCode(CodeType.JPF, DIRECT, peek(1),
+                PB[peek(0)] = new InterCode(CodeType.JPF, peek(1)>0?DIRECT:INDIRECT, abs(peek(1)),
                                                     IMMEDIATE, p+1);
                 pop(2);
                 push(p); p++;
@@ -202,33 +204,33 @@ public class CodeGenerator {
                 break;
             case "while":
                 PB[p++] = new InterCode(CodeType.JP, IMMEDIATE, peek(2));
-                PB[peek(0)] = new InterCode(CodeType.JPF, DIRECT, peek(1),
+                PB[peek(0)] = new InterCode(CodeType.JPF, peek(1)>0?DIRECT:INDIRECT, abs(peek(1)),
                                                     IMMEDIATE, p);
                 pop(3);
                 break;
             case "and":
                 temp = getTemp();
-                PB[p++] = new InterCode(CodeType.AND, DIRECT, peek(0),
-                                                    DIRECT, peek(1),
+                PB[p++] = new InterCode(CodeType.AND, peek(0)>0?DIRECT:INDIRECT, abs(peek(0)),
+                        peek(1)>0?DIRECT:INDIRECT, abs(peek(1)),
                                                     DIRECT, temp);
                 pop(2); push(temp);
                 break;
             case "equal":
                 temp = getTemp();
-                PB[p++] = new InterCode(CodeType.EQ, DIRECT, peek(0),
-                        DIRECT, peek(1),
+                PB[p++] = new InterCode(CodeType.EQ, peek(0)>0?DIRECT:INDIRECT, abs(peek(0)),
+                        peek(1)>0?DIRECT:INDIRECT, abs(peek(1)),
                         DIRECT, temp);
                 pop(2); push(temp);
                 break;
             case "larger":
                 temp = getTemp();
-                PB[p++] = new InterCode(CodeType.LT, DIRECT, peek(1),
-                        DIRECT, peek(0),
+                PB[p++] = new InterCode(CodeType.LT, peek(1)>0?DIRECT:INDIRECT, abs(peek(1)), // inja chera jaye 0 va 1 bar'ask hamas
+                        peek(0)>0?DIRECT:INDIRECT, abs(peek(0)),
                         DIRECT, temp);
                 pop(2); push(temp);
                 break;
             case "output":
-                PB[p++] = new InterCode(CodeType.OUTPUT, DIRECT, peek(0));
+                PB[p++] = new InterCode(CodeType.OUTPUT, peek(0)>0?DIRECT:INDIRECT, abs(peek(0)));
                 pop(1);
                 break;
             case "plus":
@@ -240,12 +242,12 @@ public class CodeGenerator {
             case "add":
                 temp = getTemp();
                 if(peek(1) == '+') // in tasavi kar mikone? (moshabehan baraye '-' '*' '/')
-                    PB[p++] = new InterCode(CodeType.ADD, DIRECT, peek(2),
-                                                        DIRECT, peek(0),
+                    PB[p++] = new InterCode(CodeType.ADD, peek(2)>0?DIRECT:INDIRECT, abs(peek(2)),
+                            peek(0)>0?DIRECT:INDIRECT, abs(peek(0)),
                                                         DIRECT, temp);
                 else if(peek(1) == '-')
-                    PB[p++] = new InterCode(CodeType.SUB, DIRECT, peek(2),
-                                                        DIRECT, peek(0),
+                    PB[p++] = new InterCode(CodeType.SUB, peek(2)>0?DIRECT:INDIRECT, abs(peek(2)),
+                                            peek(0)>0?DIRECT:INDIRECT, abs(peek(0)),
                                                         DIRECT, temp);
 
                 pop(3); push(temp);
@@ -259,12 +261,12 @@ public class CodeGenerator {
             case "mult":
                 temp = getTemp();
                 if(peek(1) == '*')
-                    PB[p++] = new InterCode(CodeType.MULT, DIRECT, peek(2),
-                            DIRECT, peek(0),
+                    PB[p++] = new InterCode(CodeType.MULT, peek(2)>0?DIRECT:INDIRECT, abs(peek(2)),
+                            peek(0)>0?DIRECT:INDIRECT, abs(peek(0)),
                             DIRECT, temp);
                 else if(peek(1) == '/')
-                    PB[p++] = new InterCode(CodeType.DIVIDE, DIRECT, peek(2),
-                            DIRECT, peek(0),
+                    PB[p++] = new InterCode(CodeType.DIVIDE, peek(2)>0?DIRECT:INDIRECT, abs(peek(2)),
+                            peek(0)>0?DIRECT:INDIRECT, abs(peek(0)),
                             DIRECT, temp);
 
                 pop(3); push(temp);
@@ -334,6 +336,13 @@ public class CodeGenerator {
             System.out.print(i + ": ");
             PB[i].print();
         }
+    }
+
+    private int abs(int v)
+    {
+        if(v >= 0)
+            return v;
+        return -v;
     }
 }
 
