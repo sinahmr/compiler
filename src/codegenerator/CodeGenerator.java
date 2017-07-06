@@ -222,8 +222,8 @@ public class CodeGenerator {
                 break;
             case "larger":
                 temp = getTemp();
-                PB[p++] = new InterCode(CodeType.LT, DIRECT, peek(0),
-                        DIRECT, peek(1),
+                PB[p++] = new InterCode(CodeType.LT, DIRECT, peek(1),
+                        DIRECT, peek(0),
                         DIRECT, temp);
                 pop(2); push(temp);
                 break;
