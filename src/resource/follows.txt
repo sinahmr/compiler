@@ -23,7 +23,7 @@ $AddOp NUM ( ID
 $Program EOF
 $DeclarationList void EOF int
 $#def_arr NUM ]
-$#start_scope output void ( ; { ID while if } int return
+$#start_scope output ; { ID while if } int return
 $Call == && ) * ; + < , ] - /
 $Params )
 $Args )
@@ -39,6 +39,7 @@ $#equal && ) ;
 $ExpressionStmt output else ; { ID while } if return
 $#def_func void ( int
 $#add == && ) ; + < , ] -
+$#start_scope_func void ( int
 $#end_scope void EOF } int
 $CompoundStmt output void else ; { ID while EOF } if int return
 $Statement output else ; { ID while } if return

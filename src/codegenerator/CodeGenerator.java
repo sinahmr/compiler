@@ -116,6 +116,9 @@ public class CodeGenerator {
             case "start_scope":
                 symbolTable.startScope();
                 break;
+            case "start_scope_func":
+                symbolTable.startScope();
+                break;
             case "init_func":
                 PB[peek(0)] = new InterCode(CodeType.JP, IMMEDIATE, p);
                 /*int param_length = symbolTable.getFuncParamLength();
