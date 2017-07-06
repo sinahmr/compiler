@@ -78,16 +78,19 @@ public class CodeGenerator {
     // prevTokens: tokenhaye ghabli ke barresi shodan o oomadan too stack.
     // "int void ID" -> prevTokens[0] == ID, prevTokens[2] == int
     public void generateCode(String action, Token currentToken, Token[] prevTokens) {
+        final AddressType IMMEDIATE = AddressType.IMMEDIATE;
+        final AddressType DIRECT = AddressType.DIRECT;
+        final AddressType INDIRECT = AddressType.INDIRECT;
         int temp, temp2, temp3;
         switch (action)
         {
             case "init":
                 PB[p++] = new InterCode(CodeType.ASSIGN,
-                        AddressType.IMMEDIATE, CODE_SIZE+8+STATIC_SIZE+TEMP_SIZE, AddressType.DIRECT, CODE_SIZE);
+                        IMMEDIATE, CODE_SIZE+8+STATIC_SIZE+TEMP_SIZE, DIRECT, CODE_SIZE);
                 //PB[p++] = new InterCode(CodeType.ASSIGN,
-                //        AddressType.IMMEDIATE, CODE_SIZE+12, AddressType.DIRECT, CODE_SIZE+4);
+                //        IMMEDIATE, CODE_SIZE+12, DIRECT, CODE_SIZE+4);
                 //PB[p++] = new InterCode(CodeType.ASSIGN,
-                //        AddressType.IMMEDIATE, CODE_SIZE+12+STATIC_SIZE+TEMP_SIZE+12, AddressType.DIRECT, CODE_SIZE+8);
+                //        IMMEDIATE, CODE_SIZE+12+STATIC_SIZE+TEMP_SIZE+12, DIRECT, CODE_SIZE+8);
                 push(p); p++;
                 break;
             case "def_var":
@@ -101,8 +104,8 @@ public class CodeGenerator {
                 break;
             case "set_pointer":
                 int address = symbolTable.getAddress(prevTokens[1].attribute);
-                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.IMMEDIATE, address+4,
-                        AddressType.DIRECT, address);
+                PB[p++] = new InterCode(CodeType.ASSIGN, IMMEDIATE, address+4,
+                        DIRECT, address);
                 break;
             case "arr_size":
                 symbolTable.setArraySize(prevTokens[0].attribute);
@@ -111,15 +114,15 @@ public class CodeGenerator {
                 symbolTable.startScope();
                 break;
             case "init_func":
-                PB[peek(0)] = new InterCode(CodeType.JP, AddressType.IMMEDIATE, p);
+                PB[peek(0)] = new InterCode(CodeType.JP, IMMEDIATE, p);
                 /*int param_length = symbolTable.getFuncParamLength();
                 for(int i=0;i<param_length;i++)
                     PB[p++] = new InterCode(CodeType.ASSIGN,
-                            AddressType.DIRECT)
+                            DIRECT)
                 push(p); p++;*/
-                PB[p++] = new InterCode(CodeType.ADD, AddressType.IMMEDIATE, 4,
-                                                        AddressType.DIRECT, CODE_SIZE,
-                                                        AddressType.DIRECT, CODE_SIZE);
+                PB[p++] = new InterCode(CodeType.ADD, IMMEDIATE, 4,
+                                                        DIRECT, CODE_SIZE,
+                                                        DIRECT, CODE_SIZE);
                 break;
             case "end_scope":
                 symbolTable.endScope();
@@ -128,22 +131,22 @@ public class CodeGenerator {
                 symbolTable.addFuncParam();
                 break;
             case "set_ret_value":
-                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.DIRECT, peek(0),
-                                                        AddressType.DIRECT, CODE_SIZE+4);
+                PB[p++] = new InterCode(CodeType.ASSIGN, DIRECT, peek(0),
+                                                        DIRECT, CODE_SIZE+4);
                 pop(1);
                 break;
             case "end_func":
-                PB[p++] = new InterCode(CodeType.SUB, AddressType.DIRECT, CODE_SIZE,
-                        AddressType.IMMEDIATE, 4,
-                        AddressType.DIRECT, CODE_SIZE);
-                PB[p++] = new InterCode(CodeType.JP, AddressType.INDIRECT, CODE_SIZE); // in nabayd direct bashe?
+                PB[p++] = new InterCode(CodeType.SUB, DIRECT, CODE_SIZE,
+                        IMMEDIATE, 4,
+                        DIRECT, CODE_SIZE);
+                PB[p++] = new InterCode(CodeType.JP, INDIRECT, CODE_SIZE); // in nabayd direct bashe?
                 break;
             case "pid":
                 push(symbolTable.getAddress(prevTokens[0].attribute));
                 break;
             case "assign":
-                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.DIRECT, pop(1),
-                                                        AddressType.DIRECT, pop(1) );
+                PB[p++] = new InterCode(CodeType.ASSIGN, DIRECT, pop(1),
+                                                        DIRECT, pop(1) );
                 break;
             case "push_arr_size":
                 push(symbolTable.getArraySize(prevTokens[0].attribute));
@@ -153,73 +156,73 @@ public class CodeGenerator {
                 temp = getTemp();
                 temp2 = getTemp();
                 temp3 = getTemp();
-                PB[p++] = new InterCode(CodeType.MULT, AddressType.IMMEDIATE, 4,
-                        AddressType.DIRECT, peek(0),
-                        AddressType.DIRECT, temp);
-                PB[p++] = new InterCode(CodeType.ADD, AddressType.IMMEDIATE, peek(2),
-                                                    AddressType.DIRECT, temp,
-                                                    AddressType.DIRECT, temp2);
-                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.INDIRECT, temp2,
-                                                    AddressType.DIRECT, temp3);
+                PB[p++] = new InterCode(CodeType.MULT, IMMEDIATE, 4,
+                        DIRECT, peek(0),
+                        DIRECT, temp);
+                PB[p++] = new InterCode(CodeType.ADD, IMMEDIATE, peek(2),
+                                                    DIRECT, temp,
+                                                    DIRECT, temp2);
+                PB[p++] = new InterCode(CodeType.ASSIGN, INDIRECT, temp2,
+                                                    DIRECT, temp3);
                 pop(3); push(temp3);
                 break;
             case "num_value":
                 temp = getTemp();
-                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.IMMEDIATE, prevTokens[0].attribute,
-                                                    AddressType.DIRECT, temp);
+                PB[p++] = new InterCode(CodeType.ASSIGN, IMMEDIATE, prevTokens[0].attribute,
+                                                    DIRECT, temp);
                 push(temp);
                 break;
             case "save":
                 push(p); p++;
                 break;
             case "jpf":
-                PB[peek(0)] = new InterCode(CodeType.JPF, AddressType.DIRECT, peek(1),
-                                                    AddressType.IMMEDIATE, p);
+                PB[peek(0)] = new InterCode(CodeType.JPF, DIRECT, peek(1),
+                                                    IMMEDIATE, p);
                 pop(2);
                 break;
             case "jpf_save":
-                PB[peek(0)] = new InterCode(CodeType.JPF, AddressType.DIRECT, peek(1),
-                                                    AddressType.IMMEDIATE, p+1);
+                PB[peek(0)] = new InterCode(CodeType.JPF, DIRECT, peek(1),
+                                                    IMMEDIATE, p+1);
                 pop(2);
                 push(p); p++;
                 //push(p-1); in ke comment kardam nabayad bashe?
                 break;
             case "jp":
-                PB[peek(0)] = new InterCode(CodeType.JP, AddressType.IMMEDIATE, p);
+                PB[peek(0)] = new InterCode(CodeType.JP, IMMEDIATE, p);
                 pop(1);
                 break;
             case "label":
                 push(p);
                 break;
             case "while":
-                PB[p++] = new InterCode(CodeType.JP, AddressType.IMMEDIATE, peek(2));
-                PB[peek(0)] = new InterCode(CodeType.JPF, AddressType.DIRECT, peek(1),
-                                                    AddressType.IMMEDIATE, p);
+                PB[p++] = new InterCode(CodeType.JP, IMMEDIATE, peek(2));
+                PB[peek(0)] = new InterCode(CodeType.JPF, DIRECT, peek(1),
+                                                    IMMEDIATE, p);
                 pop(3);
                 break;
             case "and":
                 temp = getTemp();
-                PB[p++] = new InterCode(CodeType.AND, AddressType.DIRECT, peek(0),
-                                                    AddressType.DIRECT, peek(1),
-                                                    AddressType.DIRECT, temp);
+                PB[p++] = new InterCode(CodeType.AND, DIRECT, peek(0),
+                                                    DIRECT, peek(1),
+                                                    DIRECT, temp);
                 pop(2); push(temp);
                 break;
             case "equal":
                 temp = getTemp();
-                PB[p++] = new InterCode(CodeType.EQ, AddressType.DIRECT, peek(0),
-                        AddressType.DIRECT, peek(1),
-                        AddressType.DIRECT, temp);
+                PB[p++] = new InterCode(CodeType.EQ, DIRECT, peek(0),
+                        DIRECT, peek(1),
+                        DIRECT, temp);
                 pop(2); push(temp);
                 break;
             case "larger":
                 temp = getTemp();
-                PB[p++] = new InterCode(CodeType.LT, AddressType.DIRECT, peek(0),
-                        AddressType.DIRECT, peek(1),
-                        AddressType.DIRECT, temp);
+                PB[p++] = new InterCode(CodeType.LT, DIRECT, peek(0),
+                        DIRECT, peek(1),
+                        DIRECT, temp);
                 pop(2); push(temp);
                 break;
             case "output":
-                PB[p++] = new InterCode(CodeType.OUTPUT, AddressType.DIRECT, peek(0));
+                PB[p++] = new InterCode(CodeType.OUTPUT, DIRECT, peek(0));
                 pop(1);
                 break;
             case "plus":
@@ -231,13 +234,13 @@ public class CodeGenerator {
             case "add":
                 temp = getTemp();
                 if(peek(1) == '+') // in tasavi kar mikone? (moshabehan baraye '-' '*' '/')
-                    PB[p++] = new InterCode(CodeType.ADD, AddressType.DIRECT, peek(2),
-                                                        AddressType.DIRECT, peek(0),
-                                                        AddressType.DIRECT, temp);
+                    PB[p++] = new InterCode(CodeType.ADD, DIRECT, peek(2),
+                                                        DIRECT, peek(0),
+                                                        DIRECT, temp);
                 else if(peek(1) == '-')
-                    PB[p++] = new InterCode(CodeType.SUB, AddressType.DIRECT, peek(2),
-                                                        AddressType.DIRECT, peek(0),
-                                                        AddressType.DIRECT, temp);
+                    PB[p++] = new InterCode(CodeType.SUB, DIRECT, peek(2),
+                                                        DIRECT, peek(0),
+                                                        DIRECT, temp);
 
                 pop(3); push(temp);
                 break;
@@ -250,28 +253,28 @@ public class CodeGenerator {
             case "mult":
                 temp = getTemp();
                 if(peek(1) == '*')
-                    PB[p++] = new InterCode(CodeType.MULT, AddressType.DIRECT, peek(2),
-                            AddressType.DIRECT, peek(0),
-                            AddressType.DIRECT, temp);
+                    PB[p++] = new InterCode(CodeType.MULT, DIRECT, peek(2),
+                            DIRECT, peek(0),
+                            DIRECT, temp);
                 else if(peek(1) == '/')
-                    PB[p++] = new InterCode(CodeType.DIVIDE, AddressType.DIRECT, peek(2),
-                            AddressType.DIRECT, peek(0),
-                            AddressType.DIRECT, temp);
+                    PB[p++] = new InterCode(CodeType.DIVIDE, DIRECT, peek(2),
+                            DIRECT, peek(0),
+                            DIRECT, temp);
 
                 pop(3); push(temp);
                 break;
             case "call":
-                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.IMMEDIATE, p+2,
-                                                    AddressType.INDIRECT, CODE_SIZE);
+                PB[p++] = new InterCode(CodeType.ASSIGN, IMMEDIATE, p+2,
+                                                    INDIRECT, CODE_SIZE);
                 pop(1);
-                PB[p++] = new InterCode(CodeType.JP, AddressType.IMMEDIATE, peek(0));
+                PB[p++] = new InterCode(CodeType.JP, IMMEDIATE, peek(0));
                 pop(1);
                 break;
             //case "sp_param": ino nemikhaim dg?
                 //break;
             case "copy_input":
-                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.DIRECT, peek(0),
-                                                        AddressType.DIRECT, peek(1));
+                PB[p++] = new InterCode(CodeType.ASSIGN, DIRECT, peek(0),
+                                                        DIRECT, peek(1));
                 pop(1);
                 push(pop(1)+4);
                 break;
