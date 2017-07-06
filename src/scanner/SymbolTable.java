@@ -77,7 +77,7 @@ public class SymbolTable
             IDTypes.remove(IDTypes.size()-1);
             retTypes.remove(retTypes.size()-1);
         }
-        currAddress = currOffset.remove(currOffset.size() - 1);
+        //currAddress = currOffset.remove(currOffset.size() - 1);
     }
 
 //    public void setRetType(RetType retType) // farz kardam ke ghabl az farakhani defineFunc in tabe' seda mishe
