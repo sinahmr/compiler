@@ -15,7 +15,7 @@ $#arr_size ]
 $#pid == && ( ) * + , - / [ ; < = ]
 $#mult == && ) * ; + < , ] - /
 $#init_func {
-$#end_func ;
+$#end_func void ; EOF int
 $ArgList ) ,
 $Expression == && ) ; + < , ] -
 $#larger && ) ;

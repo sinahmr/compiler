@@ -27,4 +27,5 @@ void main (void) {
         x = 3;
         y = 2;
     }
+    x = 0; /* TODO ino fek mikone hamoon x e blocke balayie */
 }
