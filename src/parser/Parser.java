@@ -64,19 +64,21 @@ public class Parser {
             }
 
             if (action.equals("Acc")) {
+                codeGenerator.printCode();
                 break;
             }
 
             if (action.startsWith("S")) {  // Shift
                 int destinationState = Integer.parseInt(action.substring(1));
                 stack.push(destinationState);
+                pushToPrevTokens(token);
                 getNewToken = true;
             } else {  // Reduce
                 int ruleNumber = Integer.parseInt(action.substring(1));
                 Rule rule = grammar.rules.get(ruleNumber);
 
                 if (rule.lhs.startsWith("$#")) {
-                    String codegenAction = rule.lhs.substring(1);
+                    String codegenAction = rule.lhs.substring(2);
                     codeGenerator.generateCode(codegenAction, token, prevTokens);
                 }
 
@@ -87,7 +89,6 @@ public class Parser {
                 stack.push(gotoState);
                 getNewToken = false;
             }
-            pushToPrevTokens(token);
         } while (!stack.isEmpty());
 
     }

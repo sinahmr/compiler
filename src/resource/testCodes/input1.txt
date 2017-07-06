@@ -2,19 +2,21 @@ int main( void ){
 int a;
 int b;
 int c;
-a;=2;
-b;=3;
-c;=a;+b;;
-if(a;+b;)
+int e;
+a=2;
+b=3;
+c=a+ b;
+e = 1;
+if(a +b)
 {
 	int d;
-	d;=a;;
-	output(d;);	
+	d=a;
+	output(d);
 }
 else{
 int d;
-d;=b;;
-output(d;);
+d=b;
+output(d);
 }
 output(4*2-3);
 }

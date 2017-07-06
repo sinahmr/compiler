@@ -1,6 +1,5 @@
 package codegenerator;
 
-import scanner.Scanner;
 import scanner.SymbolTable;
 import scanner.Token;
 
@@ -9,9 +8,9 @@ import java.util.Stack;
 
 public class CodeGenerator {
 
-    ArrayList<String> tempBuffAction;
-    ArrayList<Token> tempBuffToken;
-    ArrayList<Token[]> tempBuffPrev;
+    ArrayList<String> tempBuffAction = new ArrayList<>();
+    ArrayList<Token> tempBuffToken = new ArrayList<>();
+    ArrayList<Token[]> tempBuffPrev = new ArrayList<>();
 
     final int CODE_SIZE = 1000;
     final int STATIC_SIZE = 20;
@@ -33,7 +32,7 @@ public class CodeGenerator {
         semanticStack = new Stack<>();
         PB = new InterCode[CODE_SIZE];
     }
-
+/*
     public void generateCode(String action, Token currentToken, Token[] prevTokens)
     {
         tempBuffAction.add(action);
@@ -74,12 +73,12 @@ public class CodeGenerator {
         }
 
     }
-
+*/
     // currentToken: tokeni ke ba didanesh tasmim gereftim Reduce anjam bedim o hanuz too stack nayoomade
     // prevTokens: tokenhaye ghabli ke barresi shodan o oomadan too stack.
     // "int void ID" -> prevTokens[0] == ID, prevTokens[2] == int
-    public void generateCode2(String action, Token currentToken, Token[] prevTokens) {
-        int temp, temp2;
+    public void generateCode(String action, Token currentToken, Token[] prevTokens) {
+        int temp, temp2, temp3;
         switch (action)
         {
             case "init":
@@ -95,17 +94,13 @@ public class CodeGenerator {
                 symbolTable.defineVar(prevTokens[0].attribute);
                 break;
             case "def_func":
-                symbolTable.defineFunc(prevTokens[0].attribute, p);
-                if(prevTokens[1].type == Token.Type.INT)
-                    symbolTable.setRetType(SymbolTable.RetType.INT);
-                else if(prevTokens[1].type == Token.Type.VOID)
-                    symbolTable.setRetType(SymbolTable.RetType.VOID);
+                symbolTable.defineFunc(prevTokens[1].attribute, p, prevTokens[2].type);
                 break;
             case "def_arr":
                 symbolTable.defineArray(prevTokens[0].attribute);
                 break;
             case "set_pointer":
-                int address = symbolTable.getAddress(prevTokens[0].attribute);
+                int address = symbolTable.getAddress(prevTokens[1].attribute);
                 PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.IMMEDIATE, address+4,
                         AddressType.DIRECT, address);
                 break;
@@ -153,21 +148,26 @@ public class CodeGenerator {
             case "push_arr_size":
                 push(symbolTable.getArraySize(prevTokens[0].attribute));
                 break;
-            case "arr_value":
+            case "arr_value":  // TODO in kharabe, tahesh meghdar push mikone na address, +1 ham bayad beshe addressesh fek konam
                 int size = peek(1);
                 temp = getTemp();
                 temp2 = getTemp();
+                temp3 = getTemp();
+                PB[p++] = new InterCode(CodeType.MULT, AddressType.IMMEDIATE, 4,
+                        AddressType.DIRECT, peek(0),
+                        AddressType.DIRECT, temp);
                 PB[p++] = new InterCode(CodeType.ADD, AddressType.IMMEDIATE, peek(2),
-                                                    AddressType.DIRECT, peek(0),
-                                                    AddressType.DIRECT, temp);
-                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.INDIRECT, temp,
+                                                    AddressType.DIRECT, temp,
                                                     AddressType.DIRECT, temp2);
-                pop(3); push(temp2);
+                PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.INDIRECT, temp2,
+                                                    AddressType.DIRECT, temp3);
+                pop(3); push(temp3);
                 break;
             case "num_value":
                 temp = getTemp();
                 PB[p++] = new InterCode(CodeType.ASSIGN, AddressType.IMMEDIATE, prevTokens[0].attribute,
                                                     AddressType.DIRECT, temp);
+                push(temp);
                 break;
             case "save":
                 push(p); p++;
@@ -306,6 +306,15 @@ public class CodeGenerator {
         tempPointer+=4;
         return CODE_SIZE+8+STATIC_SIZE+(tempPointer-4);
     }
+
+    public void printCode() {
+        for (int i = 0; i < p; i++) {
+            if (i < 10)
+                System.out.print("0");
+            System.out.print(i + ": ");
+            PB[i].print();
+        }
+    }
 }
 
 
@@ -358,18 +367,17 @@ class InterCode
     public void print()
     {
         String result = "(";
-        result = result.concat(type.toString());
+        result += type.toString();
         for(int i=0;i<addressTypes.length;i++)
         {
-            result.concat(", ");
-            switch (addressTypes[i])
-            {
-                case INDIRECT : result.concat("@"); break;
-                case IMMEDIATE: result.concat("#"); break;
-            }
-            result.concat("" + addresses[i]);
+            result += ", ";
+            if (addressTypes[i] == CodeGenerator.AddressType.INDIRECT)
+                result += "@";
+            if (addressTypes[i] == CodeGenerator.AddressType.IMMEDIATE)
+                result += "#";
+            result += addresses[i];
         }
-        result.concat(")");
+        result += ")";
         System.out.println(result);
     }
 

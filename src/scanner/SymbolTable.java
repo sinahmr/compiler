@@ -22,7 +22,7 @@ public class SymbolTable
 
     private int lastDefinedFunc;
     private int lastDefinedArray;
-    private RetType lastRetType;
+//    private RetType lastRetType; TODO delete
 
     enum IDType {FUNC, VAR, ARRAY};
     public enum RetType {VOID, INT};
@@ -67,12 +67,12 @@ public class SymbolTable
         currAddress = currOffset.remove(currOffset.size() - 1);
     }
 
-    public void setRetType(RetType retType) // farz kardam ke ghabl az farakhani defineFunc in tabe' seda mishe
-    {
-        lastRetType = retType;
-    }
+//    public void setRetType(RetType retType) // farz kardam ke ghabl az farakhani defineFunc in tabe' seda mishe
+//    {
+//        lastRetType = retType;
+//    } TODO delete
 
-    public void defineFunc(int index, int address) // the former input was the name of the array and the address
+    public void defineFunc(int index, int address, Token.Type returnType) // the former input was the name of the array and the address
     {
         /*int index = find(func);
         if(index < 0)
@@ -85,18 +85,21 @@ public class SymbolTable
         {
             errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
         }
-        if(lastRetType == null)
-        {
-            errorHandler.semanticError("Return Type not specified"); // hesam ine ke in khata hichvaght nabayad ettefagh biofte!! magar moghe'i ke code compiler eshkal dashte bashe
-            lastRetType = RetType.VOID; // default ro void dar nazar gereftam
-        }
+//        if(lastRetType == null)
+//        {
+//            errorHandler.semanticError("Return Type not specified"); // hesam ine ke in khata hichvaght nabayad ettefagh biofte!! magar moghe'i ke code compiler eshkal dashte bashe
+//            lastRetType = RetType.VOID; // default ro void dar nazar gereftam
+//        }  TODO delete
 
         addresses.set(index, address);
         args_size.set(index, 0);
         addressOffset.set(index, currAddress);
         IDTypes.set(index, IDType.FUNC);
-        retTypes.set(index, lastRetType);
-        lastRetType = null;
+        if (returnType == Token.Type.INT)
+            retTypes.set(index, RetType.INT);
+        else
+            retTypes.set(index, RetType.VOID);
+//        lastRetType = null; TODO delete
 
         lastDefinedFunc = index;
     }

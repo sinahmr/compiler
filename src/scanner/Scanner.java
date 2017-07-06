@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class Scanner
 {
     public final int bufferLength=100; //TODO
-    public final int symbolTableInitAddress=1012; //TODO
+    public final int symbolTableInitAddress=2012; //TODO
 
     public int currentToken;
     public int lexemeBeginning;

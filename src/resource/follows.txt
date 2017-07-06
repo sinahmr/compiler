@@ -1,64 +1,64 @@
 $#copy_input ) ,
 $#init void int
 $FunDeclaration void EOF int
-$VarDeclaration void ε EOF int
+$VarDeclaration output void ; { ID while EOF if } int return
 $#plus NUM ( ID
 $#times NUM ( ID
-$#jpf output else ; { ID while if return ?
-$#num_value == ) * + < ] - ? /
-$Term == ) * + < ] - ? /
-$#jp output else ; { ID while if return ?
+$#jpf output else ; { ID while } if return
+$#num_value == && ) * ; + < , ] - /
+$Term == && ) * ; + < , ] - /
+$#jp output else ; { ID while } if return
 $#assign ;
 $#minus NUM ( ID
 $#set_pointer NUM
 $#arr_size ]
-$#end_func; output else ; { ID while if return ?
-$#pid ; ?
-$#mult == ) * + < ] - ? /
+$#pid == && ( ) * + , - / [ ; < = ]
+$#mult == && ) * ; + < , ] - /
 $#init_func {
+$#end_func ;
 $ArgList ) ,
-$Expression == ) + < ] - ?
-$#larger && ) ?
+$Expression == && ) ; + < , ] -
+$#larger && ) ;
 $AddOp NUM ( ID
 $Program EOF
 $DeclarationList void EOF int
-$#def_arr ] ?
-$#start_scope void ε ( int
-$Call == ) * + < ] - ? /
+$#def_arr NUM ]
+$#start_scope output void ( ; { ID while if } int return
+$Call == && ) * ; + < , ] - /
 $Params )
 $Args )
-$RelTerm && ) ?
+$RelTerm && ) ;
 $ParamList ) ,
-$#arr_value == ) * + < = ] - ? /
-$#while output else ; { ID while if return ?
+$#arr_value == && ) * ; + < , = ] - /
+$#while output else ; { ID while } if return
 $Declaration void EOF int
-$Param ?
-$RelExpression && ) ?
-$Factor == ) * + < ] - ? /
-$#equal && ) ?
-$ExpressionStmt output else ; { ID while if return ?
-$#def_func ?
-$#add == ) + < ] - ?
+$Param ) ,
+$RelExpression && ) ;
+$Factor == && ) * ; + < , ] - /
+$#equal && ) ;
+$ExpressionStmt output else ; { ID while } if return
+$#def_func void ( int
+$#add == && ) ; + < , ] -
 $#end_scope void EOF } int
-$CompoundStmt output else ; { ID while if return ?
-$Statement output else ; { ID while if return ?
-$#call == ) * + < ] - ? /
+$CompoundStmt output void else ; { ID while EOF } if int return
+$Statement output else ; { ID while } if return
+$#call == && ) * ; + < , ] - /
 $#jpf_save output ; { ID while if return
 $#func_add_param ) ,
-$StatementList output ; { ID while if return ?
+$StatementList output ; { ID while } if return
 $MulOp NUM ( ID
-$GenExpression ) ?
+$GenExpression ) ;
 $#label (
 $#save output ; { ID while if return
-$ReturnStmt output else ; { ID while if return ?
-$Var == ) * + < = ] - ? /
-$SelectionStmt output else ; { ID while if return ?
-$#and && ) ?
-$#def_var ; ?
+$ReturnStmt output else ; { ID while } if return
+$Var == && ) * ; + < , = ] - /
+$SelectionStmt output else ; { ID while } if return
+$#and && ) ;
+$#def_var ) ; ,
 $#output )
 $#init_copy (
-$#set_ret_value ?
+$#set_ret_value ;
 $#push_arr_size [
-$LocalDeclarations ε int
-$IterationStmt output else ; { ID while if return ?
+$LocalDeclarations output ; { ID while if } return int
+$IterationStmt output else ; { ID while } if return
 $#divide NUM ( ID

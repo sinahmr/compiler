@@ -29,9 +29,9 @@ $ExpressionStmt ~ ;
 $SelectionStmt ~ if ( $GenExpression ) $#save $Statement $#jpf
 $SelectionStmt ~ if ( $GenExpression ) $#save $Statement else $#jpf_save $Statement $#jp
 $IterationStmt ~ while $#label ( $GenExpression ) $#save $Statement $#while
-$ReturnStmt ~ return $#end_func;
-$ReturnStmt ~ return $GenExpression $#set_ret_value $#end_func;
-$Var ~ ID $#pid ;
+$ReturnStmt ~ return $#end_func ;
+$ReturnStmt ~ return $GenExpression $#set_ret_value $#end_func ;
+$Var ~ ID $#pid
 $Var ~ ID $#pid $#push_arr_size [ $Expression ] $#arr_value
 $GenExpression ~ $RelExpression
 $GenExpression ~ $Expression
@@ -56,39 +56,39 @@ $Args ~ $ArgList
 $Args ~ ε
 $ArgList ~ $ArgList , $Expression $#copy_input
 $ArgList ~ $Expression $#copy_input
-$#init ~ ?
-$#def_var ~ ?
-$#def_arr ~ ?
-$#set_pointer ~ ?
-$#arr_size ~ ?
-$#def_func ~ ?
-$#start_scope ~ ?
-$#init_func ~ ?
-$#end_scope ~ ?
-$#func_add_param ~ ?
-$#output ~ ?
-$#assign ~ ?
-$#save ~ ?
-$#jpf ~ ?
-$#jpf_save ~ ?
-$#jp ~ ?
-$#label ~ ?
-$#while ~ ?
-$#end_func; ~ ?
-$#set_ret_value ~ ?
-$#pid ~ ?
-$#push_arr_size ~ ?
-$#arr_value ~ ?
-$#and ~ ?
-$#equal ~ ?
-$#larger ~ ?
-$#add ~ ?
-$#plus ~ ?
-$#minus ~ ?
-$#mult ~ ?
-$#times ~ ?
-$#divide ~ ?
-$#num_value ~ ?
-$#init_copy ~ ?
-$#call ~ ?
-$#copy_input ~ ?
+$#init ~ ε
+$#def_var ~ ε
+$#def_arr ~ ε
+$#set_pointer ~ ε
+$#arr_size ~ ε
+$#def_func ~ ε
+$#start_scope ~ ε
+$#init_func ~ ε
+$#end_scope ~ ε
+$#func_add_param ~ ε
+$#output ~ ε
+$#assign ~ ε
+$#save ~ ε
+$#jpf ~ ε
+$#jpf_save ~ ε
+$#jp ~ ε
+$#label ~ ε
+$#while ~ ε
+$#end_func ~ ε
+$#set_ret_value ~ ε
+$#pid ~ ε
+$#push_arr_size ~ ε
+$#arr_value ~ ε
+$#and ~ ε
+$#equal ~ ε
+$#larger ~ ε
+$#add ~ ε
+$#plus ~ ε
+$#minus ~ ε
+$#mult ~ ε
+$#times ~ ε
+$#divide ~ ε
+$#num_value ~ ε
+$#init_copy ~ ε
+$#call ~ ε
+$#copy_input ~ ε
