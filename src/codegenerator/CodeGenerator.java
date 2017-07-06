@@ -275,6 +275,10 @@ public class CodeGenerator {
                 pop(1);
                 PB[p++] = new InterCode(CodeType.JP, IMMEDIATE, peek(0));
                 pop(1);
+                temp = getTemp();
+                PB[p++] = new InterCode(CodeType.ASSIGN, DIRECT, CODE_SIZE + 4,
+                                                    DIRECT, temp);
+                push(temp);
                 break;
             //case "sp_param": ino nemikhaim dg?
                 //break;
