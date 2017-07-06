@@ -39,12 +39,10 @@ public class TableCreator {
         }
 
         for (int i = 0; i < lines.size(); i++) {
-            System.out.println(lines.get(i));
-            System.out.println(lines.get(i).length());
             String[] rhs = lines.get(i).split("~")[1].trim().split(" ");
             for (String tnt : rhs)
-                if (tnt.startsWith("$#") && !lines.contains(tnt + " ~ ε"))
-                    lines.add(tnt + " ~ ε");
+                if (tnt.startsWith("$#") && !lines.contains(tnt + " ~ !"))
+                    lines.add(tnt + " ~ !");
         }
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("./src/resource/grammars/final_grammar.txt"))) {
@@ -65,7 +63,7 @@ public class TableCreator {
 
                 String[] parts = line.split("~")[1].trim().split(" ");
                 for (String part : parts)
-                    if (!part.startsWith("$") && !part.trim().equals("ε"))
+                    if (!part.startsWith("$") && !part.trim().equals("!"))
                         terminals.add(part.trim());
 
                 HashSet<String> first;
@@ -75,8 +73,8 @@ public class TableCreator {
                 }
                 else
                     first = firsts.get(lhs);
-                if (line.contains("ε"))
-                    first.add("ε");
+                if (line.contains("!"))
+                    first.add("!");
                 if (!parts[0].startsWith("$"))
                     first.add(parts[0].trim());
 
@@ -101,16 +99,16 @@ public class TableCreator {
                 toReturn.add(part);
                 break;
             }
-            if (!firsts.get(part.trim()).contains("ε")) {
+            if (!firsts.get(part.trim()).contains("!")) {
                 toReturn.addAll(firsts.get(part.trim()));
                 break;
             }
-            // reaching here means NT's first contains ε
+            // reaching here means NT's first contains !
             for (String f : firsts.get(part.trim()))
-                if (!f.equals("ε"))
+                if (!f.equals("!"))
                     toReturn.add(f);
             if (i == parts.length - 1)
-                toReturn.add("ε");
+                toReturn.add("!");
         }
         return toReturn;
 
@@ -148,8 +146,8 @@ public class TableCreator {
                         for (int j = i + 1; j < parts.length; j++)
                             s += parts[j] + " ";
                         HashSet<String> toUnion = firstOfString(s.trim());
-                        if (toUnion.contains("ε")) {
-                            toUnion.remove("ε");
+                        if (toUnion.contains("!")) {
+                            toUnion.remove("!");
                             toUnion.addAll(follows.get(lhs));
                         }
                         follows.get(part.trim()).addAll(toUnion);
@@ -288,7 +286,7 @@ class Item {
     public Item(String rule, int ruleNumber) {
         this.lhs = rule.split("~")[0].trim();
         this.rhs = rule.split("~")[1].trim().split(" ");
-        if (this.rhs[0].equals("ε"))
+        if (this.rhs[0].equals("!"))
             this.rhs = new String[0];
         this.dotBefore = 0;
         this.ruleNumber = ruleNumber;

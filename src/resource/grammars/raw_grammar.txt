@@ -15,9 +15,9 @@ $Param → int ID
 $Param → int ID [ ]
 $CompoundStmt → { $LocalDeclarations $StatementList }
 $LocalDeclarations → $LocalDeclarations $VarDeclaration
-$LocalDeclarations → ε
+$LocalDeclarations → !
 $StatementList → $StatementList $Statement
-$StatementList → ε
+$StatementList → !
 $Statement → $ExpressionStmt
 $Statement → $CompoundStmt
 $Statement → $SelectionStmt
@@ -53,6 +53,6 @@ $Factor → $Call
 $Factor → NUM
 $Call → ID ( $Args )
 $Args → $ArgList
-$Args → ε
+$Args → !
 $ArgList → $ArgList , $Expression
 $ArgList → $Expression

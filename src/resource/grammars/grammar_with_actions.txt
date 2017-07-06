@@ -15,9 +15,9 @@ $Param ~ int ID #def_var
 $Param ~ int ID [ #def_arr ]
 $CompoundStmt ~ { #start_scope $LocalDeclarations $StatementList #end_scope }
 $LocalDeclarations ~ $LocalDeclarations $VarDeclaration
-$LocalDeclarations ~ ε
+$LocalDeclarations ~ !
 $StatementList ~ $StatementList $Statement
-$StatementList ~ ε
+$StatementList ~ !
 $Statement ~ $ExpressionStmt
 $Statement ~ $CompoundStmt
 $Statement ~ $SelectionStmt
@@ -53,6 +53,6 @@ $Factor ~ $Call
 $Factor ~ NUM #num_value
 $Call ~ ID #pid #init_copy ( $Args ) #call
 $Args ~ $ArgList
-$Args ~ ε
+$Args ~ !
 $ArgList ~ $ArgList , $Expression #copy_input
 $ArgList ~ $Expression #copy_input

@@ -31,7 +31,7 @@ class Rule {
         String lhs = rule.split("~")[0].trim();
         String[] parts = rule.split("~")[1].trim().split(" ");
         this.lhs = lhs;
-        if (rule.contains("ε"))
+        if (rule.contains("!"))
             this.rhs = new String[0];
         else
             this.rhs = parts;

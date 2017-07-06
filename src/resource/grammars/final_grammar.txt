@@ -15,9 +15,9 @@ $Param ~ int ID $#def_var
 $Param ~ int ID [ $#def_arr ]
 $CompoundStmt ~ { $#start_scope $LocalDeclarations $StatementList $#end_scope }
 $LocalDeclarations ~ $LocalDeclarations $VarDeclaration
-$LocalDeclarations ~ ε
+$LocalDeclarations ~ !
 $StatementList ~ $StatementList $Statement
-$StatementList ~ ε
+$StatementList ~ !
 $Statement ~ $ExpressionStmt
 $Statement ~ $CompoundStmt
 $Statement ~ $SelectionStmt
@@ -53,42 +53,42 @@ $Factor ~ $Call
 $Factor ~ NUM $#num_value
 $Call ~ ID $#pid $#init_copy ( $Args ) $#call
 $Args ~ $ArgList
-$Args ~ ε
+$Args ~ !
 $ArgList ~ $ArgList , $Expression $#copy_input
 $ArgList ~ $Expression $#copy_input
-$#init ~ ?
-$#def_var ~ ?
-$#def_arr ~ ?
-$#set_pointer ~ ?
-$#arr_size ~ ?
-$#def_func ~ ?
-$#start_scope ~ ?
-$#init_func ~ ?
-$#end_scope ~ ?
-$#func_add_param ~ ?
-$#output ~ ?
-$#assign ~ ?
-$#save ~ ?
-$#jpf ~ ?
-$#jpf_save ~ ?
-$#jp ~ ?
-$#label ~ ?
-$#while ~ ?
-$#end_func ~ ?
-$#set_ret_value ~ ?
-$#pid ~ ?
-$#push_arr_size ~ ?
-$#arr_value ~ ?
-$#and ~ ?
-$#equal ~ ?
-$#larger ~ ?
-$#add ~ ?
-$#plus ~ ?
-$#minus ~ ?
-$#mult ~ ?
-$#times ~ ?
-$#divide ~ ?
-$#num_value ~ ?
-$#init_copy ~ ?
-$#call ~ ?
-$#copy_input ~ ?
+$#init ~ !
+$#def_var ~ !
+$#def_arr ~ !
+$#set_pointer ~ !
+$#arr_size ~ !
+$#def_func ~ !
+$#start_scope ~ !
+$#init_func ~ !
+$#end_scope ~ !
+$#func_add_param ~ !
+$#output ~ !
+$#assign ~ !
+$#save ~ !
+$#jpf ~ !
+$#jpf_save ~ !
+$#jp ~ !
+$#label ~ !
+$#while ~ !
+$#end_func ~ !
+$#set_ret_value ~ !
+$#pid ~ !
+$#push_arr_size ~ !
+$#arr_value ~ !
+$#and ~ !
+$#equal ~ !
+$#larger ~ !
+$#add ~ !
+$#plus ~ !
+$#minus ~ !
+$#mult ~ !
+$#times ~ !
+$#divide ~ !
+$#num_value ~ !
+$#init_copy ~ !
+$#call ~ !
+$#copy_input ~ !
