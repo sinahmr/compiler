@@ -181,10 +181,10 @@ class DFA
                     currState = tranDef[currState];
                 }else
                 {
-                    scn.currentToken++;
-                    if(currState != 0 || scn.buffer[scn.currentToken] != 0)// check shavad
-                        scn.errorHandler.scannerError(errors[-tranDef[currState]]);
 
+                    //if(currState != 0 || scn.buffer[scn.currentToken] != 0)// check shavad
+                    scn.currentToken++;
+                    scn.errorHandler.scannerError(errors[-tranDef[currState]]);
 
                     currState = 0;
                 }
@@ -238,6 +238,8 @@ class DFA
         tranValid = new HashMap<>();
         tranError = new HashMap<>();
         tranDef = new int[size];
+
+        tranValid.put(new TupleIB(0,(byte) 0), 0);
 
         tranValid.put(new TupleIB(0,(byte)';'), 1);
         tranValid.put(new TupleIB(0,(byte)'['), 2);
