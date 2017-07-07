@@ -104,19 +104,19 @@ public class CodeGenerator {
                 PB[p++] = new InterCode(CodeType.JP, DIRECT, CODE_SIZE + CONTROL_REGISTERS_SIZE + VARS_BLOCK_SIZE + TEMP_SIZE);
                 break;
             case "def_var":
-                if(!symbolTable.defineVar(prevTokens[0].attribute))
+                if(!symbolTable.defineVar(prevTokens[0].attribute, prevTokens[0]))
                     return false;
                 break;
             case "def_func":
-                if(!symbolTable.defineFunc(prevTokens[1].attribute, p, prevTokens[2].type))
+                if(!symbolTable.defineFunc(prevTokens[1].attribute, p, prevTokens[2].type, prevTokens[1]))
                     return false;
                 break;
             case "def_arr":
-                if(!symbolTable.defineArray(prevTokens[1].attribute))
+                if(!symbolTable.defineArray(prevTokens[1].attribute, prevTokens[1]))
                     return false;
                 break;
             case "set_pointer":
-                address = symbolTable.getAddress(prevTokens[1].attribute);
+                address = symbolTable.getAddress(prevTokens[1].attribute, prevTokens[1]);
                 if(address == -1)
                     return false;
                 PB[p++] = new InterCode(CodeType.ASSIGN, IMMEDIATE, address+4,
@@ -149,11 +149,11 @@ public class CodeGenerator {
                 symbolTable.addFuncParam();
                 break;
             case "voidly_ret":
-                if (!symbolTable.isLastReturnTypeVoid())
+                if (!symbolTable.isLastReturnTypeVoid(prevTokens[0].lineNumber))
                     return false;
                 break;
             case "set_ret_value":
-                if (!symbolTable.isLastReturnTypeInt())
+                if (!symbolTable.isLastReturnTypeInt(prevTokens[0].lineNumber))
                     return false;
                 PB[p++] = new InterCode(CodeType.ASSIGN, DIRECT, peek(0),
                                                         DIRECT, CODE_SIZE+4);
@@ -166,7 +166,7 @@ public class CodeGenerator {
                 PB[p++] = new InterCode(CodeType.JP, INDIRECT, CODE_SIZE);
                 break;
             case "pid":
-                address = symbolTable.getAddress(prevTokens[0].attribute);
+                address = symbolTable.getAddress(prevTokens[0].attribute, prevTokens[0]);
                 if(address == -1)
                     return false;
                 push(address);
@@ -177,7 +177,7 @@ public class CodeGenerator {
                 pop(2);
                 break;
             case "push_arr_size":
-                Integer arrSize = symbolTable.getArraySize(prevTokens[0].attribute);
+                Integer arrSize = symbolTable.getArraySize(prevTokens[0].attribute, prevTokens[0]);
                 if (arrSize == null)
                     return false;
                 push(arrSize);
@@ -252,7 +252,7 @@ public class CodeGenerator {
                 break;
             case "larger":
                 temp = getTemp();
-                PB[p++] = new InterCode(CodeType.LT, peek(1)>0?DIRECT:INDIRECT, abs(peek(1)), // inja chera jaye 0 va 1 bar'ask hamas
+                PB[p++] = new InterCode(CodeType.LT, peek(1)>0?DIRECT:INDIRECT, abs(peek(1)),
                         peek(0)>0?DIRECT:INDIRECT, abs(peek(0)),
                         DIRECT, temp);
                 pop(2); push(temp);
@@ -262,14 +262,14 @@ public class CodeGenerator {
                 pop(1);
                 break;
             case "plus":
-                push('+'); // in haminjuri okeye? mage nabayad int begire? :))) (moshabehan baraye '-' '*' '/')
+                push('+');
                 break;
             case "minus":
                 push('-');
                 break;
             case "add":
                 temp = getTemp();
-                if(peek(1) == '+') // in tasavi kar mikone? (moshabehan baraye '-' '*' '/')
+                if(peek(1) == '+')
                     PB[p++] = new InterCode(CodeType.ADD, peek(2)>0?DIRECT:INDIRECT, abs(peek(2)),
                             peek(0)>0?DIRECT:INDIRECT, abs(peek(0)),
                                                         DIRECT, temp);
@@ -304,7 +304,7 @@ public class CodeGenerator {
                                                     INDIRECT, CODE_SIZE);
                 p++;
                 int lastParamEndAddress = pop(1);  // In hamoon addresse moteghayere voroodie tabe'e ke khodemoon ba didane har voroodi 4 ta mobordimesh jolo
-                boolean success = symbolTable.isLastParamEndAddressCorrect(peek(0), lastParamEndAddress);
+                boolean success = symbolTable.isLastParamEndAddressCorrect(peek(0), lastParamEndAddress, prevTokens[0].lineNumber);
                 if (!success)
                     return false;
 
@@ -326,7 +326,7 @@ public class CodeGenerator {
             //case "sp_local": mikhaim ino?
             //    break;
             case "init_copy":
-                address = symbolTable.getFuncAddressOffset(prevTokens[0].attribute);
+                address = symbolTable.getFuncAddressOffset(prevTokens[0].attribute, prevTokens[0]);
                 if(address == -1)
                     return false;
                 push(address);

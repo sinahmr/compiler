@@ -8,8 +8,8 @@ public class Token
     //all keywords and IDs are identical up to this point, change tokenType by using the keyword symbol table
     public Type type;
     public int attribute;
-    public int lineNumber;  // TODO
-    public int offsetInLine;  // TODO
+    public int lineNumber;
+    public int offsetInLine;
     public Token(SymbolTable keywordTable, SymbolTable IDTable, Type type, int line, int inLine, byte[] name1, byte[] name2)
     {
         byte[] result = new byte[name1.length+name2.length];

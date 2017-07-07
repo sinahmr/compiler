@@ -85,40 +85,40 @@ public class SymbolTable
         lastRetType = retType;
     } //TODO delete*/
 
-    public boolean isLastReturnTypeInt() {
+    public boolean isLastReturnTypeInt(int lineForErrorLog) {
         if (retTypes.get(lastDefinedFunc) == RetType.INT)
             return true;
         else {
-            errorHandler.semanticError("Function return type is void while you returned a value");
+            errorHandler.semanticError("Function return type is void while you returned a value, At line: " + lineForErrorLog);
             return false;
         }
     }
 
-    public boolean isLastReturnTypeVoid() {
+    public boolean isLastReturnTypeVoid(int lineForErrorLog) {
         if (retTypes.get(lastDefinedFunc) == RetType.VOID)
             return true;
         else {
-            errorHandler.semanticError("Function return type is int while you did not return a value");
+            errorHandler.semanticError("Function return type is int while you did not return a value, At line: " + lineForErrorLog);
             return false;
         }
     }
 
-    public boolean isLastParamEndAddressCorrect(int funcStartAddress, int lastParamEndAddress) {
+    public boolean isLastParamEndAddressCorrect(int funcStartAddress, int lastParamEndAddress, int lineForErrorLog) {
         int index = addresses.indexOf(funcStartAddress);
         if (index == -1) {
-            errorHandler.semanticError("ID was not a function");
+            errorHandler.semanticError("ID was not a function, At line: " + lineForErrorLog);
             return false;
         }
         int argsCount = args_size.get(index);
         int offset = addressOffset.get(index);
         if (offset + argsCount * 4 != lastParamEndAddress) {
-            errorHandler.semanticError("Number of given arguments does not match function prototype");
+            errorHandler.semanticError("Number of given arguments does not match function prototype, At line: " + lineForErrorLog);
             return false;
         }
         return true;
     }
 
-    public boolean defineFunc(int index, int address, Token.Type returnType) // the former input was the name of the array and the address
+    public boolean defineFunc(int index, int address, Token.Type returnType, Token tokenForErrorLog) // the former input was the name of the array and the address
     {
         /*int index = find(func);
         if(index < 0)
@@ -129,7 +129,7 @@ public class SymbolTable
         }*/
         if(IDTypes.get(index) != null)
         {
-            errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
+            errorHandler.semanticError("ID already defined", tokenForErrorLog); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
             return false;
         }
         /*if(lastRetType == null)
@@ -158,7 +158,7 @@ public class SymbolTable
         args_size.set(lastDefinedFunc, args_size.get(lastDefinedFunc)+1);
     }
 
-    public boolean defineVar(int index) // the former input was the name of the var
+    public boolean defineVar(int index, Token tokenForErrorLog) // the former input was the name of the var
     {
         /*int index = find(var);
         if(index < 0)
@@ -173,7 +173,7 @@ public class SymbolTable
         {
             if(index >= scopeStack.get(scopeStack.size()-1))
             {
-                errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
+                errorHandler.semanticError("ID already defined", tokenForErrorLog); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
                 return false;
             }else
             {
@@ -190,7 +190,7 @@ public class SymbolTable
     }
 
 
-    public boolean defineArray(int index) // the former input was the name of the array
+    public boolean defineArray(int index, Token tokenForErrorLog) // the former input was the name of the array
     {
         /*int index = find(array);
         if(index < 0)
@@ -203,7 +203,7 @@ public class SymbolTable
         {
             if (index >= scopeStack.get(scopeStack.size() - 1))
             {
-                errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
+                errorHandler.semanticError("ID already defined", tokenForErrorLog); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
                 return false;
             }else
             {
@@ -227,7 +227,7 @@ public class SymbolTable
         currAddress += 4*size; // ino ba'dan ezafe kardam, motmaen nistam
     }
 
-    public int getAddress(int index) // the former input was the name of the array
+    public int getAddress(int index, Token tokenForErrorLog) // the former input was the name of the array
     {
         /*int index = find(ID);
         if(index < 0)
@@ -238,7 +238,7 @@ public class SymbolTable
         }*/
         if(IDTypes.get(index) == null)
         {
-            errorHandler.semanticError("ID not defined yet");
+            errorHandler.semanticError("ID not defined yet", tokenForErrorLog);
             return -1;
             //defineVar(index);
         }
@@ -338,21 +338,21 @@ public class SymbolTable
         return args_size.get(lastDefinedFunc);
     }
 
-    public Integer getArraySize(int index)
+    public Integer getArraySize(int index, Token tokenForErrorLog)
     {
         if(IDTypes.get(index) != IDType.ARRAY)
         {
-            errorHandler.semanticError("ID is not an array");
+            errorHandler.semanticError("ID is not an array", tokenForErrorLog);
             return null;
         }
         return args_size.get(index);
     }
 
-    public int getFuncAddressOffset(int index)
+    public int getFuncAddressOffset(int index, Token tokenForErrorLog)
     {
         if(IDTypes.get(index) != IDType.FUNC)
         {
-            errorHandler.semanticError("ID is not an function");
+            errorHandler.semanticError("ID is not an function", tokenForErrorLog);
             return -1;
         }
         return addressOffset.get(index);
