@@ -1,12 +1,11 @@
-CODE (fixed length)
+CODE (fixed length) -> [0, 1000)
 ----------
-TOP
-DISP[0] (be avale Static Variables eshare mikone)
-DISP[1] (kollan in DISP ha hich fayedeyi nadaran, chon meghdare DISP[0] fix e va meghdare DISP[1] hamun TOP_SP)
-Static Variables (fixed length)
-Temporaries (fixed length)
+top -> [1000, 1004)
+Return Value -> [1004, 1008)
+Static Variables and Function Variables (fixed length) -> [1008, 1500)
+Temporaries (fixed length) -> [1500, 2000)
 ----------
-Stack
+Stack -> [2000, ...)
 
 
 
@@ -14,12 +13,5 @@ Stack
 Stack:
 n*
 [
-Return Value
-----------
-Actual Parameters
-----------
-Last DISP[1]
 Return Address
-----------
-Local Parameters (array ha ba content eshun vasat hamin gharar migiran)
 ]

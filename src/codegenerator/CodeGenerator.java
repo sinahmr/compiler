@@ -13,8 +13,9 @@ public class CodeGenerator {
     ArrayList<Token[]> tempBuffPrev = new ArrayList<>();
 
     final int CODE_SIZE = 1000;
-    final int STATIC_SIZE = 20;
-    final int TEMP_SIZE = 100;
+    final int CONTROL_REGISTERS_SIZE = 4 + 4;
+    final int VARS_BLOCK_SIZE = 1500 - 1008;
+    final int TEMP_SIZE = 500;
 
     int tempPointer=0;
     int p = 0;
@@ -89,11 +90,11 @@ public class CodeGenerator {
         {
             case "init":
                 PB[p++] = new InterCode(CodeType.ASSIGN,
-                        IMMEDIATE, CODE_SIZE+8+STATIC_SIZE+TEMP_SIZE, DIRECT, CODE_SIZE);
+                        IMMEDIATE, CODE_SIZE + CONTROL_REGISTERS_SIZE + VARS_BLOCK_SIZE + TEMP_SIZE, DIRECT, CODE_SIZE);
                 //PB[p++] = new InterCode(CodeType.ASSIGN,
                 //        IMMEDIATE, CODE_SIZE+12, DIRECT, CODE_SIZE+4);
                 //PB[p++] = new InterCode(CodeType.ASSIGN,
-                //        IMMEDIATE, CODE_SIZE+12+STATIC_SIZE+TEMP_SIZE+12, DIRECT, CODE_SIZE+8);
+                //        IMMEDIATE, CODE_SIZE+12+VARS_BLOCK_SIZE+TEMP_SIZE+12, DIRECT, CODE_SIZE+8);
                 push(p); p++;
                 break;
             case "def_var":
@@ -158,7 +159,7 @@ public class CodeGenerator {
             case "push_arr_size":
                 push(symbolTable.getArraySize(prevTokens[0].attribute));
                 break;
-            case "arr_value":  // TODO in kharabe, tahesh meghdar push mikone na address, +1 ham bayad beshe addressesh fek konam
+            case "arr_value":
                 int size = peek(1);
                 temp = getTemp();
                 temp2 = getTemp();
@@ -271,8 +272,9 @@ public class CodeGenerator {
                 pop(3); push(temp);
                 break;
             case "call":
-                PB[p++] = new InterCode(CodeType.ASSIGN, IMMEDIATE, p+2,
+                PB[p] = new InterCode(CodeType.ASSIGN, IMMEDIATE, p+2,
                                                     INDIRECT, CODE_SIZE);
+                p++;
                 pop(1);
                 PB[p++] = new InterCode(CodeType.JP, IMMEDIATE, peek(0));
                 pop(1);
@@ -325,7 +327,7 @@ public class CodeGenerator {
     private int getTemp()
     {
         tempPointer+=4;
-        return CODE_SIZE+8+STATIC_SIZE+(tempPointer-4);
+        return CODE_SIZE + CONTROL_REGISTERS_SIZE + VARS_BLOCK_SIZE + (tempPointer-4);
     }
 
     public void printCode() {

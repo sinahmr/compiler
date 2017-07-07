@@ -22,7 +22,7 @@ public class TableCreator {
 
         ParseTable table = createTable();
         writeFollowsToFile();
-        // TODO resolve conflicts.txt
+
         System.out.println("Don't forget to resolve conflicts");
         writeTableToFile(table);
     }

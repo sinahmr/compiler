@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class Scanner
 {
     public final int bufferLength=100; //TODO
-    public final int symbolTableInitAddress=2012; //TODO
+    public final int symbolTableInitAddress = 1008;
 
     public int currentToken;
     public int lexemeBeginning;
@@ -23,7 +23,7 @@ public class Scanner
 
     public Token.Type lastTokenType;
 
-    public ErrorHandler errorHandler;  // TODO: Pouya az tab'e scannerError e in estefade kon
+    public ErrorHandler errorHandler;
     private DFA dfa;
     private SymbolTable keywordTable;
     private SymbolTable IDTable;

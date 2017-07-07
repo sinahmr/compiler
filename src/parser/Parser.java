@@ -12,9 +12,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-
-// TODO: ezafe va handle kardane $#yechizi ha va $!yechizi ha (tahlilgare manayi)
-// TODO: raf'e S/R conflict
 // TODO: error message
 
 public class Parser {
