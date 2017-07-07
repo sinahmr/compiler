@@ -163,16 +163,13 @@ public class CodeGenerator {
                 int size = peek(1);
                 temp = getTemp();
                 temp2 = getTemp();
-                PB[p++] = new InterCode(CodeType.ADD, IMMEDIATE, 1,
+                PB[p++] = new InterCode(CodeType.MULT, IMMEDIATE, 4,
                         DIRECT, peek(0),
                         DIRECT, temp);
-                PB[p++] = new InterCode(CodeType.MULT, IMMEDIATE, 4,
-                        DIRECT, temp,
-                        DIRECT, temp2);
-                PB[p++] = new InterCode(CodeType.ADD, IMMEDIATE, peek(2),
-                                                    DIRECT, temp2,
-                                                    DIRECT, temp);
-                pop(3); push(-temp);
+                PB[p++] = new InterCode(CodeType.ADD, DIRECT, peek(2),
+                                                    DIRECT, temp,
+                                                    DIRECT, temp2);
+                pop(3); push(-temp2);
                 break;
             case "num_value":
                 temp = getTemp();
