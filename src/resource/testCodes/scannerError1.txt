@@ -1,5 +1,0 @@
-void main(void) {
-    int a;
-    a=a-1; /* -1 ro ye token migire */
-    a=2-3; /* in ro dorost migire vali */
-}

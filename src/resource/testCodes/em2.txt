@@ -1,7 +1,0 @@
-int main(void) {
-    3 * 2;
-    ;
-    int p;
-    1 == 1
-    output(1);
-}

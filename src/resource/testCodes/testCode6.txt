@@ -1,5 +1,0 @@
-int 3abc;
-int test(int a){
-  return bc;
-}
-int mammad;

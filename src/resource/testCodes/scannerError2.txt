@@ -1,3 +1,0 @@
-void main(void) {
-    output(3aa); /* error mikhore */
-}
