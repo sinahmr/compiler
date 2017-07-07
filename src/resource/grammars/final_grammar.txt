@@ -5,8 +5,8 @@ $Declaration ~ $VarDeclaration
 $Declaration ~ $FunDeclaration
 $VarDeclaration ~ int ID $#def_var ;
 $VarDeclaration ~ int ID [ $#def_arr $#set_pointer NUM $#arr_size ] ;
-$FunDeclaration ~ int ID ( $#def_func $#start_scope_func $Params ) $#init_func $CompoundStmt $#end_func $#end_scope
-$FunDeclaration ~ void ID ( $#def_func $#start_scope_func $Params ) $#init_func $CompoundStmt $#end_func $#end_scope
+$FunDeclaration ~ int ID ( $#def_func $#start_scope_func $Params ) $#init_func $CompoundStmt $#end_func
+$FunDeclaration ~ void ID ( $#def_func $#start_scope_func $Params ) $#init_func $CompoundStmt $#end_func
 $Params ~ $ParamList
 $Params ~ void
 $ParamList ~ $ParamList , $Param $#func_add_param
@@ -65,9 +65,9 @@ $#def_func ~ !
 $#start_scope_func ~ !
 $#init_func ~ !
 $#end_func ~ !
-$#end_scope ~ !
 $#func_add_param ~ !
 $#start_scope ~ !
+$#end_scope ~ !
 $#output ~ !
 $#assign ~ !
 $#save ~ !

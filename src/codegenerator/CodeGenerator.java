@@ -117,7 +117,7 @@ public class CodeGenerator {
                 symbolTable.startScope();
                 break;
             case "start_scope_func":
-                symbolTable.startScope();
+                symbolTable.startScopeFunc();
                 break;
             case "init_func":
                 PB[peek(0)] = new InterCode(CodeType.JP, IMMEDIATE, p);
@@ -136,11 +136,11 @@ public class CodeGenerator {
             case "func_add_param":
                 symbolTable.addFuncParam();
                 break;
-            /*case "set_ret_value":
+            case "set_ret_value":
                 PB[p++] = new InterCode(CodeType.ASSIGN, DIRECT, peek(0),
                                                         DIRECT, CODE_SIZE+4);
                 pop(1);
-                break;*/
+                break;
             case "end_func":
                 PB[p++] = new InterCode(CodeType.SUB, DIRECT, CODE_SIZE,
                         IMMEDIATE, 4,
@@ -151,9 +151,9 @@ public class CodeGenerator {
                 push(symbolTable.getAddress(prevTokens[0].attribute));
                 break;
             case "assign":
-
-                PB[p++] = new InterCode(CodeType.ASSIGN, peek(0)>0?DIRECT:INDIRECT, abs(pop(1)),
-                                                peek(1)>0?DIRECT:INDIRECT, abs(pop(1)) );
+                PB[p++] = new InterCode(CodeType.ASSIGN, peek(0)>0?DIRECT:INDIRECT, abs(peek(0)),
+                                                peek(1)>0?DIRECT:INDIRECT, abs(peek(1)) );
+                pop(2);
                 break;
             case "push_arr_size":
                 push(symbolTable.getArraySize(prevTokens[0].attribute));
@@ -162,17 +162,16 @@ public class CodeGenerator {
                 int size = peek(1);
                 temp = getTemp();
                 temp2 = getTemp();
-                //temp3 = getTemp();
-                PB[p++] = new InterCode(CodeType.MULT, IMMEDIATE, 4,
+                PB[p++] = new InterCode(CodeType.ADD, IMMEDIATE, 1,
                         DIRECT, peek(0),
                         DIRECT, temp);
+                PB[p++] = new InterCode(CodeType.MULT, IMMEDIATE, 4,
+                        DIRECT, temp,
+                        DIRECT, temp2);
                 PB[p++] = new InterCode(CodeType.ADD, IMMEDIATE, peek(2),
-                                                    DIRECT, temp,
-                                                    DIRECT, temp2);
-                //PB[p++] = new InterCode(CodeType.ASSIGN, INDIRECT, temp2,
-                //                                    DIRECT, temp3);
-
-                pop(3); push(-temp2);
+                                                    DIRECT, temp2,
+                                                    DIRECT, temp);
+                pop(3); push(-temp);
                 break;
             case "num_value":
                 temp = getTemp();

@@ -40,7 +40,7 @@ $ExpressionStmt output else ; { ID while } if return
 $#def_func void int
 $#add == && ) ; + < , ] -
 $#start_scope_func void int
-$#end_scope void EOF } int
+$#end_scope }
 $CompoundStmt output void else ; { ID while EOF } if int return
 $Statement output else ; { ID while } if return
 $#call == && ) * ; + < , ] - /
