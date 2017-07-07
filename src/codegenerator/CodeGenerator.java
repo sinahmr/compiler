@@ -102,11 +102,11 @@ public class CodeGenerator {
                 symbolTable.addFuncParam();
                 break;
             case "voidly_ret":
-                if (!symbolTable.isLastReturnTypeVoid(prevTokens[0].lineNumber))
+                if (!symbolTable.isLastReturnTypeVoid(prevTokens[0]))
                     return false;
                 break;
             case "set_ret_value":
-                if (!symbolTable.isLastReturnTypeInt(prevTokens[0].lineNumber))
+                if (!symbolTable.isLastReturnTypeInt(prevTokens[0]))
                     return false;
                 PB[p++] = new InterCode(CodeType.ASSIGN, DIRECT, peek(0),
                         DIRECT, CODE_SIZE + 4);
@@ -265,7 +265,7 @@ public class CodeGenerator {
                         INDIRECT, CODE_SIZE);
                 p++;
                 int lastParamEndAddress = pop(1);  // In hamoon addresse moteghayere voroodie tabe'e ke khodemoon ba didane har voroodi 4 ta mobordimesh jolo
-                boolean success = symbolTable.isLastParamEndAddressCorrect(peek(0), lastParamEndAddress, prevTokens[0].lineNumber);
+                boolean success = symbolTable.isLastParamEndAddressCorrect(peek(0), lastParamEndAddress, prevTokens[0]);
                 if (!success)
                     return false;
 
