@@ -20,7 +20,12 @@ public class ErrorHandler {
         System.out.println("Semantic Error: " + msg);
     }
 
-    public void semanticError(String msg, Token token) {
-        System.out.println("Semantic Error: " + msg + ", At " + token.lineNumber + ":" + token.offsetInLine);
+    public void semanticError(String msg, Token token, boolean noOffset) {
+        String at = ", At ";
+        if (noOffset)
+            at += "line " + token.lineNumber;
+        else
+            at += token.lineNumber + ":" + token.offsetInLine;
+        System.out.println("Semantic Error: " + msg + at);
     }
 }
