@@ -100,7 +100,8 @@ public class CodeGenerator {
                 push(p); p++;  // khatte 2 hamishe ye jump khahad bood ke tahe code por mishe va jump mikone be tahe code
                 break;
             case "set_jump_to_end":
-                PB[peek(0)] = new InterCode(CodeType.JP, DIRECT, p - 2); // ke jump be OS ro anjam bede
+                PB[peek(0)] = new InterCode(CodeType.JP, DIRECT, p); // ke jump be OS ro anjam bede
+                PB[p++] = new InterCode(CodeType.JP, DIRECT, CODE_SIZE + CONTROL_REGISTERS_SIZE + VARS_BLOCK_SIZE + TEMP_SIZE);
                 break;
             case "def_var":
                 symbolTable.defineVar(prevTokens[0].attribute);
