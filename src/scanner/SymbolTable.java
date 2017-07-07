@@ -171,8 +171,15 @@ public class SymbolTable
 
         if(IDTypes.get(index) != null)
         {
-            errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
-            return false;
+            if(index >= scopeStack.get(scopeStack.size()-1))
+            {
+                errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
+                return false;
+            }else
+            {
+                insert(lexemes.get(index));
+                index = find(lexemes.get(index));
+            }
         }
 
         addresses.set(index, currAddress);
@@ -194,8 +201,15 @@ public class SymbolTable
         }*/
         if(IDTypes.get(index) != null)
         {
-            errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
-            return false;
+            if (index >= scopeStack.get(scopeStack.size() - 1))
+            {
+                errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
+                return false;
+            }else
+            {
+                insert(lexemes.get(index));
+                index = find(lexemes.get(index));
+            }
         }
 
         addresses.set(index, currAddress);
@@ -289,7 +303,7 @@ public class SymbolTable
 
     public int find(String lex)
     {
-        for(int i=0;i<lexemes.size();i++)
+        for(int i=lexemes.size()-1; i>=0; i--)
             if(lex.equals(lexemes.get(i)))
                 return i;
         return -1;
