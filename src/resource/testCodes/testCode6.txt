@@ -1,7 +1,5 @@
-void main(void) {
-    if (1 < 2)
-        if (1 < 2)
-            output(2);
-        else
-            output(3);
+int 3abc;
+int test(int a){
+  return bc;
 }
+int mammad;
