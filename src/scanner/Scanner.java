@@ -171,7 +171,7 @@ class DFA
             else if(tranError.containsKey(next))
             {
                 scn.currentToken++;
-                scn.errorHandler.scannerError(errors[tranError.get(next)]);
+                scn.errorHandler.scannerError(errors[tranError.get(next)] + scn.currentLine + " column: " + scn.currentInLine);
                 currState = 0;
             }else
             {
@@ -184,7 +184,7 @@ class DFA
 
                     //if(currState != 0 || scn.buffer[scn.currentToken] != 0)// check shavad
                     scn.currentToken++;
-                    scn.errorHandler.scannerError(errors[-tranDef[currState]]);
+                    scn.errorHandler.scannerError(errors[-tranDef[currState]] + scn.currentLine + " column: " + scn.currentInLine);
 
                     currState = 0;
                 }
@@ -228,9 +228,9 @@ class DFA
     private void setErrors()
     {
         errors = new String[4]; //index 0 was used for EOF error and is currently unassigned
-        errors[1] = "Invalid character to begin with";
-        errors[2] = "Invalid character after &";
-        errors[3] = "A number is instantly followed by a letter";
+        errors[1] = "Invalid character to begin with at line: ";
+        errors[2] = "Invalid character after & at line: ";
+        errors[3] = "A number is instantly followed by a letter at line: ";
     }
 
     private void setTrans()
