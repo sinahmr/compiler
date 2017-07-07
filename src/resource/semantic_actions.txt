@@ -81,7 +81,7 @@ pop(2);
 #push_arr_size
 push(symbol.getArraySize(input));
 
-#arr_value
+#arr_value (arr_addr)
 size = ss(top-1);
 if(size >= 0)
 {

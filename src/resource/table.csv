@@ -1,4 +1,4 @@
-	&&	(	)	*	+	,	-	/	;	<	=	==	EOF	ID	NUM	[	]	else	if	int	output	return	void	while	{	}	$#add	$#and	$#arr_size	$#arr_value	$#assign	$#call	$#copy_input	$#def_arr	$#def_func	$#def_var	$#divide	$#end_func	$#end_scope	$#equal	$#func_add_param	$#init	$#init_copy	$#init_func	$#jp	$#jpf	$#jpf_save	$#label	$#larger	$#minus	$#mult	$#num_value	$#output	$#pid	$#plus	$#push_arr_size	$#save	$#set_pointer	$#set_ret_value	$#start_scope	$#start_scope_func	$#times	$#while	$AddOp	$ArgList	$Args	$Call	$CompoundStmt	$Declaration	$DeclarationList	$Expression	$ExpressionStmt	$Factor	$FunDeclaration	$GenExpression	$IterationStmt	$LocalDeclarations	$MulOp	$Param	$ParamList	$Params	$Program	$RelExpression	$RelTerm	$ReturnStmt	$SelectionStmt	$Statement	$StatementList	$Term	$Var	$VarDeclaration
+	&&	(	)	*	+	,	-	/	;	<	=	==	EOF	ID	NUM	[	]	else	if	int	output	return	void	while	{	}	$#add	$#and	$#arr_addr	$#arr_size	$#assign	$#call	$#copy_input	$#def_arr	$#def_func	$#def_var	$#divide	$#end_func	$#end_scope	$#equal	$#func_add_param	$#init	$#init_copy	$#init_func	$#jp	$#jpf	$#jpf_save	$#label	$#larger	$#minus	$#mult	$#num_value	$#output	$#pid	$#plus	$#push_arr_size	$#save	$#set_pointer	$#set_ret_value	$#start_scope	$#start_scope_func	$#times	$#while	$AddOp	$ArgList	$Args	$Call	$CompoundStmt	$Declaration	$DeclarationList	$Expression	$ExpressionStmt	$Factor	$FunDeclaration	$GenExpression	$IterationStmt	$LocalDeclarations	$MulOp	$Param	$ParamList	$Params	$Program	$RelExpression	$RelTerm	$ReturnStmt	$SelectionStmt	$Statement	$StatementList	$Term	$Var	$VarDeclaration
 0																				R59			R59																			1																																								2									
 1																				S4			S3																																														8	7				5																	6
 2													Acc																																																																														
@@ -28,7 +28,7 @@
 26			S32																																																																																								
 27			R10			S33																																																																																					
 28			R68			R68																																			34																																																		
-29																	R63												35																																																														
+29																	R63													35																																																													
 30			S36																																																																																								
 31			R60			R60			R60							S37																				38																																																							
 32																									R66																			39																																															
@@ -140,7 +140,7 @@
 138									R27					R27				R27	R27		R27	R27		R27	R27	R27																																																																	
 139									S62					S60					S61		S59	S63		S58	S44																																											66				64				71									68	70	146			69	
 140									R26					R26				R26	R26		R26	R26		R26	R26	R26																																																																	
-141	R82		R82	R82	R82	R82	R82	R82	R82	R82	R82	R82					R82													147																																																													
+141	R82		R82	R82	R82	R82	R82	R82	R82	R82	R82	R82					R82												147																																																														
 142									R74					R74				S148	R74		R74	R74		R74	R74	R74																				149
 143			R55			S150																																																																																					
 144			R95		S102	R95	S103																										151																															105																											

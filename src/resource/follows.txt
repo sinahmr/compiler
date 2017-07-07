@@ -29,7 +29,6 @@ $Params )
 $Args )
 $RelTerm && ) ;
 $ParamList ) ,
-$#arr_value == && ) * ; + < , = ] - /
 $#while output else ; { ID while } if return
 $Declaration void EOF int
 $Param ) ,
@@ -58,6 +57,7 @@ $#and && ) ;
 $#def_var ) ; ,
 $#output )
 $#init_copy (
+$#arr_addr == && ) * ; + < , = ] - /
 $#set_ret_value ;
 $#push_arr_size [
 $LocalDeclarations output ; { ID while if } return int

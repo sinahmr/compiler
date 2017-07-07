@@ -32,7 +32,7 @@ $IterationStmt ~ while #label ( $GenExpression ) #save $Statement #while
 $ReturnStmt ~ return #end_func ;
 $ReturnStmt ~ return $GenExpression #set_ret_value #end_func ;
 $Var ~ ID #pid
-$Var ~ ID #pid #push_arr_size [ $Expression ] #arr_value
+$Var ~ ID #pid #push_arr_size [ $Expression ] #arr_addr
 $GenExpression ~ $RelExpression
 $GenExpression ~ $Expression
 $RelExpression ~ $RelExpression && $RelTerm #and

@@ -159,7 +159,7 @@ public class CodeGenerator {
             case "push_arr_size":
                 push(symbolTable.getArraySize(prevTokens[0].attribute));
                 break;
-            case "arr_value":
+            case "arr_addr":
                 int size = peek(1);
                 temp = getTemp();
                 temp2 = getTemp();
