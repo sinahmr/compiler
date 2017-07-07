@@ -355,7 +355,10 @@ public class CodeGenerator {
             if (i < 10)
                 System.out.print("0");
             System.out.print(i + ": ");
-            PB[i].print();
+            if (PB[i] == null)
+                System.out.println("Not yet defined");
+            else
+                PB[i].print();
         }
     }
 

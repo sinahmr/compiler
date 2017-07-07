@@ -54,7 +54,8 @@ public class Parser {
             if (action == null || action.equals("")) {
                 token = handleErrorAndReturnLastToken();
                 if (token == null) {  // Parser is finished
-                    errorHandler.parserError("Parse could not be complete, even after recovery.");
+                    System.out.println("Code until this point:");
+                    codeGenerator.printCode();
                     return;
                 }
                 action = table.get(stack.peek(), token.toString());
