@@ -294,7 +294,11 @@ public class CodeGenerator {
                 PB[p] = new InterCode(CodeType.ASSIGN, IMMEDIATE, p+2,
                                                     INDIRECT, CODE_SIZE);
                 p++;
-                pop(1);  // In hamoon addresse moteghayere voroodie tabe'e ke khodemoon ba didane har voroodi 4 ta mobordimesh jolo
+                int lastParamEndAddress = pop(1);  // In hamoon addresse moteghayere voroodie tabe'e ke khodemoon ba didane har voroodi 4 ta mobordimesh jolo
+                boolean success = symbolTable.isLastParamEndAddressCorrect(peek(0), lastParamEndAddress);
+                if (!success)
+                    return false;
+
                 PB[p++] = new InterCode(CodeType.JP, DIRECT, peek(0));
                 pop(1);
                 temp = getTemp();

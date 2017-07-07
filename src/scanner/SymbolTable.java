@@ -103,6 +103,21 @@ public class SymbolTable
         }
     }
 
+    public boolean isLastParamEndAddressCorrect(int funcStartAddress, int lastParamEndAddress) {
+        int index = addresses.indexOf(funcStartAddress);
+        if (index == -1) {
+            errorHandler.semanticError("ID was not a function");
+            return false;
+        }
+        int argsCount = args_size.get(index);
+        int offset = addressOffset.get(index);
+        if (offset + argsCount * 4 != lastParamEndAddress) {
+            errorHandler.semanticError("Number of given arguments does not match function prototype");
+            return false;
+        }
+        return true;
+    }
+
     public void defineFunc(int index, int address, Token.Type returnType) // the former input was the name of the array and the address
     {
         /*int index = find(func);
