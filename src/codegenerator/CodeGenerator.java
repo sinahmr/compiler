@@ -1,5 +1,6 @@
 package codegenerator;
 
+import errorhandler.ErrorHandler;
 import scanner.SymbolTable;
 import scanner.Token;
 
@@ -15,7 +16,10 @@ public class CodeGenerator {
     int tempPointer = 0;
     int p = 0;
 
+    boolean hasReturnStatementSeen = false;
+
     SymbolTable symbolTable;
+    ErrorHandler errorHandler;
     Stack<Integer> semanticStack;
     InterCode[] PB;
 
@@ -23,8 +27,9 @@ public class CodeGenerator {
 
     enum AddressType {INDIRECT, DIRECT, IMMEDIATE}
 
-    public CodeGenerator(SymbolTable symbolTable) {
+    public CodeGenerator(SymbolTable symbolTable, ErrorHandler errorHandler) {
         this.symbolTable = symbolTable;
+        this.errorHandler = errorHandler;
         semanticStack = new Stack<>();
         PB = new InterCode[CODE_SIZE];
     }
@@ -61,6 +66,7 @@ public class CodeGenerator {
                     return false;
                 break;
             case "def_func":
+                hasReturnStatementSeen = false;
                 if (!symbolTable.defineFunc(prevTokens[1].attribute, p, prevTokens[2].type, prevTokens[1]))
                     return false;
                 break;
@@ -108,11 +114,16 @@ public class CodeGenerator {
             case "set_ret_value":
                 if (!symbolTable.isLastReturnTypeInt(prevTokens[0]))
                     return false;
+                hasReturnStatementSeen = true;
                 PB[p++] = new InterCode(CodeType.ASSIGN, DIRECT, peek(0),
                         DIRECT, CODE_SIZE + 4);
                 pop(1);
                 break;
             case "end_func":
+                if (!hasReturnStatementSeen) {
+                    errorHandler.semanticError("No return found while the function return type is int", prevTokens[0], true);
+                    return false;
+                }
                 PB[p++] = new InterCode(CodeType.SUB, DIRECT, CODE_SIZE,
                         IMMEDIATE, 4,
                         DIRECT, CODE_SIZE);
