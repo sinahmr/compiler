@@ -100,7 +100,7 @@ public class CodeGenerator {
                 push(p); p++;  // khatte 2 hamishe ye jump khahad bood ke tahe code por mishe va jump mikone be tahe code
                 break;
             case "set_jump_to_end":
-                PB[peek(0)] = new InterCode(CodeType.JP, DIRECT, p); // ke jump be OS ro anjam bede
+                PB[peek(0)] = new InterCode(CodeType.JP, IMMEDIATE, p); // ke jump be OS ro anjam bede
                 PB[p++] = new InterCode(CodeType.JP, DIRECT, CODE_SIZE + CONTROL_REGISTERS_SIZE + VARS_BLOCK_SIZE + TEMP_SIZE);
                 break;
             case "def_var":
@@ -127,7 +127,7 @@ public class CodeGenerator {
                 symbolTable.startScopeFunc();
                 break;
             case "init_func":
-                PB[peek(1)] = new InterCode(CodeType.JP, DIRECT, p);
+                PB[peek(1)] = new InterCode(CodeType.JP, IMMEDIATE, p);
                 /*int param_length = symbolTable.getFuncParamLength();
                 for(int i=0;i<param_length;i++)
                     PB[p++] = new InterCode(CodeType.ASSIGN,
@@ -182,7 +182,7 @@ public class CodeGenerator {
                             IMMEDIATE, size,
                             DIRECT, temp);
                     PB[p++] = new InterCode(CodeType.JPF, DIRECT, temp,
-                            DIRECT, 2); // In 2 yani hamoon khatte 2 ke jump mikone be tahe code
+                            IMMEDIATE, 2); // In 2 yani hamoon khatte 2 ke jump mikone be tahe code
                 }
                 temp = getTemp();
                 temp2 = getTemp();
@@ -205,27 +205,27 @@ public class CodeGenerator {
                 break;
             case "jpf":
                 PB[peek(0)] = new InterCode(CodeType.JPF, peek(1)>0?DIRECT:INDIRECT, abs(peek(1)),
-                                                    DIRECT, p);
+                                                    IMMEDIATE, p);
                 pop(2);
                 break;
             case "jpf_save":
                 PB[peek(0)] = new InterCode(CodeType.JPF, peek(1)>0?DIRECT:INDIRECT, abs(peek(1)),
-                                                    DIRECT, p+1);
+                                                    IMMEDIATE, p+1);
                 pop(2);
                 push(p); p++;
                 //push(p-1); in ke comment kardam nabayad bashe?
                 break;
             case "jp":
-                PB[peek(0)] = new InterCode(CodeType.JP, DIRECT, p);
+                PB[peek(0)] = new InterCode(CodeType.JP, IMMEDIATE, p);
                 pop(1);
                 break;
             case "label":
                 push(p);
                 break;
             case "while":
-                PB[p++] = new InterCode(CodeType.JP, DIRECT, peek(2));
+                PB[p++] = new InterCode(CodeType.JP, IMMEDIATE, peek(2));
                 PB[peek(0)] = new InterCode(CodeType.JPF, peek(1)>0?DIRECT:INDIRECT, abs(peek(1)),
-                                                    DIRECT, p);
+                                                    IMMEDIATE, p);
                 pop(3);
                 break;
             case "and":
@@ -300,7 +300,7 @@ public class CodeGenerator {
                 if (!success)
                     return false;
 
-                PB[p++] = new InterCode(CodeType.JP, DIRECT, peek(0));
+                PB[p++] = new InterCode(CodeType.JP, IMMEDIATE, peek(0));
                 pop(1);
                 temp = getTemp();
                 PB[p++] = new InterCode(CodeType.ASSIGN, DIRECT, CODE_SIZE + 4,
