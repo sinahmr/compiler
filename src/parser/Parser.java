@@ -76,7 +76,12 @@ public class Parser {
 
                 if (rule.lhs.startsWith("$#")) {
                     String codegenAction = rule.lhs.substring(2);
-                    codeGenerator.generateCode(codegenAction, token, prevTokens);
+                    boolean success = codeGenerator.generateCode(codegenAction, token, prevTokens);
+                    if (!success) {
+                        System.out.println("Code until this point:");
+                        codeGenerator.printCode();
+                        return;
+                    }
                 }
 
                 int popTimes = rule.rhs.length;

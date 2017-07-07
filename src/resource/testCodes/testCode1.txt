@@ -1,1 +1,5 @@
-int ID;
+void main(void) {
+    int a;
+    a[1] = 5;
+    output(a[1]);
+}

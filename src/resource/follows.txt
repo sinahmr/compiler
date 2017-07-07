@@ -53,6 +53,7 @@ $#save output ; { ID while if return
 $ReturnStmt output else ; { ID while } if return
 $Var == && ) * ; + < , = ] - /
 $SelectionStmt output else ; { ID while } if return
+$#voidly_ret ;
 $#and && ) ;
 $#def_var ) ; ,
 $#output )

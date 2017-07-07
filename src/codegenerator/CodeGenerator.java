@@ -80,7 +80,8 @@ public class CodeGenerator {
     // currentToken: tokeni ke ba didanesh tasmim gereftim Reduce anjam bedim o hanuz too stack nayoomade
     // prevTokens: tokenhaye ghabli ke barresi shodan o oomadan too stack.
     // "int void ID" -> prevTokens[0] == ID, prevTokens[2] == int
-    public void generateCode(String action, Token currentToken, Token[] prevTokens) {
+    // if false is returned, parser will stop
+    public boolean generateCode(String action, Token currentToken, Token[] prevTokens) {
         final AddressType IMMEDIATE = AddressType.IMMEDIATE;
         final AddressType DIRECT = AddressType.DIRECT;
         final AddressType INDIRECT = AddressType.INDIRECT;
@@ -137,7 +138,13 @@ public class CodeGenerator {
             case "func_add_param":
                 symbolTable.addFuncParam();
                 break;
+            case "voidly_ret":
+                if (!symbolTable.isLastReturnTypeVoid())
+                    return false;
+                break;
             case "set_ret_value":
+                if (!symbolTable.isLastReturnTypeInt())
+                    return false;
                 PB[p++] = new InterCode(CodeType.ASSIGN, DIRECT, peek(0),
                                                         DIRECT, CODE_SIZE+4);
                 pop(1);
@@ -157,7 +164,10 @@ public class CodeGenerator {
                 pop(2);
                 break;
             case "push_arr_size":
-                push(symbolTable.getArraySize(prevTokens[0].attribute));
+                Integer arrSize = symbolTable.getArraySize(prevTokens[0].attribute);
+                if (arrSize == null)
+                    return false;
+                push(arrSize);
                 break;
             case "arr_addr":
                 int size = peek(1);
@@ -301,6 +311,7 @@ public class CodeGenerator {
                 System.out.println("            ");
         lastPrinted = p;
 
+        return true;
     }
 
     private void push(int value)

@@ -29,7 +29,7 @@ $ExpressionStmt ~ ;
 $SelectionStmt ~ if ( $GenExpression ) #save $Statement #jpf
 $SelectionStmt ~ if ( $GenExpression ) #save $Statement else #jpf_save $Statement #jp
 $IterationStmt ~ while #label ( $GenExpression ) #save $Statement #while
-$ReturnStmt ~ return #end_func ;
+$ReturnStmt ~ return #voidly_ret #end_func ;
 $ReturnStmt ~ return $GenExpression #set_ret_value #end_func ;
 $Var ~ ID #pid
 $Var ~ ID #pid #push_arr_size [ $Expression ] #arr_addr

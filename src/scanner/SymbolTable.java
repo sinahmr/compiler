@@ -85,6 +85,24 @@ public class SymbolTable
         lastRetType = retType;
     } //TODO delete*/
 
+    public boolean isLastReturnTypeInt() {
+        if (retTypes.get(lastDefinedFunc) == RetType.INT)
+            return true;
+        else {
+            errorHandler.semanticError("Function return type is void while you returned a value");
+            return false;
+        }
+    }
+
+    public boolean isLastReturnTypeVoid() {
+        if (retTypes.get(lastDefinedFunc) == RetType.VOID)
+            return true;
+        else {
+            errorHandler.semanticError("Function return type is int while you did not return a value");
+            return false;
+        }
+    }
+
     public void defineFunc(int index, int address, Token.Type returnType) // the former input was the name of the array and the address
     {
         /*int index = find(func);
@@ -281,12 +299,12 @@ public class SymbolTable
         return args_size.get(lastDefinedFunc);
     }
 
-    public int getArraySize(int index)
+    public Integer getArraySize(int index)
     {
         if(IDTypes.get(index) != IDType.ARRAY)
         {
             errorHandler.semanticError("ID is not an array");
-            return -1;
+            return null;
         }
         return args_size.get(index);
     }
