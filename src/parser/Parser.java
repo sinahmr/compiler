@@ -12,8 +12,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-// TODO: error message
-
 public class Parser {
     Scanner scanner;
     CodeGenerator codeGenerator;
@@ -52,7 +50,7 @@ public class Parser {
             String action = table.get(stack.peek(), token.toString());
 
             if (action == null || action.equals("")) {
-                token = handleErrorAndReturnLastToken();
+                token = handleErrorAndReturnLastToken(token);
                 if (token == null) {  // Parser is finished
                     System.out.println("Code until this point:");
                     codeGenerator.printCode();
@@ -96,13 +94,13 @@ public class Parser {
 
     }
 
-    private Token handleErrorAndReturnLastToken() {
+    private Token handleErrorAndReturnLastToken(Token lastToken) {
         HashSet<String> nts = removeFromStackAndGetNTSet();
 
         // discard input
         String selectedNT = null;
         Token token;
-        errorHandler.parserError("Some tokens are ezafi and discarded.");
+        errorHandler.parserError("Some misplaced tokens are discarded", lastToken);
         do {
             token = scanner.getNextToken();
             for (String nt : nts)
@@ -112,7 +110,7 @@ public class Parser {
 
         // push the new state
         if (selectedNT == null) {
-            errorHandler.parserError("End of input is reached but parse is failed.");
+            errorHandler.parserError("End of input is reached but parse is failed");
             return null;
         }
         stack.push(Integer.parseInt(table.get(stack.peek(), selectedNT)));
@@ -124,7 +122,7 @@ public class Parser {
         HashSet<String> foundNTs;
         while ((foundNTs = getNTsWithAGotoBelow(stateWithSomethingInGoto)).isEmpty()) {
             int discardedState = stack.pop();
-            errorHandler.parserError("Missing ye chizi, state " + discardedState + " is discarded.");
+//            errorHandler.parserError("Missing ye chizi, state " + discardedState + " is discarded");
             stateWithSomethingInGoto = stack.peek();
         }
         return foundNTs;
