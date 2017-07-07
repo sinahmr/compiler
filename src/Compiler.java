@@ -8,7 +8,7 @@ import java.io.*;
 public class Compiler {
     public static void main(String[] args) {
         ErrorHandler errorHandler = new ErrorHandler();
-        File codeFile = new File("./src/resource/testCodes/input5.txt");
+        File codeFile = new File("./src/resource/testCodes/testCode5.txt");
         Scanner scanner;
         try {
             scanner = new Scanner(new FileInputStream(codeFile), errorHandler);

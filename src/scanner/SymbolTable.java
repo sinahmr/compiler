@@ -118,7 +118,7 @@ public class SymbolTable
         return true;
     }
 
-    public void defineFunc(int index, int address, Token.Type returnType) // the former input was the name of the array and the address
+    public boolean defineFunc(int index, int address, Token.Type returnType) // the former input was the name of the array and the address
     {
         /*int index = find(func);
         if(index < 0)
@@ -130,6 +130,7 @@ public class SymbolTable
         if(IDTypes.get(index) != null)
         {
             errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
+            return false;
         }
         /*if(lastRetType == null)
         {
@@ -148,6 +149,8 @@ public class SymbolTable
         //lastRetType = null; //TODO delete
 
         lastDefinedFunc = index;
+
+        return true;
     }
 
     public void addFuncParam() //farz kardam ke adade tabe' ro az farakhani defineFunc hefz mikone, in moshkeli be vujud miare?
@@ -155,7 +158,7 @@ public class SymbolTable
         args_size.set(lastDefinedFunc, args_size.get(lastDefinedFunc)+1);
     }
 
-    public void defineVar(int index) // the former input was the name of the var
+    public boolean defineVar(int index) // the former input was the name of the var
     {
         /*int index = find(var);
         if(index < 0)
@@ -169,15 +172,18 @@ public class SymbolTable
         if(IDTypes.get(index) != null)
         {
             errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
+            return false;
         }
 
         addresses.set(index, currAddress);
         currAddress += 4; // chon har moteghayyer 4 byte hafeze mikhad
         IDTypes.set(index, IDType.VAR);
+
+        return true;
     }
 
 
-    public void defineArray(int index) // the former input was the name of the array
+    public boolean defineArray(int index) // the former input was the name of the array
     {
         /*int index = find(array);
         if(index < 0)
@@ -189,6 +195,7 @@ public class SymbolTable
         if(IDTypes.get(index) != null)
         {
             errorHandler.semanticError("ID already defined"); // mishe be payam error in ro ezafe kard ke bege ghablan be onvan func ta'rif shode ya var ya array
+            return false;
         }
 
         addresses.set(index, currAddress);
@@ -196,6 +203,8 @@ public class SymbolTable
         IDTypes.set(index, IDType.ARRAY);
 
         lastDefinedArray = index;
+
+        return true;
     }
 
     public void setArraySize(int size) //farz kardam in tabe' ba'd az defineArray farakhani mishe va in ke akharin array ta'rif shode ro hefz mikone
@@ -216,7 +225,8 @@ public class SymbolTable
         if(IDTypes.get(index) == null)
         {
             errorHandler.semanticError("ID not defined yet");
-            defineVar(index);
+            return -1;
+            //defineVar(index);
         }
 
         if(IDTypes.get(index) == IDType.FUNC)
@@ -314,12 +324,12 @@ public class SymbolTable
         return args_size.get(lastDefinedFunc);
     }
 
-    public Integer getArraySize(int index)
+    public int getArraySize(int index)
     {
         if(IDTypes.get(index) != IDType.ARRAY)
         {
             errorHandler.semanticError("ID is not an array");
-            return null;
+            return -1;
         }
         return args_size.get(index);
     }
