@@ -84,7 +84,7 @@ public class CodeGenerator {
         final AddressType IMMEDIATE = AddressType.IMMEDIATE;
         final AddressType DIRECT = AddressType.DIRECT;
         final AddressType INDIRECT = AddressType.INDIRECT;
-        int temp, temp2, temp3;
+        int temp, temp2;
         System.out.println("Called " + action);
         switch (action)
         {
@@ -275,7 +275,7 @@ public class CodeGenerator {
                 PB[p] = new InterCode(CodeType.ASSIGN, IMMEDIATE, p+2,
                                                     INDIRECT, CODE_SIZE);
                 p++;
-                pop(1);
+                pop(1);  // In hamoon addresse moteghayere voroodie tabe'e ke khodemoon ba didane har voroodi 4 ta mobordimesh jolo
                 PB[p++] = new InterCode(CodeType.JP, DIRECT, peek(0));
                 pop(1);
                 temp = getTemp();
