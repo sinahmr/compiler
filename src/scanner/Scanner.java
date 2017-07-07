@@ -47,7 +47,7 @@ public class Scanner
         dfa = new DFA(this, 30);
 
         currentLine = 1;
-        currentInLine = 1;
+        currentInLine = 0;
     }
 
     public Token getNextToken()
@@ -157,7 +157,7 @@ class DFA
             if(scn.buffer[scn.currentToken] == 10)
             {
                 scn.currentLine++;
-                scn.currentInLine = 1;
+                scn.currentInLine = 0;
             }
 
 
