@@ -66,7 +66,10 @@ public class CodeGenerator {
                     return false;
                 break;
             case "def_func":
-                hasReturnStatementSeen = false;
+                if (prevTokens[2].type == Token.Type.INT)
+                    hasReturnStatementSeen = false;
+                else
+                    hasReturnStatementSeen = true;
                 if (!symbolTable.defineFunc(prevTokens[1].attribute, p, prevTokens[2].type, prevTokens[1]))
                     return false;
                 break;

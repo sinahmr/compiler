@@ -1,4 +1,4 @@
-void main (void) {
+int main (void) {
     int a;
     if (2 < 1)
         if (4 < 5)
