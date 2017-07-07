@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class Scanner
 {
-    public final int bufferLength=1000; //TODO
+    public final int bufferLength=100;
     public final int symbolTableInitAddress = 1008;
 
     public int currentToken;

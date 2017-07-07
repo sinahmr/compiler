@@ -75,7 +75,7 @@ public class Parser {
 
                 if (rule.lhs.startsWith("$#")) {
                     String codegenAction = rule.lhs.substring(2);
-                    boolean success = codeGenerator.generateCode(codegenAction, token, prevTokens);
+                    boolean success = codeGenerator.generateCode(codegenAction, prevTokens);
                     if (!success) {
                         System.out.println("Code until this point:");
                         codeGenerator.printCode();
