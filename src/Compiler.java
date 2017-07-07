@@ -2,12 +2,10 @@ import codegenerator.CodeGenerator;
 import errorhandler.ErrorHandler;
 import parser.Parser;
 import scanner.Scanner;
-import scanner.Token;
 
 import java.io.*;
 
-public class Compiler
-{
+public class Compiler {
     public static void main(String[] args) {
         ErrorHandler errorHandler = new ErrorHandler();
         File codeFile = new File("./src/resource/testCodes/input5.txt");

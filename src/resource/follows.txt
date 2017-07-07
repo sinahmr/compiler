@@ -30,6 +30,7 @@ $Args )
 $RelTerm && ) ;
 $ParamList ) ,
 $#while output else ; { ID while } if return
+$#set_jump_to_end EOF
 $Declaration void EOF int
 $Param ) ,
 $RelExpression && ) ;

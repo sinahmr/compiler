@@ -1,4 +1,4 @@
-$Program ~ #init $DeclarationList EOF
+$Program ~ #init $DeclarationList #set_jump_to_end EOF
 $DeclarationList ~ $DeclarationList $Declaration
 $DeclarationList ~ $Declaration
 $Declaration ~ $VarDeclaration

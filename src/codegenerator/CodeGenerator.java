@@ -96,7 +96,11 @@ public class CodeGenerator {
                 //        IMMEDIATE, CODE_SIZE+12, DIRECT, CODE_SIZE+4);
                 //PB[p++] = new InterCode(CodeType.ASSIGN,
                 //        IMMEDIATE, CODE_SIZE+12+VARS_BLOCK_SIZE+TEMP_SIZE+12, DIRECT, CODE_SIZE+8);
-                push(p); p++;
+                push(p); p++;  // in baraye jump be sare main e
+                push(p); p++;  // khatte 2 hamishe ye jump khahad bood ke tahe code por mishe va jump mikone be tahe code
+                break;
+            case "set_jump_to_end":
+                PB[peek(0)] = new InterCode(CodeType.JP, DIRECT, p - 2); // ke jump be OS ro anjam bede
                 break;
             case "def_var":
                 symbolTable.defineVar(prevTokens[0].attribute);
@@ -122,7 +126,7 @@ public class CodeGenerator {
                 symbolTable.startScopeFunc();
                 break;
             case "init_func":
-                PB[peek(0)] = new InterCode(CodeType.JP, DIRECT, p);
+                PB[peek(1)] = new InterCode(CodeType.JP, DIRECT, p);
                 /*int param_length = symbolTable.getFuncParamLength();
                 for(int i=0;i<param_length;i++)
                     PB[p++] = new InterCode(CodeType.ASSIGN,
@@ -171,6 +175,14 @@ public class CodeGenerator {
                 break;
             case "arr_addr":
                 int size = peek(1);
+                if (size != -1) {
+                    temp = getTemp();
+                    PB[p++] = new InterCode(CodeType.LT, DIRECT, peek(0),
+                            IMMEDIATE, size,
+                            DIRECT, temp);
+                    PB[p++] = new InterCode(CodeType.JPF, DIRECT, temp,
+                            DIRECT, 2); // In 2 yani hamoon khatte 2 ke jump mikone be tahe code
+                }
                 temp = getTemp();
                 temp2 = getTemp();
                 PB[p++] = new InterCode(CodeType.MULT, IMMEDIATE, 4,

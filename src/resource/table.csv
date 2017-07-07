@@ -1,162 +1,163 @@
-	&&	(	)	*	+	,	-	/	;	<	=	==	EOF	ID	NUM	[	]	else	if	int	output	return	void	while	{	}	$#add	$#and	$#arr_addr	$#arr_size	$#assign	$#call	$#copy_input	$#def_arr	$#def_func	$#def_var	$#divide	$#end_func	$#end_scope	$#equal	$#func_add_param	$#init	$#init_copy	$#init_func	$#jp	$#jpf	$#jpf_save	$#label	$#larger	$#minus	$#mult	$#num_value	$#output	$#pid	$#plus	$#push_arr_size	$#save	$#set_pointer	$#set_ret_value	$#start_scope	$#start_scope_func	$#times	$#voidly_ret	$#while	$AddOp	$ArgList	$Args	$Call	$CompoundStmt	$Declaration	$DeclarationList	$Expression	$ExpressionStmt	$Factor	$FunDeclaration	$GenExpression	$IterationStmt	$LocalDeclarations	$MulOp	$Param	$ParamList	$Params	$Program	$RelExpression	$RelTerm	$ReturnStmt	$SelectionStmt	$Statement	$StatementList	$Term	$Var	$VarDeclaration
-0																				R59			R59																			1																																									2									
-1																				S4			S3																																															8	7				5																	6
-2													Acc																																																																															
-3														S9																																																																														
-4														S10																																																																														
-5													R5							R5			R5																																																																					
-6													R4							R4			R4																																																																					
-7													S11							S4			S3																																															12					5																	6
-8													R3							R3			R3																																																																					
-9		S13																																																																																										
-10		S15	R60			R60			R60							S14																				16																																																								
-11													R1																																																																															
-12													R2							R2			R2																																																																					
-13																				R64			R64												17																																																									
-14															R61		R61																	18																																																										
-15																				R64			R64												19																																																									
-16									S20																																																																																			
-17																				R65			R65																																						21																															
-18															R62																																											22																																		
-19																				R65			R65																																						23																															
-20									R6				R6	R6					R6	R6	R6	R6	R6	R6	R6	R6																																																																		
-21																				S25			S24																																																									28	27	26										
-22															S29																																																																													
-23																				S25			S24																																																									28	27	30										
-24			R11																																																																																									
-25														S31																																																																														
-26			S32																																																																																									
-27			R10			S33																																																																																						
-28			R68			R68																																			34																																																			
-29																	R63													35																																																														
-30			S36																																																																																									
-31			R60			R60			R60							S37																				38																																																								
-32																									R66																			39																																																
-33																				S25																																																												40												
-34			R13			R13																																																																																						
-35																	S41																																																																											
-36																									R66																			42																																																
-37															R61		R61																	43																																																										
-38			R14			R14																																																																																						
-39																									S44																																												45																							
-40			R68			R68																																			46																																																			
-41									S47																																																																																			
-42																									S44																																												48																							
-43																	S49																																																																											
-44									R69					R69					R69	R69	R69	R69		R69	R69	R69																																		50																																
-45									R67				R67							R67			R67															51																																																						
-46			R12			R12																																																																																						
-47									R7				R7	R7					R7	R7	R7	R7	R7	R7	R7	R7																																																																		
-48									R67				R67							R67			R67															52																																																						
-49			R15			R15																																																																																						
-50									R18					R18					R18	R18	R18	R18		R18	R18	R18																																																				53														
-51													R9							R9			R9																																																																					
-52													R8							R8			R8																																																																					
-53									R20					R20					R20	S54	R20	R20		R20	R20	R20																																																															56			55
-54														S57																																																																														
-55									R17					R17					R17	R17	R17	R17		R17	R17	R17																																																																		
-56									S62					S60					S61		S59	S63		S58	S44	R70													65																														66				64				71									68	70	67			69	
-57			R60			R60			R60							S14																				16																																																								
-58		R77																																														72																																												
-59		S73																																																																																										
-60	R81	R81	R81	R81	R81	R81	R81	R81	R81	R81	R81	R81				R81	R81																																					74																																						
-61		S75																																																																																										
-62									R28					R28				R28	R28		R28	R28		R28	R28	R28																																																																		
-63		S78							R79					S76	S77																																																87					81				80		84		85								83	82					79	86	
-64									R21					R21				R21	R21		R21	R21		R21	R21	R21																																																																		
-65																										S88																																																																		
-66									R22					R22				R22	R22		R22	R22		R22	R22	R22																																																																		
-67									R19					R19					R19		R19	R19		R19	R19	R19																																																																		
-68									R25					R25				R25	R25		R25	R25		R25	R25	R25																																																																		
-69											S89																																																																																	
-70									R23					R23				R23	R23		R23	R23		R23	R23	R23																																																																		
-71									R24					R24				R24	R24		R24	R24		R24	R24	R24																																																																		
-72		S90																																																																																										
-73		S78												S76	S77																																																					81				91		84																79	86	
-74	R34		R34	R34	R34	R34	R34	R34	R34	R34	R34	R34				R82	R34																																							92																																				
-75		S78												S76	S77																																																					81				80		84		93								83	82					79	86	
-76	R81	R81	R81	R81	R81	R81	R81	R81	R81	R81	R81	R81				R81	R81																																					94																																						
-77	R93		R93	R93	R93	R93	R93	R93	R93	R93		R93					R93																																			95																																								
-78		S78												S76	S77																																																					81				96		84																79	86	
-79	R43		R43	S97	R43	R43	R43	S98	R43	R43		R43					R43																																																														99													
-80			R37		S101		S102		R37	S103		S100																																																					104																											
-81	R52		R52	R52	R52	R52	R52	R52	R52	R52		R52					R52																																																																											
-82	R39		R39						R39																																																																																			
-83	S105		R36						R36																																																																																			
-84	R47		R47	R47	R47	R47	R47	R47	R47	R47		R47					R47																																																																											
-85									R80																																																		106																																	
-86	R51		R51	R51	R51	R51	R51	R51	R51	R51		R51					R51																																																																											
-87									R67				R67							R67			R67															107																																																						
-88									R16				R16	R16				R16	R16	R16	R16	R16	R16	R16	R16	R16																																																																		
-89		S78												S76	S77																																																					81				108		84																79	86	
-90		S78												S76	S77																																																					81				80		84		109								83	82					79	86	
-91			R71		S101		S102																																														110												104																											
-92																S111																																																																												
-93			S112																																																																																									
-94	R34	R94	R34	R34	R34	R34	R34	R34	R34	R34	R34	R34				R82	R34																										113													92																																				
-95	R53		R53	R53	R53	R53	R53	R53	R53	R53		R53					R53																																																																											
-96			S114		S101		S102																																																										104																											
-97		R91												R91	R91																																															115																														
-98		R92												R92	R92																						116																																																							
-99		S78												S76	S77																																																					81						117																	86	
-100		S78												S76	S77																																																					81				118		84																79	86	
-101		R88												R88	R88																																								119																																					
-102		R89												R89	R89																																			120																																										
-103		S78												S76	S77																																																					81				121		84																79	86	
-104		S78												S76	S77																																																					81						84																122	86	
-105		S78												S76	S77																																																					81				123		84											124					79	86	
-106									R67				R67							R67			R67															125																																																						
-107									S126																																																																																			
-108					S101		S102		R72																						127																																		104																											
-109			S128																																																																																									
-110			S129																																																																																									
-111		S78												S76	S77																																																					81				130		84																79	86	
-112									R73					R73					R73		R73	R73		R73	R73																																131																																			
-113		S132																																																																																										
-114	R50		R50	R50	R50	R50	R50	R50	R50	R50		R50					R50																																																																											
-115		R48												R48	R48																																																																													
-116		R49												R49	R49																																																																													
-117	R90		R90	R90	R90	R90	R90	R90	R90	R90		R90					R90																																		133																																									
-118	R85		R85		S101		S102		R85																															134																									104																											
-119		R44												R44	R44																																																																													
-120		R45												R45	R45																																																																													
-121	R86		R86		S101		S102		R86																																								135																104																											
-122	R87		R87	S97	R87	R87	R87	S98	R87	R87		R87					R87										136																																																				99													
-123					S101		S102			S103		S100																																																					104																											
-124	R84		R84						R84																			137																																																																
-125									S138																																																																																			
-126									R32					R32				R32	R32		R32	R32		R32	R32	R32																																																																		
-127									S139																																																																																			
-128									R73					R73					R73		R73	R73		R73	R73																																140																																			
-129									S141																																																																																			
-130					S101		S102										S142																																																104																											
-131									S62					S60					S61		S59	S63		S58	S44																																												66				64				71									68	70	143			69	
-132		S78	R56											S76	S77																																																			144	146	81				145		84																79	86	
-133	R46		R46	R46	R46	R46	R46	R46	R46	R46		R46					R46																																																																											
-134	R40		R40						R40																																																																																			
-135	R41		R41						R41																																																																																			
-136	R42		R42		R42	R42	R42		R42	R42		R42					R42																																																																											
-137	R38		R38						R38																																																																																			
-138									R33					R33				R33	R33		R33	R33		R33	R33	R33																																																																		
-139									R27					R27				R27	R27		R27	R27		R27	R27	R27																																																																		
-140									S62					S60					S61		S59	S63		S58	S44																																												66				64				71									68	70	147			69	
-141									R26					R26				R26	R26		R26	R26		R26	R26	R26																																																																		
-142	R83		R83	R83	R83	R83	R83	R83	R83	R83	R83	R83					R83												148																																																															
-143									R74					R74				S149	R74		R74	R74		R74	R74	R74																				150
-144			R55			S151																																																																																						
-145			R96		S101	R96	S102																										152																																104																											
-146			S153																																																																																									
-147									R78					R78				R78	R78		R78	R78		R78	R78	R78																																						154																												
-148	R35		R35	R35	R35	R35	R35	R35	R35	R35	R35	R35					R35																																																																											
-149									R75					R75					R75		R75	R75		R75	R75																						155																																													
-150									R29					R29				R29	R29		R29	R29		R29	R29	R29																																																																		
-151		S78												S76	S77																																																					81				156		84																79	86	
-152			R58			R58																																																																																						
-153	R95		R95	R95	R95	R95	R95	R95	R95	R95		R95					R95															157																																																												
-154									R31					R31				R31	R31		R31	R31		R31	R31	R31																																																																		
-155									S62					S60					S61		S59	S63		S58	S44																																												66				64				71									68	70	158			69	
-156			R96		S101	R96	S102																										159																																104																											
-157	R54		R54	R54	R54	R54	R54	R54	R54	R54		R54					R54																																																																											
-158									R76					R76				R76	R76		R76	R76		R76	R76	R76																			160																																															
-159			R57			R57																																																																																						
-160									R30					R30				R30	R30		R30	R30		R30	R30	R30																																																																		
+	&&	(	)	*	+	,	-	/	;	<	=	==	EOF	ID	NUM	[	]	else	if	int	output	return	void	while	{	}	$#add	$#and	$#arr_addr	$#arr_size	$#assign	$#call	$#copy_input	$#def_arr	$#def_func	$#def_var	$#divide	$#end_func	$#end_scope	$#equal	$#func_add_param	$#init	$#init_copy	$#init_func	$#jp	$#jpf	$#jpf_save	$#label	$#larger	$#minus	$#mult	$#num_value	$#output	$#pid	$#plus	$#push_arr_size	$#save	$#set_jump_to_end	$#set_pointer	$#set_ret_value	$#start_scope	$#start_scope_func	$#times	$#voidly_ret	$#while	$AddOp	$ArgList	$Args	$Call	$CompoundStmt	$Declaration	$DeclarationList	$Expression	$ExpressionStmt	$Factor	$FunDeclaration	$GenExpression	$IterationStmt	$LocalDeclarations	$MulOp	$Param	$ParamList	$Params	$Program	$RelExpression	$RelTerm	$ReturnStmt	$SelectionStmt	$Statement	$StatementList	$Term	$Var	$VarDeclaration
+0																				R59			R59																			1																																										2									
+1																				S4			S3																																																8	7				5																	6
+2													Acc																																																																																
+3														S9																																																																															
+4														S10																																																																															
+5													R5							R5			R5																																																																						
+6													R4							R4			R4																																																																						
+7													R60							S4			S3																																			11													12					5																	6
+8													R3							R3			R3																																																																						
+9		S13																																																																																											
+10		S15	R61			R61			R61							S14																				16																																																									
+11													S17																																																																																
+12													R2							R2			R2																																																																						
+13																				R65			R65												18																																																										
+14															R62		R62																	19																																																											
+15																				R65			R65												20																																																										
+16									S21																																																																																				
+17													R1																																																																																
+18																				R66			R66																																							22																															
+19															R63																																												23																																		
+20																				R66			R66																																							24																															
+21									R6				R6	R6					R6	R6	R6	R6	R6	R6	R6	R6																																																																			
+22																				S26			S25																																																										29	28	27										
+23															S30																																																																														
+24																				S26			S25																																																										29	28	31										
+25			R11																																																																																										
+26														S32																																																																															
+27			S33																																																																																										
+28			R10			S34																																																																																							
+29			R69			R69																																			35																																																				
+30																	R64													36																																																															
+31			S37																																																																																										
+32			R61			R61			R61							S38																				39																																																									
+33																									R67																			40																																																	
+34																				S26																																																													41												
+35			R13			R13																																																																																							
+36																	S42																																																																												
+37																									R67																			43																																																	
+38															R62		R62																	44																																																											
+39			R14			R14																																																																																							
+40																									S45																																													46																							
+41			R69			R69																																			47																																																				
+42									S48																																																																																				
+43																									S45																																													49																							
+44																	S50																																																																												
+45									R70					R70					R70	R70	R70	R70		R70	R70	R70																																			51																																
+46									R68				R68							R68			R68															52																																																							
+47			R12			R12																																																																																							
+48									R7				R7	R7					R7	R7	R7	R7	R7	R7	R7	R7																																																																			
+49									R68				R68							R68			R68															53																																																							
+50			R15			R15																																																																																							
+51									R18					R18					R18	R18	R18	R18		R18	R18	R18																																																					54														
+52													R9							R9			R9																																																																						
+53													R8							R8			R8																																																																						
+54									R20					R20					R20	S55	R20	R20		R20	R20	R20																																																																57			56
+55														S58																																																																															
+56									R17					R17					R17	R17	R17	R17		R17	R17	R17																																																																			
+57									S63					S61					S62		S60	S64		S59	S45	R71													66																															67				65				72									69	71	68			70	
+58			R61			R61			R61							S14																				16																																																									
+59		R78																																														73																																													
+60		S74																																																																																											
+61	R82	R82	R82	R82	R82	R82	R82	R82	R82	R82	R82	R82				R82	R82																																					75																																							
+62		S76																																																																																											
+63									R28					R28				R28	R28		R28	R28		R28	R28	R28																																																																			
+64		S79							R80					S77	S78																																																	88					82				81		85		86								84	83					80	87	
+65									R21					R21				R21	R21		R21	R21		R21	R21	R21																																																																			
+66																										S89																																																																			
+67									R22					R22				R22	R22		R22	R22		R22	R22	R22																																																																			
+68									R19					R19					R19		R19	R19		R19	R19	R19																																																																			
+69									R25					R25				R25	R25		R25	R25		R25	R25	R25																																																																			
+70											S90																																																																																		
+71									R23					R23				R23	R23		R23	R23		R23	R23	R23																																																																			
+72									R24					R24				R24	R24		R24	R24		R24	R24	R24																																																																			
+73		S91																																																																																											
+74		S79												S77	S78																																																						82				92		85																80	87	
+75	R34		R34	R34	R34	R34	R34	R34	R34	R34	R34	R34				R83	R34																																							93																																					
+76		S79												S77	S78																																																						82				81		85		94								84	83					80	87	
+77	R82	R82	R82	R82	R82	R82	R82	R82	R82	R82	R82	R82				R82	R82																																					95																																							
+78	R94		R94	R94	R94	R94	R94	R94	R94	R94		R94					R94																																			96																																									
+79		S79												S77	S78																																																						82				97		85																80	87	
+80	R43		R43	S98	R43	R43	R43	S99	R43	R43		R43					R43																																																															100													
+81			R37		S102		S103		R37	S104		S101																																																						105																											
+82	R52		R52	R52	R52	R52	R52	R52	R52	R52		R52					R52																																																																												
+83	R39		R39						R39																																																																																				
+84	S106		R36						R36																																																																																				
+85	R47		R47	R47	R47	R47	R47	R47	R47	R47		R47					R47																																																																												
+86									R81																																																			107																																	
+87	R51		R51	R51	R51	R51	R51	R51	R51	R51		R51					R51																																																																												
+88									R68				R68							R68			R68															108																																																							
+89									R16				R16	R16				R16	R16	R16	R16	R16	R16	R16	R16	R16																																																																			
+90		S79												S77	S78																																																						82				109		85																80	87	
+91		S79												S77	S78																																																						82				81		85		110								84	83					80	87	
+92			R72		S102		S103																																														111													105																											
+93																S112																																																																													
+94			S113																																																																																										
+95	R34	R95	R34	R34	R34	R34	R34	R34	R34	R34	R34	R34				R83	R34																										114													93																																					
+96	R53		R53	R53	R53	R53	R53	R53	R53	R53		R53					R53																																																																												
+97			S115		S102		S103																																																											105																											
+98		R92												R92	R92																																																116																														
+99		R93												R93	R93																						117																																																								
+100		S79												S77	S78																																																						82						118																	87	
+101		S79												S77	S78																																																						82				119		85																80	87	
+102		R89												R89	R89																																								120																																						
+103		R90												R90	R90																																			121																																											
+104		S79												S77	S78																																																						82				122		85																80	87	
+105		S79												S77	S78																																																						82						85																123	87	
+106		S79												S77	S78																																																						82				124		85											125					80	87	
+107									R68				R68							R68			R68															126																																																							
+108									S127																																																																																				
+109					S102		S103		R73																						128																																			105																											
+110			S129																																																																																										
+111			S130																																																																																										
+112		S79												S77	S78																																																						82				131		85																80	87	
+113									R74					R74					R74		R74	R74		R74	R74																																132																																				
+114		S133																																																																																											
+115	R50		R50	R50	R50	R50	R50	R50	R50	R50		R50					R50																																																																												
+116		R48												R48	R48																																																																														
+117		R49												R49	R49																																																																														
+118	R91		R91	R91	R91	R91	R91	R91	R91	R91		R91					R91																																		134																																										
+119	R86		R86		S102		S103		R86																															135																										105																											
+120		R44												R44	R44																																																																														
+121		R45												R45	R45																																																																														
+122	R87		R87		S102		S103		R87																																								136																	105																											
+123	R88		R88	S98	R88	R88	R88	S99	R88	R88		R88					R88										137																																																					100													
+124					S102		S103			S104		S101																																																						105																											
+125	R85		R85						R85																			138																																																																	
+126									S139																																																																																				
+127									R32					R32				R32	R32		R32	R32		R32	R32	R32																																																																			
+128									S140																																																																																				
+129									R74					R74					R74		R74	R74		R74	R74																																141																																				
+130									S142																																																																																				
+131					S102		S103										S143																																																	105																											
+132									S63					S61					S62		S60	S64		S59	S45																																													67				65				72									69	71	144			70	
+133		S79	R56											S77	S78																																																				145	147	82				146		85																80	87	
+134	R46		R46	R46	R46	R46	R46	R46	R46	R46		R46					R46																																																																												
+135	R40		R40						R40																																																																																				
+136	R41		R41						R41																																																																																				
+137	R42		R42		R42	R42	R42		R42	R42		R42					R42																																																																												
+138	R38		R38						R38																																																																																				
+139									R33					R33				R33	R33		R33	R33		R33	R33	R33																																																																			
+140									R27					R27				R27	R27		R27	R27		R27	R27	R27																																																																			
+141									S63					S61					S62		S60	S64		S59	S45																																													67				65				72									69	71	148			70	
+142									R26					R26				R26	R26		R26	R26		R26	R26	R26																																																																			
+143	R84		R84	R84	R84	R84	R84	R84	R84	R84	R84	R84					R84												149																																																																
+144									R75					R75				S150	R75		R75	R75		R75	R75	R75																				151
+145			R55			S152																																																																																							
+146			R97		S102	R97	S103																										153																																	105																											
+147			S154																																																																																										
+148									R79					R79				R79	R79		R79	R79		R79	R79	R79																																							155																												
+149	R35		R35	R35	R35	R35	R35	R35	R35	R35	R35	R35					R35																																																																												
+150									R76					R76					R76		R76	R76		R76	R76																						156																																														
+151									R29					R29				R29	R29		R29	R29		R29	R29	R29																																																																			
+152		S79												S77	S78																																																						82				157		85																80	87	
+153			R58			R58																																																																																							
+154	R96		R96	R96	R96	R96	R96	R96	R96	R96		R96					R96															158																																																													
+155									R31					R31				R31	R31		R31	R31		R31	R31	R31																																																																			
+156									S63					S61					S62		S60	S64		S59	S45																																													67				65				72									69	71	159			70	
+157			R97		S102	R97	S103																										160																																	105																											
+158	R54		R54	R54	R54	R54	R54	R54	R54	R54		R54					R54																																																																												
+159									R77					R77				R77	R77		R77	R77		R77	R77	R77																			161																																																
+160			R57			R57																																																																																							
+161									R30					R30				R30	R30		R30	R30		R30	R30	R30																																																																			

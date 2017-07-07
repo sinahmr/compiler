@@ -1,4 +1,4 @@
-$Program ~ $#init $DeclarationList EOF
+$Program ~ $#init $DeclarationList $#set_jump_to_end EOF
 $DeclarationList ~ $DeclarationList $Declaration
 $DeclarationList ~ $Declaration
 $Declaration ~ $VarDeclaration
@@ -57,6 +57,7 @@ $Args ~ !
 $ArgList ~ $ArgList , $Expression $#copy_input
 $ArgList ~ $Expression $#copy_input
 $#init ~ !
+$#set_jump_to_end ~ !
 $#def_var ~ !
 $#def_arr ~ !
 $#set_pointer ~ !
