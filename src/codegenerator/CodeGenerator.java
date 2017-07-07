@@ -86,6 +86,7 @@ public class CodeGenerator {
         final AddressType DIRECT = AddressType.DIRECT;
         final AddressType INDIRECT = AddressType.INDIRECT;
         int temp, temp2;
+        int address;
         System.out.println("Called " + action);
         switch (action)
         {
@@ -104,16 +105,21 @@ public class CodeGenerator {
                 PB[p++] = new InterCode(CodeType.JP, DIRECT, CODE_SIZE + CONTROL_REGISTERS_SIZE + VARS_BLOCK_SIZE + TEMP_SIZE);
                 break;
             case "def_var":
-                symbolTable.defineVar(prevTokens[0].attribute);
+                if(!symbolTable.defineVar(prevTokens[0].attribute))
+                    return false;
                 break;
             case "def_func":
-                symbolTable.defineFunc(prevTokens[1].attribute, p, prevTokens[2].type);
+                if(!symbolTable.defineFunc(prevTokens[1].attribute, p, prevTokens[2].type))
+                    return false;
                 break;
             case "def_arr":
-                symbolTable.defineArray(prevTokens[1].attribute);
+                if(!symbolTable.defineArray(prevTokens[1].attribute))
+                    return false;
                 break;
             case "set_pointer":
-                int address = symbolTable.getAddress(prevTokens[1].attribute);
+                address = symbolTable.getAddress(prevTokens[1].attribute);
+                if(address == -1)
+                    return false;
                 PB[p++] = new InterCode(CodeType.ASSIGN, IMMEDIATE, address+4,
                         DIRECT, address);
                 break;
@@ -161,7 +167,10 @@ public class CodeGenerator {
                 PB[p++] = new InterCode(CodeType.JP, INDIRECT, CODE_SIZE);
                 break;
             case "pid":
-                push(symbolTable.getAddress(prevTokens[0].attribute));
+                address = symbolTable.getAddress(prevTokens[0].attribute);
+                if(address == -1)
+                    return false;
+                push(address);
                 break;
             case "assign":
                 PB[p++] = new InterCode(CodeType.ASSIGN, peek(0)>0?DIRECT:INDIRECT, abs(peek(0)),
@@ -169,8 +178,8 @@ public class CodeGenerator {
                 pop(2);
                 break;
             case "push_arr_size":
-                Integer arrSize = symbolTable.getArraySize(prevTokens[0].attribute);
-                if (arrSize == null)
+                int arrSize = symbolTable.getArraySize(prevTokens[0].attribute);
+                if (arrSize == -1)
                     return false;
                 push(arrSize);
                 break;
@@ -318,7 +327,10 @@ public class CodeGenerator {
             //case "sp_local": mikhaim ino?
             //    break;
             case "init_copy":
-                push(symbolTable.getFuncAddressOffset(prevTokens[0].attribute));
+                address = symbolTable.getFuncAddressOffset(prevTokens[0].attribute);
+                if(address == -1)
+                    return false;
+                push(address);
                 break;
         }
         for(int i=lastPrinted;i<p;i++)
