@@ -27,7 +27,7 @@ public class CodeGenerator {
     InterCode[] PB;
 
     enum  CodeType {ADD, AND, ASSIGN, EQ, JPF, JP, LT, MULT, NOT, PRINT, SUB, DIVIDE}
-    enum AddressType {INDIRECT, DIRECT, IMMEDIATE};
+    enum AddressType {INDIRECT, DIRECT, IMMEDIATE}
 
     public CodeGenerator(SymbolTable symbolTable)
     {
@@ -104,7 +104,7 @@ public class CodeGenerator {
                 symbolTable.defineFunc(prevTokens[1].attribute, p, prevTokens[2].type);
                 break;
             case "def_arr":
-                symbolTable.defineArray(prevTokens[0].attribute);
+                symbolTable.defineArray(prevTokens[1].attribute);
                 break;
             case "set_pointer":
                 int address = symbolTable.getAddress(prevTokens[1].attribute);
