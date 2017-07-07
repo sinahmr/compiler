@@ -31,6 +31,9 @@ public class Scanner
     private FileInputStream code;
     public byte[] buffer;
 
+    public int currentLine;
+    public int currentInLine;
+
     public Scanner(FileInputStream code, ErrorHandler errorHandler)
     {
         this.code = code;
@@ -42,6 +45,9 @@ public class Scanner
         lexemeBeginning = 0;
         buffer = new byte[bufferLength*2];
         dfa = new DFA(this, 30);
+
+        currentLine = 1;
+        currentInLine = 1;
     }
 
     public Token getNextToken()
@@ -50,9 +56,9 @@ public class Scanner
         lexemeBeginning = currentToken;
         lastTokenType = dfa.run();
         if(currentToken > lexemeBeginning)
-            return new Token(keywordTable, IDTable, lastTokenType, Arrays.copyOfRange(buffer, lexemeBeginning, currentToken));
+            return new Token(keywordTable, IDTable, lastTokenType, currentLine, currentInLine, Arrays.copyOfRange(buffer, lexemeBeginning, currentToken));
         else
-            return new Token(keywordTable, IDTable, lastTokenType, Arrays.copyOfRange(buffer, lexemeBeginning, 2*bufferLength) , Arrays.copyOfRange(buffer, 0, currentToken));
+            return new Token(keywordTable, IDTable, lastTokenType, currentLine, currentInLine, Arrays.copyOfRange(buffer, lexemeBeginning, 2*bufferLength) , Arrays.copyOfRange(buffer, 0, currentToken));
     }
 
     public void loadBuffer()
@@ -146,6 +152,15 @@ class DFA
             if(scn.buffer[scn.currentToken] == 0)
                 toEnd = true;
 
+
+            scn.currentInLine++;
+            if(scn.buffer[scn.currentToken] == 10)
+            {
+                scn.currentLine++;
+                scn.currentInLine = 1;
+            }
+
+
             TupleIB next = new TupleIB(currState, scn.buffer[scn.currentToken]);
 
             if(tranValid.containsKey(next))
@@ -191,7 +206,15 @@ class DFA
                 if(doReturn)
                 {
                     if (undoFinalStates.contains(currState))
+                    {
                         scn.currentToken--;
+                        scn.currentInLine--;
+                        if(scn.buffer[scn.currentToken] == 10)
+                        {
+                            scn.currentLine--;
+                            scn.currentInLine=1;
+                        }
+                    }
                     return finalStates.get(currState);
                 }
             }

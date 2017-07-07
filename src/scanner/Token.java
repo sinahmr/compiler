@@ -10,22 +10,22 @@ public class Token
     public int attribute;
     public int lineNumber;  // TODO
     public int offsetInLine;  // TODO
-    public Token(SymbolTable keywordTable, SymbolTable IDTable, Type type, byte[] name1, byte[] name2)
+    public Token(SymbolTable keywordTable, SymbolTable IDTable, Type type, int line, int inLine, byte[] name1, byte[] name2)
     {
         byte[] result = new byte[name1.length+name2.length];
         for(int i=0;i<name1.length;i++)
             result[i] = name1[i];
         for(int i=0;i<name2.length;i++)
             result[i+name1.length] = name2[i];
-        make(keywordTable, IDTable, type, result);
+        make(keywordTable, IDTable, type, line, inLine, result);
     }
 
-    public Token(SymbolTable keywordTable, SymbolTable IDTable, Type type, byte[] name)
+    public Token(SymbolTable keywordTable, SymbolTable IDTable, Type type, int line, int inLine, byte[] name)
     {
-        make(keywordTable, IDTable, type, name);
+        make(keywordTable, IDTable, type, line, inLine, name);
     }
 
-    private void make(SymbolTable keywordTable, SymbolTable IDTable, Type tokenType, byte[] name)
+    private void make(SymbolTable keywordTable, SymbolTable IDTable, Type tokenType, int line, int inLine, byte[] name)
     {
         try {
             String str = new String(name, "UTF-8");
@@ -45,6 +45,9 @@ public class Token
                 attribute = new Integer(str);
             } else
                 type = tokenType;
+
+            lineNumber = line;
+            offsetInLine = inLine;
 
         }catch(Exception e)
         {

@@ -87,7 +87,6 @@ public class CodeGenerator {
         final AddressType INDIRECT = AddressType.INDIRECT;
         int temp, temp2;
         int address;
-        System.out.println("Called " + action);
         switch (action)
         {
             case "init":
@@ -333,12 +332,13 @@ public class CodeGenerator {
                 push(address);
                 break;
         }
+        /*System.out.println("Called " + action);
         for(int i=lastPrinted;i<p;i++)
             if(PB[i] != null)
                 PB[i].print();
             else
                 System.out.println("            ");
-        lastPrinted = p;
+        lastPrinted = p;*/
 
         return true;
     }
