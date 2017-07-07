@@ -324,12 +324,12 @@ public class SymbolTable
         return args_size.get(lastDefinedFunc);
     }
 
-    public int getArraySize(int index)
+    public Integer getArraySize(int index)
     {
         if(IDTypes.get(index) != IDType.ARRAY)
         {
             errorHandler.semanticError("ID is not an array");
-            return -1;
+            return null;
         }
         return args_size.get(index);
     }

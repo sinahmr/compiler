@@ -87,7 +87,7 @@ public class CodeGenerator {
         final AddressType INDIRECT = AddressType.INDIRECT;
         int temp, temp2;
         int address;
-        System.out.println("Called " + action);
+//        System.out.println("Called " + action);
         switch (action)
         {
             case "init":
@@ -178,8 +178,8 @@ public class CodeGenerator {
                 pop(2);
                 break;
             case "push_arr_size":
-                int arrSize = symbolTable.getArraySize(prevTokens[0].attribute);
-                if (arrSize == -1)
+                Integer arrSize = symbolTable.getArraySize(prevTokens[0].attribute);
+                if (arrSize == null)
                     return false;
                 push(arrSize);
                 break;
@@ -333,11 +333,11 @@ public class CodeGenerator {
                 push(address);
                 break;
         }
-        for(int i=lastPrinted;i<p;i++)
-            if(PB[i] != null)
-                PB[i].print();
-            else
-                System.out.println("            ");
+//        for(int i=lastPrinted;i<p;i++)
+//            if(PB[i] != null)
+//                PB[i].print();
+//            else
+//                System.out.println("            ");
         lastPrinted = p;
 
         return true;
