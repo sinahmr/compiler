@@ -1,0 +1,14 @@
+int f(int a) {
+    int b;
+    b = a*a;
+    return (b*2)-1;
+}
+int g(void) {
+    return f(3);
+}
+void main(void) {
+    int p;
+    p = g() * g() + 1 * (2 + 3);
+    output(p);
+    return;
+}

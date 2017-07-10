@@ -1,0 +1,6 @@
+int b;
+int main( void ){
+
+	if(2&& b<2) 
+	output(b);
+}

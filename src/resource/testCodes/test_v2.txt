@@ -25,3 +25,4 @@ void main(void) {
 		output(c-b) ;
 		}
 }
+EOF
